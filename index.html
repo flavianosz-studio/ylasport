@@ -367,7 +367,10 @@ function liveSearch(q) { renderHomeAlbums(q); }
 function liveSearch2(q) { renderAllAlbums(q); }
 
 async function openAlbum(id) {
-  history.pushState(null, '', `#album/${id}`);
+  if (!albums.length) albums = await fetchAlbums();
+  const albForSlug = albums.find(a => String(a.id) === String(id));
+  const slug = albForSlug ? slugify(albForSlug.name) : id;
+  history.pushState(null, '', `#album/${slug}`);
   if (!albums.length) albums = await fetchAlbums();
   const alb = albums.find(a => String(a.id) === String(id));
   if (!alb) return;
@@ -443,6 +446,7 @@ document.addEventListener('keydown', e => {
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function slugify(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
 
 // ─── HASH ROUTER ──────────────────────────────────────────────────────────
 async function handleRoute() {
@@ -454,9 +458,9 @@ async function handleRoute() {
   } else if (hash === 'contact') {
     showContactPage();
   } else if (hash.startsWith('album/')) {
-    const id = hash.replace('album/', '');
+    const slug = hash.replace('album/', '');
     if (!albums.length) albums = await fetchAlbums();
-    const alb = albums.find(a => String(a.id) === String(id));
+    const alb = albums.find(a => slugify(a.name) === slug);
     if (alb) {
       lastView = 'albums';
       renderAlbumDetail(alb);
