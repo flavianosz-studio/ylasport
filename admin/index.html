@@ -1,1 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · YLASPORT</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #3dba7e; --green-dark: #2a9a64; --green-light: #e8f9f1; --green-xlight: #f3fdf8;
+    --white: #ffffff; --gray-50: #f9f9f7; --gray-100: #f0efeb; --gray-200: #e0dfd9;
+    --gray-400: #999890; --gray-600: #5a5950; --gray-900: #1a1a18;
+    --font-display: 'Barlow Condensed', sans-serif; --font-body: 'Barlow', sans-serif;
+    --radius: 10px; --radius-lg: 16px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07); --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); background: var(--white); color: var(--gray-900); }
 
+  /* ── LOGIN ── */
+  #screen-login { display: none; min-height: 100vh; background: var(--gray-50); align-items: center; justify-content: center; }
+  #screen-login.active { display: flex; }
+  .login-card { background: var(--white); border-radius: var(--radius-lg); border: 1.5px solid var(--gray-200); box-shadow: var(--shadow-md); padding: 48px 40px; width: 100%; max-width: 400px; }
+  .login-logo { font-family: var(--font-display); font-size: 36px; letter-spacing: 3px; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 6px; }
+  .login-logo span { color: var(--green); }
+  .login-sub { font-size: 13px; color: var(--gray-400); margin-bottom: 32px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1.5px solid var(--gray-200); border-radius: var(--radius); font-size: 13px; font-family: var(--font-body); outline: none; transition: border .15s; background: var(--gray-50); }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--green); background: var(--white); }
+  .login-err { color: #d84e3e; font-size: 12px; margin-bottom: 12px; display: none; }
+  .login-err.show { display: block; }
+  .btn-green { background: var(--green); color: var(--white); border: none; border-radius: 24px; padding: 8px 20px; font-size: 13px; font-weight: 600; font-family: var(--font-body); cursor: pointer; transition: background .15s; letter-spacing: 0.5px; text-transform: uppercase; }
+  .btn-green:hover { background: var(--green-dark); }
+  .btn-full { width: 100%; padding: 12px; font-size: 14px; font-weight: 700; border-radius: var(--radius); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── ADMIN ── */
+  #screen-admin { display: none; flex-direction: row; min-height: 100vh; }
+  #screen-admin.active { display: flex; }
+  .admin-sidebar { width: 240px; min-height: 100vh; background: var(--gray-900); color: var(--white); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
+  .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: var(--font-display); font-size: 24px; letter-spacing: 3px; font-weight: 800; text-transform: uppercase; }
+  .sidebar-logo span { color: var(--green); }
+  .sidebar-nav { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
+  .sidebar-nav button { display: flex; align-items: center; gap: 10px; background: none; border: none; color: rgba(255,255,255,0.65); font-family: var(--font-body); font-size: 13px; font-weight: 500; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: all .15s; text-align: left; width: 100%; }
+  .sidebar-nav button:hover { background: rgba(255,255,255,0.07); color: white; }
+  .sidebar-nav button.active { background: var(--green); color: white; }
+  .sidebar-nav .icon { font-size: 18px; width: 22px; text-align: center; }
+  .sidebar-footer { padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .sidebar-footer button { display: flex; align-items: center; gap: 8px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 12px; cursor: pointer; padding: 8px 12px; border-radius: 8px; font-family: var(--font-body); width: 100%; transition: all .15s; }
+  .sidebar-footer button:hover { color: white; background: rgba(255,255,255,0.07); }
+  .admin-content { flex: 1; background: var(--gray-50); padding: 32px; overflow-y: auto; }
+  .admin-page { display: none; }
+  .admin-page.active { display: block; }
+  .admin-page-title { font-family: var(--font-display); font-size: 30px; letter-spacing: 3px; font-weight: 800; margin-bottom: 24px; color: var(--gray-900); text-transform: uppercase; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: var(--white); border-radius: var(--radius-lg); border: 1.5px solid var(--gray-200); padding: 20px; box-shadow: var(--shadow); }
+  .stat-label { font-size: 10px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1.5px; }
+  .stat-value { font-family: var(--font-display); font-size: 42px; color: var(--green); margin-top: 4px; font-weight: 800; }
+  .stat-sub { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+  .admin-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .admin-toolbar input { flex: 1; padding: 9px 14px; border: 1.5px solid var(--gray-200); border-radius: var(--radius); font-size: 13px; font-family: var(--font-body); outline: none; background: var(--white); }
+  .admin-toolbar input:focus { border-color: var(--green); }
+  .admin-album-list { display: flex; flex-direction: column; gap: 12px; }
+  .admin-album-row { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow); }
+  .admin-album-thumb { width: 60px; height: 60px; border-radius: 8px; background: var(--gray-100); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--gray-400); }
+  .admin-album-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .admin-album-info { flex: 1; }
+  .admin-album-info h4 { font-size: 14px; font-weight: 600; }
+  .admin-album-info p { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+  .admin-album-actions { display: flex; gap: 8px; }
+  .btn-sm { padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: var(--font-body); cursor: pointer; border: 1.5px solid; transition: all .15s; }
+  .btn-edit { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
+  .btn-edit:hover { background: var(--green); color: white; }
+  .btn-del { background: #fff0ee; color: #d84e3e; border-color: #f5c0ba; }
+  .btn-del:hover { background: #d84e3e; color: white; }
+  .btn-outline { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius); padding: 9px 18px; font-size: 13px; font-weight: 600; font-family: var(--font-body); cursor: pointer; color: var(--gray-900); transition: all .15s; }
+  .btn-outline:hover { border-color: var(--green); color: var(--green); }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 500; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--white); border-radius: var(--radius-lg); border: 1.5px solid var(--gray-200); box-shadow: var(--shadow-md); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; padding: 32px; }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .modal-header h3 { font-family: var(--font-display); font-size: 24px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
+  .modal-close { background: var(--gray-100); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+  .modal-close:hover { background: var(--gray-200); }
+  .settings-section { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow); }
+  .settings-section h4 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--gray-900); letter-spacing: 0.5px; text-transform: uppercase; }
+  .upload-area { border: 2px dashed var(--gray-200); border-radius: var(--radius-lg); padding: 32px; text-align: center; cursor: pointer; transition: all .2s; background: var(--gray-50); margin-top: 12px; }
+  .upload-area:hover, .upload-area.dragover { border-color: var(--green); background: var(--green-xlight); }
+  .upload-area .upload-icon { font-size: 40px; margin-bottom: 10px; }
+  .upload-area p { font-size: 13px; color: var(--gray-600); }
+  .upload-area span { color: var(--green); font-weight: 600; }
+  .upload-area input { display: none; }
+  .upload-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 16px; }
+  .preview-item { position: relative; border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--gray-200); }
+  .preview-item img, .preview-item video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .preview-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .admin-media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 8px; }
+  .admin-media-item { position: relative; border-radius: 8px; overflow: hidden; border: 1.5px solid var(--gray-200); }
+  .admin-media-item img, .admin-media-item video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .remove-media { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .vbadge { position: absolute; bottom: 4px; left: 4px; background: var(--gray-900); color: white; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+  .toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: var(--gray-900); color: white; border-radius: var(--radius); padding: 12px 20px; font-size: 13px; font-weight: 500; transform: translateY(80px); opacity: 0; transition: all .3s; pointer-events: none; box-shadow: var(--shadow-md); }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.green { background: var(--green); }
+  .loading-overlay { position: fixed; inset: 0; background: var(--gray-50); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+  .spinner { width: 40px; height: 40px; border: 3px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="spinner"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="screen-login">
+  <div class="login-card">
+    <span class="login-logo">YLA<span>SPORT</span></span>
+    <p class="login-sub">Admin Panel — acesso restrito</p>
+    <div class="login-err" id="login-err">E-mail ou senha inválidos.</div>
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" id="login-email" placeholder="admin@ylasport.com" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="form-group">
+      <label>Senha</label>
+      <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-green btn-full" onclick="doLogin()" id="login-btn">Entrar</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="screen-admin">
+  <aside class="admin-sidebar">
+    <div class="sidebar-logo">YLA<span>SPORT</span></div>
+    <nav class="sidebar-nav">
+      <button class="active" onclick="adminNav('dashboard',this)"><span class="icon">⬛</span> Dashboard</button>
+      <button onclick="adminNav('albums',this)"><span class="icon">📁</span> Albums</button>
+      <button onclick="adminNav('upload',this)"><span class="icon">⬆</span> Upload Mídia</button>
+      <button onclick="adminNav('settings',this)"><span class="icon">⚙</span> Configurações</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button onclick="doLogout()">⬅ Sair</button>
+    </div>
+  </aside>
+  <div class="admin-content">
+
+    <div class="admin-page active" id="admin-dashboard">
+      <div class="admin-page-title">Dashboard</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Albums</div><div class="stat-value" id="stat-albums">0</div><div class="stat-sub">total criados</div></div>
+        <div class="stat-card"><div class="stat-label">Fotos</div><div class="stat-value" id="stat-photos">0</div><div class="stat-sub">enviadas</div></div>
+        <div class="stat-card"><div class="stat-label">Vídeos</div><div class="stat-value" id="stat-videos">0</div><div class="stat-sub">enviados</div></div>
+        <div class="stat-card"><div class="stat-label">Total Mídia</div><div class="stat-value" id="stat-total">0</div><div class="stat-sub">itens</div></div>
+      </div>
+      <div style="font-size:13px;color:var(--gray-400);">ℹ️ Dados armazenados no Supabase.</div>
+    </div>
+
+    <div class="admin-page" id="admin-albums">
+      <div class="admin-page-title">Albums</div>
+      <div class="admin-toolbar">
+        <input type="text" id="admin-album-search" placeholder="Buscar albums..." oninput="renderAdminAlbums()">
+        <button class="btn-green" onclick="openNewAlbumModal()">+ Novo Album</button>
+      </div>
+      <div class="admin-album-list" id="admin-album-list"></div>
+    </div>
+
+    <div class="admin-page" id="admin-upload">
+      <div class="admin-page-title">Upload Mídia</div>
+      <div class="settings-section">
+        <div class="form-group">
+          <label>Selecionar Album</label>
+          <select id="upload-album-select" style="width:100%;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:13px;font-family:var(--font-body);outline:none;background:var(--white);"><option value="">— Escolha um album —</option></select>
+        </div>
+        <div class="upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)">
+          <input type="file" id="file-input" multiple accept="image/*,video/*" onchange="handleFiles(this.files)">
+          <div class="upload-icon">📂</div>
+          <p>Arraste fotos/vídeos ou <span>selecione arquivos</span></p>
+          <p style="font-size:12px;color:var(--gray-400);margin-top:4px;">JPG, PNG, GIF, MP4, MOV, WebM</p>
+        </div>
+        <div class="upload-preview" id="upload-preview"></div>
+        <div style="margin-top:20px;display:flex;gap:10px;align-items:center;">
+          <button class="btn-green" onclick="doUpload()" id="upload-btn" disabled>Enviar para Album</button>
+          <span id="upload-status" style="font-size:13px;color:var(--gray-400)"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-page" id="admin-settings">
+      <div class="admin-page-title">Configurações</div>
+      <div class="settings-section">
+        <h4>Zona de Perigo</h4>
+        <p style="font-size:13px;color:var(--gray-400);margin-bottom:16px;">Para alterar credenciais, use o painel do Supabase → Authentication → Users.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ALBUM MODAL -->
+<div class="modal-overlay" id="album-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="album-modal-title">Novo Album</h3>
+      <button class="modal-close" onclick="closeAlbumModal()">✕</button>
+    </div>
+    <div class="form-group"><label>Nome do Album *</label><input type="text" id="album-name-input" placeholder="ex: YoungLA X Batman"></div>
+    <div class="form-group"><label>Categoria / Tag</label><input type="text" id="album-tag-input" placeholder="ex: Collab, Signature"></div>
+    <div class="form-group"><label>Descrição</label><textarea id="album-desc-input" rows="3" style="resize:vertical;" placeholder="Descreva esta coleção..."></textarea></div>
+    <div class="form-group"><label>Link de Compra</label><input type="url" id="album-paylink-input" placeholder="https://... (botão Comprar)"></div>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn-green" onclick="saveAlbum()" id="save-album-btn">Salvar Album</button>
+      <button class="btn-outline" onclick="closeAlbumModal()">Cancelar</button>
+    </div>
+    <div id="album-media-section" style="display:none;margin-top:24px;border-top:1.5px solid var(--gray-200);padding-top:20px;">
+      <div style="font-weight:600;font-size:14px;margin-bottom:8px;">Mídia neste album</div>
+      <div class="admin-media-grid" id="album-media-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ─── SUPABASE CONFIG ───────────────────────────────────────────────────────
+// Replace these with your actual Supabase project values
+const SUPABASE_URL = 'https://whzezjmjcnukixkkmyan.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoemV6am1qY251a2l4a2tteWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMDExMTgsImV4cCI6MjA5Mjg3NzExOH0.NwynrNjmxDX6rXuDB9hjmQHLNGam9aqb3QIc8Gw7PsE';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let albums = [];
+let editAlbumId = null;
+let filePreviews = [];
+
+// ─── AUTH ──────────────────────────────────────────────────────────────────
+async function init() {
+  const { data: { session } } = await supabase.auth.getSession();
+  document.getElementById('loading-overlay').style.display = 'none';
+  if (session) {
+    showAdmin();
+  } else {
+    document.getElementById('screen-login').classList.add('active');
+  }
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-err');
+  const btn = document.getElementById('login-btn');
+  err.classList.remove('show');
+  btn.textContent = 'Entrando...'; btn.disabled = true;
+  const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+  btn.textContent = 'Entrar'; btn.disabled = false;
+  if (error) { err.textContent = 'E-mail ou senha inválidos.'; err.classList.add('show'); return; }
+  document.getElementById('screen-login').classList.remove('active');
+  showAdmin();
+}
+
+async function doLogout() {
+  await supabase.auth.signOut();
+  document.getElementById('screen-admin').classList.remove('active');
+  document.getElementById('screen-login').classList.add('active');
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+// ─── ADMIN SETUP ───────────────────────────────────────────────────────────
+async function showAdmin() {
+  document.getElementById('screen-admin').classList.add('active');
+  albums = await fetchAlbums();
+  renderDashboard();
+  renderAdminAlbums();
+  populateUploadSelect();
+}
+
+function adminNav(page, btn) {
+  document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('admin-' + page).classList.add('active');
+  btn.classList.add('active');
+  if (page === 'upload') populateUploadSelect();
+}
+
+// ─── SUPABASE CRUD ─────────────────────────────────────────────────────────
+async function fetchAlbums() {
+  const { data, error } = await supabase
+    .from('albums')
+    .select('*, media(*)')
+    .order('created_at', { ascending: false });
+  if (error) { console.error(error); toast('Erro ao carregar albums'); return []; }
+  return data || [];
+}
+
+async function createAlbum(payload) {
+  const { data, error } = await supabase.from('albums').insert([payload]).select().single();
+  if (error) throw error;
+  return data;
+}
+
+async function updateAlbum(id, payload) {
+  const { error } = await supabase.from('albums').update(payload).eq('id', id);
+  if (error) throw error;
+}
+
+async function deleteAlbumDB(id) {
+  // Delete media first (or use cascade in Supabase)
+  await supabase.from('media').delete().eq('album_id', id);
+  const { error } = await supabase.from('albums').delete().eq('id', id);
+  if (error) throw error;
+}
+
+async function insertMedia(albumId, mediaArray) {
+  const rows = mediaArray.map(m => ({ album_id: albumId, type: m.type, url: m.url, name: m.name }));
+  const { error } = await supabase.from('media').insert(rows);
+  if (error) throw error;
+}
+
+async function deleteMediaItem(mediaId) {
+  const { error } = await supabase.from('media').delete().eq('id', mediaId);
+  if (error) throw error;
+}
+
+// ─── UPLOAD TO SUPABASE STORAGE ────────────────────────────────────────────
+async function uploadFileToStorage(file, albumId) {
+  const ext = file.name.split('.').pop();
+  const path = `${albumId}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+  const { error } = await supabase.storage.from('media').upload(path, file, { upsert: false });
+  if (error) throw error;
+  const { data } = supabase.storage.from('media').getPublicUrl(path);
+  return data.publicUrl;
+}
+
+// ─── DASHBOARD ─────────────────────────────────────────────────────────────
+function renderDashboard() {
+  let photos = 0, videos = 0;
+  albums.forEach(a => (a.media || []).forEach(m => m.type === 'video' ? videos++ : photos++));
+  document.getElementById('stat-albums').textContent = albums.length;
+  document.getElementById('stat-photos').textContent = photos;
+  document.getElementById('stat-videos').textContent = videos;
+  document.getElementById('stat-total').textContent = photos + videos;
+}
+
+// ─── ALBUMS LIST ───────────────────────────────────────────────────────────
+function renderAdminAlbums() {
+  const q = (document.getElementById('admin-album-search').value || '').toLowerCase();
+  let list = albums;
+  if (q) list = albums.filter(a => a.name.toLowerCase().includes(q));
+  const el = document.getElementById('admin-album-list');
+  if (!list.length) { el.innerHTML = '<div style="color:var(--gray-400);font-size:13px;padding:12px 0;">Nenhum album ainda.</div>'; return; }
+  el.innerHTML = list.map(a => {
+    const media = a.media || [];
+    const cover = media.find(m => m.type === 'image');
+    const thumb = cover ? `<img src="${cover.url}" alt="">` : '📁';
+    return `<div class="admin-album-row">
+      <div class="admin-album-thumb">${thumb}</div>
+      <div class="admin-album-info"><h4>${esc(a.name)}</h4><p>${media.length} itens${a.tag ? ' · ' + esc(a.tag) : ''}${a.pay_link ? ' · 🛒 Link de compra' : ''}</p></div>
+      <div class="admin-album-actions">
+        <button class="btn-sm btn-edit" onclick="openEditAlbum('${a.id}')">Editar</button>
+        <button class="btn-sm btn-del" onclick="deleteAlbum('${a.id}')">Deletar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function populateUploadSelect() {
+  const sel = document.getElementById('upload-album-select');
+  sel.innerHTML = '<option value="">— Escolha um album —</option>' + albums.map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join('');
+}
+
+// ─── ALBUM MODAL ───────────────────────────────────────────────────────────
+function openNewAlbumModal() {
+  editAlbumId = null;
+  document.getElementById('album-modal-title').textContent = 'Novo Album';
+  ['album-name-input','album-tag-input','album-desc-input','album-paylink-input'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('album-media-section').style.display = 'none';
+  document.getElementById('album-modal').classList.add('open');
+}
+function openEditAlbum(id) {
+  editAlbumId = id;
+  const a = albums.find(x => String(x.id) === String(id));
+  if (!a) return;
+  document.getElementById('album-modal-title').textContent = 'Editar Album';
+  document.getElementById('album-name-input').value = a.name;
+  document.getElementById('album-tag-input').value = a.tag || '';
+  document.getElementById('album-desc-input').value = a.desc || '';
+  document.getElementById('album-paylink-input').value = a.pay_link || '';
+  document.getElementById('album-media-section').style.display = 'block';
+  renderAlbumMediaAdmin(a);
+  document.getElementById('album-modal').classList.add('open');
+}
+function renderAlbumMediaAdmin(alb) {
+  const grid = document.getElementById('album-media-grid');
+  const media = alb.media || [];
+  if (!media.length) { grid.innerHTML = '<span style="color:var(--gray-400);font-size:12px;">Sem mídia ainda.</span>'; return; }
+  grid.innerHTML = media.map(m => `
+    <div class="admin-media-item">
+      ${m.type === 'video' ? `<video src="${m.url}" muted></video><span class="vbadge">VIDEO</span>` : `<img src="${m.url}" alt="">`}
+      <button class="remove-media" onclick="removeMedia('${m.id}','${alb.id}')">✕</button>
+    </div>`).join('');
+}
+async function removeMedia(mediaId, albumId) {
+  try {
+    await deleteMediaItem(mediaId);
+    albums = await fetchAlbums();
+    const alb = albums.find(a => String(a.id) === String(albumId));
+    if (alb) renderAlbumMediaAdmin(alb);
+    renderDashboard();
+    toast('Mídia removida');
+  } catch (e) { toast('Erro ao remover'); }
+}
+function closeAlbumModal() { document.getElementById('album-modal').classList.remove('open'); }
+
+async function saveAlbum() {
+  const name = document.getElementById('album-name-input').value.trim();
+  if (!name) { toast('Nome do album é obrigatório'); return; }
+  const tag = document.getElementById('album-tag-input').value.trim();
+  const desc = document.getElementById('album-desc-input').value.trim();
+  const pay_link = document.getElementById('album-paylink-input').value.trim();
+  const btn = document.getElementById('save-album-btn');
+  btn.textContent = 'Salvando...'; btn.disabled = true;
+  try {
+    if (editAlbumId) {
+      await updateAlbum(editAlbumId, { name, tag, desc, pay_link });
+    } else {
+      await createAlbum({ name, tag, desc, pay_link });
+    }
+    albums = await fetchAlbums();
+    renderAdminAlbums(); renderDashboard(); populateUploadSelect();
+    closeAlbumModal(); toast('Album salvo!', true);
+  } catch (e) { toast('Erro ao salvar album'); }
+  btn.textContent = 'Salvar Album'; btn.disabled = false;
+}
+
+async function deleteAlbum(id) {
+  if (!confirm('Deletar este album e toda sua mídia?')) return;
+  try {
+    await deleteAlbumDB(id);
+    albums = await fetchAlbums();
+    renderAdminAlbums(); renderDashboard();
+    toast('Album deletado');
+  } catch (e) { toast('Erro ao deletar'); }
+}
+
+// ─── UPLOAD ────────────────────────────────────────────────────────────────
+function handleFiles(files) { Array.from(files).forEach(f => filePreviews.push(f)); renderPreviews(); document.getElementById('upload-btn').disabled = filePreviews.length === 0; }
+function handleDrop(e) { e.preventDefault(); document.getElementById('drop-zone').classList.remove('dragover'); handleFiles(e.dataTransfer.files); }
+function renderPreviews() {
+  document.getElementById('upload-preview').innerHTML = filePreviews.map((f, i) => {
+    const isVid = f.type.startsWith('video'), url = URL.createObjectURL(f);
+    return `<div class="preview-item">${isVid ? `<video src="${url}" muted></video>` : `<img src="${url}" alt="">`}<button class="preview-remove" onclick="removePreview(${i})">✕</button></div>`;
+  }).join('');
+}
+function removePreview(i) { filePreviews.splice(i, 1); renderPreviews(); document.getElementById('upload-btn').disabled = filePreviews.length === 0; }
+
+async function doUpload() {
+  const albumId = document.getElementById('upload-album-select').value;
+  if (!albumId) { toast('Selecione um album primeiro'); return; }
+  if (!filePreviews.length) { toast('Nenhum arquivo selecionado'); return; }
+  const btn = document.getElementById('upload-btn');
+  const status = document.getElementById('upload-status');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+  const total = filePreviews.length;
+  const uploaded = [];
+  for (let i = 0; i < filePreviews.length; i++) {
+    const f = filePreviews[i];
+    status.textContent = `${i + 1}/${total} enviando...`;
+    try {
+      const url = await uploadFileToStorage(f, albumId);
+      uploaded.push({ type: f.type.startsWith('video') ? 'video' : 'image', url, name: f.name.replace(/\.[^.]+$/, '') });
+    } catch (e) { console.error(e); toast(`Erro no arquivo ${f.name}`); }
+  }
+  if (uploaded.length) {
+    try { await insertMedia(albumId, uploaded); } catch (e) { toast('Erro ao salvar mídia'); }
+  }
+  albums = await fetchAlbums();
+  renderDashboard(); renderAdminAlbums();
+  btn.textContent = 'Enviar para Album'; btn.disabled = false;
+  filePreviews = []; renderPreviews(); status.textContent = '';
+  toast(`${uploaded.length} arquivo(s) enviado(s)!`, true);
+}
+
+// ─── HELPERS ───────────────────────────────────────────────────────────────
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+let toastTimer;
+function toast(msg, green = false) {
+  const t = document.getElementById('toast'); t.textContent = msg;
+  t.className = 'toast show' + (green ? ' green' : '');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.className = 'toast', 2800);
+}
+
+// ─── BOOT ──────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
