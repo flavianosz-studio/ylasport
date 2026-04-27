@@ -295,6 +295,7 @@ function setNav(w) {
   });
 }
 async function showHome() {
+  history.pushState(null, '', '#');
   showView('home'); lastView = 'home'; setNav('home');
   document.getElementById('home-loading').style.display = 'flex';
   document.getElementById('home-album-grid').style.display = 'none';
@@ -303,6 +304,7 @@ async function showHome() {
   renderHomeAlbums();
 }
 async function showAlbumsPage() {
+  history.pushState(null, '', '#albums');
   showView('albums'); lastView = 'albums'; setNav('albums');
   document.getElementById('all-loading').style.display = 'flex';
   document.getElementById('all-album-grid').style.display = 'none';
@@ -310,8 +312,13 @@ async function showAlbumsPage() {
   albums = await fetchAlbums();
   renderAllAlbums();
 }
-function showContactPage() { showView('contact'); setNav('contact'); }
-function goBack() { lastView === 'home' ? showHome() : showAlbumsPage(); }
+function showContactPage() {
+  history.pushState(null, '', '#contact');
+  showView('contact'); setNav('contact');
+}
+function goBack() {
+  if (lastView === 'home') { showHome(); } else { showAlbumsPage(); }
+}
 
 // ─── RENDER ────────────────────────────────────────────────────────────────
 function albumCardHTML(a) {
@@ -359,11 +366,14 @@ function renderAllAlbums(q = '') {
 function liveSearch(q) { renderHomeAlbums(q); }
 function liveSearch2(q) { renderAllAlbums(q); }
 
-function openAlbum(id) {
+async function openAlbum(id) {
+  history.pushState(null, '', `#album/${id}`);
+  if (!albums.length) albums = await fetchAlbums();
   const alb = albums.find(a => String(a.id) === String(id));
   if (!alb) return;
   renderAlbumDetail(alb);
   showView('album');
+  window.scrollTo(0, 0);
 }
 function renderAlbumDetail(alb) {
   currentAlbumId = alb.id;
@@ -434,8 +444,35 @@ document.addEventListener('keydown', e => {
 // ─── HELPERS ───────────────────────────────────────────────────────────────
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
+// ─── HASH ROUTER ──────────────────────────────────────────────────────────
+async function handleRoute() {
+  const hash = window.location.hash.replace(/^#\/?/, '');
+  if (!hash || hash === '') {
+    await showHome();
+  } else if (hash === 'albums') {
+    await showAlbumsPage();
+  } else if (hash === 'contact') {
+    showContactPage();
+  } else if (hash.startsWith('album/')) {
+    const id = hash.replace('album/', '');
+    if (!albums.length) albums = await fetchAlbums();
+    const alb = albums.find(a => String(a.id) === String(id));
+    if (alb) {
+      lastView = 'albums';
+      renderAlbumDetail(alb);
+      showView('album');
+    } else {
+      await showHome();
+    }
+  } else {
+    await showHome();
+  }
+}
+
+window.addEventListener('popstate', handleRoute);
+
 // ─── INIT ──────────────────────────────────────────────────────────────────
-showHome();
+handleRoute();
 </script>
 </body>
 </html>
