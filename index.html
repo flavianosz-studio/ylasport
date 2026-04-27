@@ -30,7 +30,6 @@
   .view { display: none; min-height: 100vh; }
   .view.active { display: block; }
 
-  /* HEADER */
   .pub-header { background: var(--white); border-bottom: 1.5px solid var(--gray-200); position: sticky; top: 0; z-index: 100; }
   .pub-header-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 16px; height: 64px; }
   .logo { font-family: var(--font-display); font-size: 30px; letter-spacing: 3px; font-weight: 800; color: var(--gray-900); cursor: pointer; text-transform: uppercase; }
@@ -45,10 +44,8 @@
   .btn-green { background: var(--green); color: var(--white); border: none; border-radius: 24px; padding: 8px 20px; font-size: 13px; font-weight: 600; font-family: var(--font-body); cursor: pointer; transition: background .15s; letter-spacing: 0.5px; text-transform: uppercase; }
   .btn-green:hover { background: var(--green-dark); }
 
-  /* MAIN */
   .pub-main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
 
-  /* HERO */
   .hero-strip { background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); border-radius: var(--radius-lg); padding: 40px 48px; margin-bottom: 40px; display: flex; align-items: center; justify-content: space-between; overflow: hidden; position: relative; }
   .hero-strip::after { content: 'YLASPORT'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); font-family: var(--font-display); font-size: 120px; color: rgba(255,255,255,0.08); letter-spacing: 4px; pointer-events: none; font-weight: 800; }
   .hero-text h1 { font-family: var(--font-display); font-size: 52px; color: var(--white); letter-spacing: 4px; font-weight: 800; text-transform: uppercase; }
@@ -59,7 +56,6 @@
   .section-title { font-family: var(--font-display); font-size: 26px; letter-spacing: 3px; font-weight: 700; margin-bottom: 20px; color: var(--gray-900); display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
   .section-title::after { content: ''; flex: 1; height: 1.5px; background: var(--gray-200); border-radius: 2px; }
 
-  /* ALBUM GRID */
   .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
   .album-card { border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid var(--gray-200); background: var(--white); cursor: pointer; transition: all .2s; box-shadow: var(--shadow); }
   .album-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--green); }
@@ -70,7 +66,6 @@
   .album-info p { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
   .album-tag { display: inline-block; margin-top: 8px; background: var(--green-light); color: var(--green-dark); font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
 
-  /* ALBUM DETAIL */
   .back-btn { background: var(--gray-100); border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 13px; font-family: var(--font-body); color: var(--gray-600); display: inline-flex; align-items: center; gap: 6px; transition: background .15s; font-weight: 500; margin-bottom: 20px; }
   .back-btn:hover { background: var(--gray-200); }
   .album-detail-top { display: flex; align-items: flex-start; gap: 24px; margin-bottom: 28px; flex-wrap: wrap; }
@@ -84,7 +79,6 @@
   .buy-btn:hover { background: var(--green-dark); }
   .buy-btn.hidden { display: none; }
 
-  /* PHOTO GRID */
   .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
   .photo-item { border-radius: var(--radius); overflow: hidden; cursor: pointer; border: 1.5px solid var(--gray-200); background: var(--gray-100); transition: all .2s; }
   .photo-item:hover { transform: scale(1.02); border-color: var(--green); }
@@ -95,7 +89,6 @@
   .video-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); }
   .play-circle { width: 52px; height: 52px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
 
-  /* LIGHTBOX */
   .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; }
   .lightbox.open { display: flex; }
   .lightbox img, .lightbox video { max-width: 90vw; max-height: 85vh; border-radius: 8px; object-fit: contain; }
@@ -105,13 +98,11 @@
   #lb-prev { left: 20px; } #lb-next { right: 20px; }
   .lightbox-caption { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 12px; letter-spacing: 1px; }
 
-  /* EMPTY */
   .empty-state { text-align: center; padding: 80px 20px; color: var(--gray-400); }
   .empty-state .icon { font-size: 56px; margin-bottom: 16px; }
   .empty-state h3 { font-size: 18px; font-weight: 600; color: var(--gray-600); }
   .empty-state p { font-size: 13px; margin-top: 6px; }
 
-  /* CONTACT */
   .contact-wrap { max-width: 560px; margin: 40px auto; text-align: center; }
   .contact-card { background: var(--gray-50); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 48px 40px; box-shadow: var(--shadow); }
   .contact-card h2 { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
@@ -122,88 +113,6 @@
   .wechat-label .wc-title { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; }
   .wechat-label .wc-id { font-family: var(--font-display); font-size: 26px; font-weight: 800; color: var(--green); letter-spacing: 1px; }
 
-  /* LOGIN */
-  #view-login { background: var(--gray-50); display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-  #view-login.active { display: flex; }
-  .login-card { background: var(--white); border-radius: var(--radius-lg); border: 1.5px solid var(--gray-200); box-shadow: var(--shadow-md); padding: 48px 40px; width: 100%; max-width: 400px; }
-  .login-card .logo { display: block; margin-bottom: 8px; font-size: 36px; }
-  .login-card > p { font-size: 13px; color: var(--gray-400); margin-bottom: 32px; }
-  .form-group { margin-bottom: 18px; }
-  .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
-  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1.5px solid var(--gray-200); border-radius: var(--radius); font-size: 13px; font-family: var(--font-body); outline: none; transition: border .15s; background: var(--gray-50); }
-  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--green); background: var(--white); }
-  .login-err { color: #d84e3e; font-size: 12px; margin-bottom: 12px; display: none; }
-  .login-err.show { display: block; }
-  .btn-full { width: 100%; padding: 12px; font-size: 14px; font-weight: 700; border-radius: var(--radius); letter-spacing: 1px; text-transform: uppercase; }
-
-  /* ADMIN */
-  #view-admin { display: none; flex-direction: row; min-height: 100vh; }
-  #view-admin.active { display: flex; }
-  .admin-sidebar { width: 240px; min-height: 100vh; background: var(--gray-900); color: var(--white); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
-  .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: var(--font-display); font-size: 24px; letter-spacing: 3px; font-weight: 800; text-transform: uppercase; }
-  .sidebar-logo span { color: var(--green); }
-  .sidebar-nav { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
-  .sidebar-nav button { display: flex; align-items: center; gap: 10px; background: none; border: none; color: rgba(255,255,255,0.65); font-family: var(--font-body); font-size: 13px; font-weight: 500; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: all .15s; text-align: left; width: 100%; }
-  .sidebar-nav button:hover { background: rgba(255,255,255,0.07); color: white; }
-  .sidebar-nav button.active { background: var(--green); color: white; }
-  .sidebar-nav .icon { font-size: 18px; width: 22px; text-align: center; }
-  .sidebar-footer { padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.08); }
-  .sidebar-footer button { display: flex; align-items: center; gap: 8px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 12px; cursor: pointer; padding: 8px 12px; border-radius: 8px; font-family: var(--font-body); width: 100%; transition: all .15s; }
-  .sidebar-footer button:hover { color: white; background: rgba(255,255,255,0.07); }
-  .admin-content { flex: 1; background: var(--gray-50); padding: 32px; overflow-y: auto; }
-  .admin-page { display: none; }
-  .admin-page.active { display: block; }
-  .admin-page-title { font-family: var(--font-display); font-size: 30px; letter-spacing: 3px; font-weight: 800; margin-bottom: 24px; color: var(--gray-900); text-transform: uppercase; }
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
-  .stat-card { background: var(--white); border-radius: var(--radius-lg); border: 1.5px solid var(--gray-200); padding: 20px; box-shadow: var(--shadow); }
-  .stat-label { font-size: 10px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1.5px; }
-  .stat-value { font-family: var(--font-display); font-size: 42px; color: var(--green); margin-top: 4px; font-weight: 800; }
-  .stat-sub { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
-  .admin-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-  .admin-toolbar input { flex: 1; padding: 9px 14px; border: 1.5px solid var(--gray-200); border-radius: var(--radius); font-size: 13px; font-family: var(--font-body); outline: none; background: var(--white); }
-  .admin-toolbar input:focus { border-color: var(--green); }
-  .admin-album-list { display: flex; flex-direction: column; gap: 12px; }
-  .admin-album-row { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow); }
-  .admin-album-thumb { width: 60px; height: 60px; border-radius: 8px; background: var(--gray-100); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--gray-400); }
-  .admin-album-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .admin-album-info { flex: 1; }
-  .admin-album-info h4 { font-size: 14px; font-weight: 600; }
-  .admin-album-info p { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
-  .admin-album-actions { display: flex; gap: 8px; }
-  .btn-sm { padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: var(--font-body); cursor: pointer; border: 1.5px solid; transition: all .15s; }
-  .btn-edit { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
-  .btn-edit:hover { background: var(--green); color: white; }
-  .btn-del { background: #fff0ee; color: #d84e3e; border-color: #f5c0ba; }
-  .btn-del:hover { background: #d84e3e; color: white; }
-  .btn-outline { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius); padding: 9px 18px; font-size: 13px; font-weight: 600; font-family: var(--font-body); cursor: pointer; color: var(--gray-900); transition: all .15s; }
-  .btn-outline:hover { border-color: var(--green); color: var(--green); }
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 500; align-items: center; justify-content: center; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--white); border-radius: var(--radius-lg); border: 1.5px solid var(--gray-200); box-shadow: var(--shadow-md); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; padding: 32px; }
-  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-  .modal-header h3 { font-family: var(--font-display); font-size: 24px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
-  .modal-close { background: var(--gray-100); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-  .modal-close:hover { background: var(--gray-200); }
-  .settings-section { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow); }
-  .settings-section h4 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--gray-900); letter-spacing: 0.5px; text-transform: uppercase; }
-  .upload-area { border: 2px dashed var(--gray-200); border-radius: var(--radius-lg); padding: 32px; text-align: center; cursor: pointer; transition: all .2s; background: var(--gray-50); margin-top: 12px; }
-  .upload-area:hover, .upload-area.dragover { border-color: var(--green); background: var(--green-xlight); }
-  .upload-area .upload-icon { font-size: 40px; margin-bottom: 10px; }
-  .upload-area p { font-size: 13px; color: var(--gray-600); }
-  .upload-area span { color: var(--green); font-weight: 600; }
-  .upload-area input { display: none; }
-  .upload-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 16px; }
-  .preview-item { position: relative; border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--gray-200); }
-  .preview-item img, .preview-item video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
-  .preview-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .admin-media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 8px; }
-  .admin-media-item { position: relative; border-radius: 8px; overflow: hidden; border: 1.5px solid var(--gray-200); }
-  .admin-media-item img, .admin-media-item video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
-  .remove-media { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .vbadge { position: absolute; bottom: 4px; left: 4px; background: var(--gray-900); color: white; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
-  .toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: var(--gray-900); color: white; border-radius: var(--radius); padding: 12px 20px; font-size: 13px; font-weight: 500; transform: translateY(80px); opacity: 0; transition: all .3s; pointer-events: none; box-shadow: var(--shadow-md); }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .toast.green { background: var(--green); }
   .pub-footer { margin-top: 80px; border-top: 1.5px solid var(--gray-200); padding: 32px 24px; text-align: center; }
   .pub-footer p { font-size: 12px; color: var(--gray-400); }
   .logo-footer { font-family: var(--font-display); font-size: 22px; color: var(--gray-900); letter-spacing: 3px; font-weight: 800; }
@@ -211,6 +120,10 @@
   .footer-links { display: flex; justify-content: center; gap: 24px; margin-top: 12px; flex-wrap: wrap; }
   .footer-links a { font-size: 12px; color: var(--gray-400); text-decoration: none; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 500; transition: color .15s; cursor: pointer; }
   .footer-links a:hover { color: var(--green); }
+
+  .loading-spinner { display: flex; align-items: center; justify-content: center; padding: 60px; }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -237,7 +150,8 @@
       <div class="hero-badge"><span id="hero-count">0</span>Albums</div>
     </div>
     <div class="section-title">Featured Albums</div>
-    <div class="album-grid" id="home-album-grid"></div>
+    <div class="loading-spinner" id="home-loading"><div class="spinner"></div></div>
+    <div class="album-grid" id="home-album-grid" style="display:none"></div>
     <div class="empty-state" id="home-empty" style="display:none"><div class="icon">👕</div><h3>No albums yet</h3><p>The catalog will appear here once items are added.</p></div>
   </div>
   <footer class="pub-footer">
@@ -269,7 +183,8 @@
   </header>
   <div class="pub-main">
     <div class="section-title">All Albums</div>
-    <div class="album-grid" id="all-album-grid"></div>
+    <div class="loading-spinner" id="all-loading"><div class="spinner"></div></div>
+    <div class="album-grid" id="all-album-grid" style="display:none"></div>
     <div class="empty-state" id="all-empty" style="display:none"><div class="icon">📁</div><h3>No albums found</h3><p>Try a different search or check back soon.</p></div>
   </div>
   <footer class="pub-footer"><div class="logo-footer">YLA<span>SPORT</span></div><p style="margin-top:8px">© 2025 YLASPORT · All rights reserved</p></footer>
@@ -344,393 +259,183 @@
   <div class="lightbox-caption" id="lb-caption"></div>
 </div>
 
-<!-- LOGIN -->
-<div id="view-login" class="view">
-  <div class="login-card">
-    <span class="logo">YLA<span>SPORT</span></span>
-    <p>Admin Panel — restricted access</p>
-    <div class="login-err" id="login-err">Invalid email or password.</div>
-    <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="admin@ylasport.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <button class="btn-green btn-full" onclick="doLogin()">Sign In</button>
-  </div>
-</div>
-
-<!-- ADMIN -->
-<div id="view-admin" class="view">
-  <aside class="admin-sidebar">
-    <div class="sidebar-logo">YLA<span>SPORT</span></div>
-    <nav class="sidebar-nav">
-      <button class="active" onclick="adminNav('dashboard',this)"><span class="icon">⬛</span> Dashboard</button>
-      <button onclick="adminNav('albums',this)"><span class="icon">📁</span> Albums</button>
-      <button onclick="adminNav('upload',this)"><span class="icon">⬆</span> Upload Media</button>
-      <button onclick="adminNav('settings',this)"><span class="icon">⚙</span> Settings</button>
-    </nav>
-    <div class="sidebar-footer"><button onclick="doLogout()">⬅ Sign Out</button></div>
-  </aside>
-  <div class="admin-content">
-
-    <div class="admin-page active" id="admin-dashboard">
-      <div class="admin-page-title">Dashboard</div>
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-label">Albums</div><div class="stat-value" id="stat-albums">0</div><div class="stat-sub">total created</div></div>
-        <div class="stat-card"><div class="stat-label">Photos</div><div class="stat-value" id="stat-photos">0</div><div class="stat-sub">uploaded</div></div>
-        <div class="stat-card"><div class="stat-label">Videos</div><div class="stat-value" id="stat-videos">0</div><div class="stat-sub">uploaded</div></div>
-        <div class="stat-card"><div class="stat-label">Total Media</div><div class="stat-value" id="stat-total">0</div><div class="stat-sub">items</div></div>
-      </div>
-      <div style="font-size:13px;color:var(--gray-400);">ℹ️ Media is stored in your browser (localStorage).</div>
-    </div>
-
-    <div class="admin-page" id="admin-albums">
-      <div class="admin-page-title">Albums</div>
-      <div class="admin-toolbar">
-        <input type="text" id="admin-album-search" placeholder="Search albums..." oninput="renderAdminAlbums()">
-        <button class="btn-green" onclick="openNewAlbumModal()">+ New Album</button>
-      </div>
-      <div class="admin-album-list" id="admin-album-list"></div>
-    </div>
-
-    <div class="admin-page" id="admin-upload">
-      <div class="admin-page-title">Upload Media</div>
-      <div class="settings-section">
-        <div class="form-group">
-          <label>Select Album</label>
-          <select id="upload-album-select" style="width:100%;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:13px;font-family:var(--font-body);outline:none;background:var(--white);"><option value="">— Choose album —</option></select>
-        </div>
-        <div class="upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)">
-          <input type="file" id="file-input" multiple accept="image/*,video/*" onchange="handleFiles(this.files)">
-          <div class="upload-icon">📂</div>
-          <p>Drag & drop photos/videos here or <span>browse files</span></p>
-          <p style="font-size:12px;color:var(--gray-400);margin-top:4px;">JPG, PNG, GIF, MP4, MOV, WebM</p>
-        </div>
-        <div class="upload-preview" id="upload-preview"></div>
-        <div style="margin-top:20px;display:flex;gap:10px;align-items:center;">
-          <button class="btn-green" onclick="doUpload()" id="upload-btn" disabled>Upload to Album</button>
-          <span id="upload-status" style="font-size:13px;color:var(--gray-400)"></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="admin-page" id="admin-settings">
-      <div class="admin-page-title">Settings</div>
-      <div class="settings-section">
-        <h4>Admin Credentials</h4>
-        <div class="form-group"><label>Admin Email</label><input type="email" id="set-email"></div>
-        <div class="form-group"><label>New Password</label><input type="password" id="set-pass" placeholder="Leave blank to keep current"></div>
-        <button class="btn-green" onclick="saveSettings()">Save Changes</button>
-      </div>
-      <div class="settings-section">
-        <h4>Store Info</h4>
-        <div class="form-group"><label>Store Name</label><input type="text" id="set-storename" placeholder="YLASPORT"></div>
-        <div class="form-group"><label>Tagline</label><input type="text" id="set-tagline"></div>
-        <button class="btn-green" onclick="saveStoreInfo()">Save Info</button>
-      </div>
-      <div class="settings-section">
-        <h4>Danger Zone</h4>
-        <button class="btn-sm btn-del" style="border-radius:8px;padding:10px 20px;font-size:13px;" onclick="clearAllData()">Clear All Data</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ALBUM MODAL -->
-<div class="modal-overlay" id="album-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="album-modal-title">New Album</h3>
-      <button class="modal-close" onclick="closeAlbumModal()">✕</button>
-    </div>
-    <div class="form-group"><label>Album Name *</label><input type="text" id="album-name-input" placeholder="e.g. YoungLA X Batman"></div>
-    <div class="form-group"><label>Category / Tag</label><input type="text" id="album-tag-input" placeholder="e.g. Collab, Signature"></div>
-    <div class="form-group"><label>Description (shown on album page)</label><textarea id="album-desc-input" rows="3" style="resize:vertical;" placeholder="Describe this collection..."></textarea></div>
-    <div class="form-group"><label>Payment / Purchase Link</label><input type="url" id="album-paylink-input" placeholder="https://... (link for the Buy Now button)"></div>
-    <div style="display:flex;gap:10px;margin-top:8px;">
-      <button class="btn-green" onclick="saveAlbum()">Save Album</button>
-      <button class="btn-outline" onclick="closeAlbumModal()">Cancel</button>
-    </div>
-    <div id="album-media-section" style="display:none;margin-top:24px;border-top:1.5px solid var(--gray-200);padding-top:20px;">
-      <div style="font-weight:600;font-size:14px;margin-bottom:8px;">Media in this album</div>
-      <div class="admin-media-grid" id="album-media-grid"></div>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-let db = loadDB();
+// ─── SUPABASE CONFIG ───────────────────────────────────────────────────────
+// Replace these with your actual Supabase project values
+const SUPABASE_URL = 'https://whzezjmjcnukixkkmyan.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoemV6am1qY251a2l4a2tteWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMDExMTgsImV4cCI6MjA5Mjg3NzExOH0.NwynrNjmxDX6rXuDB9hjmQHLNGam9aqb3QIc8Gw7PsE';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let albums = [];
 let currentAlbumId = null;
-let editAlbumId = null;
 let lbItems = [], lbIndex = 0, lastView = 'home';
 
-const PRESET_ALBUMS = [
-  { id:'preset_batman',   name:'YoungLA X Batman',  tag:'Collab',    desc:'Exclusive YoungLA x Batman collaboration collection.', payLink:'', media:[] },
-  { id:'preset_superman', name:'YoungLA X Superman', tag:'Collab',    desc:'Strength meets style — YoungLA x Superman collection.', payLink:'', media:[] },
-  { id:'preset_warrior',  name:'YoungLA Warrior',    tag:'Signature', desc:'Built for warriors. Train harder, look better.',         payLink:'', media:[] }
-];
-
-function loadDB() {
-  try { const s=localStorage.getItem('ylasport_db'); if(s) return JSON.parse(s); } catch(e) {}
-  return { albums:[], creds:{email:'flavianobusiness@gmail.com', pass:'Fl@flu123'}, store:{name:'YLASPORT',tagline:''}, presetsAdded:false };
+// ─── SUPABASE DATA ─────────────────────────────────────────────────────────
+async function fetchAlbums() {
+  const { data, error } = await supabase
+    .from('albums')
+    .select('*, media(*)') 
+    .order('created_at', { ascending: false });
+  if (error) { console.error('Supabase fetch error:', error); return []; }
+  return data || [];
 }
-function ensurePresets() {
-  if (db.presetsAdded) return;
-  PRESET_ALBUMS.forEach(p => { if(!db.albums.find(a=>a.id===p.id)) db.albums.unshift({...p}); });
-  db.presetsAdded = true; saveDB();
-}
-function saveDB() { localStorage.setItem('ylasport_db', JSON.stringify(db)); }
 
-function showView(id) { document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); document.getElementById('view-'+id).classList.add('active'); }
-function showHome() { showView('home'); lastView='home'; renderHomeAlbums(); setNav('home'); }
-function showAlbumsPage() { showView('albums'); lastView='albums'; renderAllAlbums(); setNav('albums'); }
+// ─── VIEWS ─────────────────────────────────────────────────────────────────
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+}
+function setNav(w) {
+  ['home','albums','contact'].forEach(n => {
+    const e = document.getElementById('nav-' + n);
+    if (e) e.classList.toggle('active', n === w);
+  });
+}
+async function showHome() {
+  showView('home'); lastView = 'home'; setNav('home');
+  document.getElementById('home-loading').style.display = 'flex';
+  document.getElementById('home-album-grid').style.display = 'none';
+  document.getElementById('home-empty').style.display = 'none';
+  albums = await fetchAlbums();
+  renderHomeAlbums();
+}
+async function showAlbumsPage() {
+  showView('albums'); lastView = 'albums'; setNav('albums');
+  document.getElementById('all-loading').style.display = 'flex';
+  document.getElementById('all-album-grid').style.display = 'none';
+  document.getElementById('all-empty').style.display = 'none';
+  albums = await fetchAlbums();
+  renderAllAlbums();
+}
 function showContactPage() { showView('contact'); setNav('contact'); }
-function setNav(w) { ['home','albums','contact'].forEach(n=>{ const e=document.getElementById('nav-'+n); if(e) e.classList.toggle('active',n===w); }); }
+function goBack() { lastView === 'home' ? showHome() : showAlbumsPage(); }
 
-function showAlbum(id) {
-  currentAlbumId = id;
-  const alb = db.albums.find(a=>a.id===id); if(!alb) return;
-  document.getElementById('album-detail-title').textContent = alb.name;
-  const count = (alb.media||[]).length;
-  document.getElementById('album-detail-count').textContent = count+' item'+(count!==1?'s':'');
-  document.getElementById('album-desc-display').textContent = alb.desc||'';
-  const coverEl = document.getElementById('album-cover-thumb');
-  const coverImg = (alb.media||[]).find(m=>m.type==='image');
-  coverEl.innerHTML = coverImg ? `<img src="${coverImg.data}" alt="">` : '📁';
-  const buyBtn = document.getElementById('album-buy-btn');
-  if (alb.payLink && alb.payLink.trim()) { buyBtn.href=alb.payLink.trim(); buyBtn.classList.remove('hidden'); }
-  else { buyBtn.classList.add('hidden'); }
-  renderAlbumDetail(alb); showView('album');
-}
-function goBack() { if(lastView==='albums') showAlbumsPage(); else showHome(); }
-
-function renderHomeAlbums(filter) {
-  const grid=document.getElementById('home-album-grid'), empty=document.getElementById('home-empty');
-  let albums=db.albums;
-  if(filter) albums=albums.filter(a=>a.name.toLowerCase().includes(filter.toLowerCase())||(a.tag||'').toLowerCase().includes(filter.toLowerCase()));
-  document.getElementById('hero-count').textContent=db.albums.length;
-  if(!albums.length){grid.innerHTML='';empty.style.display='block';return;} empty.style.display='none';
-  grid.innerHTML=albums.map(albumCardHTML).join('');
-}
-function renderAllAlbums(filter) {
-  const grid=document.getElementById('all-album-grid'), empty=document.getElementById('all-empty');
-  let albums=db.albums;
-  if(filter) albums=albums.filter(a=>a.name.toLowerCase().includes(filter.toLowerCase())||(a.tag||'').toLowerCase().includes(filter.toLowerCase()));
-  if(!albums.length){grid.innerHTML='';empty.style.display='block';return;} empty.style.display='none';
-  grid.innerHTML=albums.map(albumCardHTML).join('');
-}
+// ─── RENDER ────────────────────────────────────────────────────────────────
 function albumCardHTML(a) {
-  const media=a.media||[], cover=media.find(m=>m.type==='image');
-  const thumb=cover?`<img src="${cover.data}" alt="${esc(a.name)}">`:'📁';
-  return `<div class="album-card" onclick="showAlbum('${a.id}')">
+  const media = a.media || [];
+  const cover = media.find(m => m.type === 'image');
+  const thumb = cover ? `<img src="${cover.url}" alt="">` : '📁';
+  return `<div class="album-card" onclick="openAlbum('${a.id}')">
     <div class="album-thumb">${thumb}</div>
-    <div class="album-info"><h3>${esc(a.name)}</h3><p>${media.length} item${media.length!==1?'s':''}</p>${a.tag?`<span class="album-tag">${esc(a.tag)}</span>`:''}</div>
+    <div class="album-info">
+      <h3>${esc(a.name)}</h3>
+      <p>${media.length} item${media.length !== 1 ? 's' : ''}</p>
+      ${a.tag ? `<span class="album-tag">${esc(a.tag)}</span>` : ''}
+    </div>
   </div>`;
 }
-function renderAlbumDetail(alb) {
-  const grid=document.getElementById('album-photo-grid'), empty=document.getElementById('album-empty');
-  const media=alb.media||[];
-  if(!media.length){grid.innerHTML='';empty.style.display='block';lbItems=[];return;} empty.style.display='none';
-  lbItems=media;
-  grid.innerHTML=media.map((m,i)=>`
-    <div class="photo-wrapper photo-item" onclick="openLightbox(${i})">
-      ${m.type==='video'
-        ?`<video src="${m.data}" muted playsinline></video><div class="video-play-overlay"><div class="play-circle">▶</div></div>`
-        :`<img src="${m.data}" alt="${esc(m.name||'')}">`}
-      ${m.name?`<div class="photo-label">${esc(m.name)}</div>`:''}
-    </div>`).join('');
-}
-function liveSearch(v){renderHomeAlbums(v);} function liveSearch2(v){renderAllAlbums(v);}
-
-function openLightbox(i){lbIndex=i;document.getElementById('lightbox').classList.add('open');renderLB();}
-function renderLB(){
-  const m=lbItems[lbIndex];if(!m)return;
-  const img=document.getElementById('lb-img'),vid=document.getElementById('lb-video');
-  document.getElementById('lb-caption').textContent=(m.name||'')+` (${lbIndex+1}/${lbItems.length})`;
-  if(m.type==='video'){img.style.display='none';vid.style.display='block';vid.src=m.data;}
-  else{vid.style.display='none';vid.src='';img.style.display='block';img.src=m.data;}
-}
-function lbNav(d){lbIndex=(lbIndex+d+lbItems.length)%lbItems.length;renderLB();}
-function closeLightbox(e){
-  if(e&&e.target!==document.getElementById('lightbox')&&!e.target.classList.contains('lightbox-close'))return;
-  document.getElementById('lightbox').classList.remove('open');
-  try{document.getElementById('lb-video').pause();}catch(e){}
-}
-document.addEventListener('keydown',e=>{
-  if(!document.getElementById('lightbox').classList.contains('open'))return;
-  if(e.key==='ArrowLeft')lbNav(-1); if(e.key==='ArrowRight')lbNav(1);
-  if(e.key==='Escape')document.getElementById('lightbox').classList.remove('open');
-});
-
-// Route: /admin or #admin → login
-function checkRoute(){
-  const path=window.location.pathname, hash=window.location.hash;
-  if(path.endsWith('/admin')||hash==='#admin'){
-    if(sessionStorage.getItem('yla_admin'))showAdmin(); else showView('login');
+function renderHomeAlbums(q = '') {
+  document.getElementById('home-loading').style.display = 'none';
+  const grid = document.getElementById('home-album-grid');
+  let list = albums;
+  if (q) list = albums.filter(a => a.name.toLowerCase().includes(q.toLowerCase()));
+  document.getElementById('hero-count').textContent = albums.length;
+  if (!list.length) {
+    grid.style.display = 'none';
+    document.getElementById('home-empty').style.display = 'block';
+  } else {
+    grid.style.display = 'grid';
+    grid.innerHTML = list.map(albumCardHTML).join('');
+    document.getElementById('home-empty').style.display = 'none';
   }
 }
-window.addEventListener('hashchange',checkRoute);
-window.addEventListener('load',()=>{ ensurePresets(); renderHomeAlbums(); checkRoute(); });
+function renderAllAlbums(q = '') {
+  document.getElementById('all-loading').style.display = 'none';
+  const grid = document.getElementById('all-album-grid');
+  let list = albums;
+  if (q) list = albums.filter(a => a.name.toLowerCase().includes(q.toLowerCase()));
+  if (!list.length) {
+    grid.style.display = 'none';
+    document.getElementById('all-empty').style.display = 'block';
+  } else {
+    grid.style.display = 'grid';
+    grid.innerHTML = list.map(albumCardHTML).join('');
+    document.getElementById('all-empty').style.display = 'none';
+  }
+}
+function liveSearch(q) { renderHomeAlbums(q); }
+function liveSearch2(q) { renderAllAlbums(q); }
 
-function doLogin(){
-  const email=document.getElementById('login-email').value.trim(), pass=document.getElementById('login-pass').value;
-  const err=document.getElementById('login-err');
-  if(email===db.creds.email&&pass===db.creds.pass){sessionStorage.setItem('yla_admin','1');err.classList.remove('show');showAdmin();}
-  else{err.classList.add('show');}
+function openAlbum(id) {
+  const alb = albums.find(a => String(a.id) === String(id));
+  if (!alb) return;
+  renderAlbumDetail(alb);
+  showView('album');
 }
-function doLogout(){sessionStorage.removeItem('yla_admin');window.location.hash='';showHome();}
-
-function showAdmin(){
-  showView('admin'); renderDashboard(); renderAdminAlbums(); populateUploadSelect();
-  const s=db.store||{};
-  document.getElementById('set-storename').value=s.name||'';
-  document.getElementById('set-tagline').value=s.tagline||'';
-  document.getElementById('set-email').value=db.creds.email||'';
-}
-function adminNav(page,btn){
-  document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.sidebar-nav button').forEach(b=>b.classList.remove('active'));
-  document.getElementById('admin-'+page).classList.add('active'); btn.classList.add('active');
-  if(page==='upload')populateUploadSelect();
-}
-function renderDashboard(){
-  let photos=0,videos=0;
-  db.albums.forEach(a=>(a.media||[]).forEach(m=>m.type==='video'?videos++:photos++));
-  document.getElementById('stat-albums').textContent=db.albums.length;
-  document.getElementById('stat-photos').textContent=photos;
-  document.getElementById('stat-videos').textContent=videos;
-  document.getElementById('stat-total').textContent=photos+videos;
-}
-function renderAdminAlbums(){
-  const q=(document.getElementById('admin-album-search').value||'').toLowerCase();
-  let albums=db.albums; if(q)albums=albums.filter(a=>a.name.toLowerCase().includes(q));
-  const list=document.getElementById('admin-album-list');
-  if(!albums.length){list.innerHTML='<div style="color:var(--gray-400);font-size:13px;padding:12px 0;">No albums yet.</div>';return;}
-  list.innerHTML=albums.map(a=>{
-    const media=a.media||[], cover=media.find(m=>m.type==='image');
-    const thumb=cover?`<img src="${cover.data}" alt="">`:'📁';
-    return `<div class="admin-album-row">
-      <div class="admin-album-thumb">${thumb}</div>
-      <div class="admin-album-info"><h4>${esc(a.name)}</h4><p>${media.length} items${a.tag?' · '+esc(a.tag):''}${a.payLink?' · 🛒 Buy link set':''}</p></div>
-      <div class="admin-album-actions">
-        <button class="btn-sm btn-edit" onclick="openEditAlbum('${a.id}')">Edit</button>
-        <button class="btn-sm btn-del" onclick="deleteAlbum('${a.id}')">Delete</button>
-      </div>
+function renderAlbumDetail(alb) {
+  currentAlbumId = alb.id;
+  document.getElementById('album-detail-title').textContent = alb.name;
+  const media = alb.media || [];
+  document.getElementById('album-detail-count').textContent = `${media.length} item${media.length !== 1 ? 's' : ''}`;
+  document.getElementById('album-desc-display').textContent = alb.desc || '';
+  const buyBtn = document.getElementById('album-buy-btn');
+  if (alb.pay_link) { buyBtn.href = alb.pay_link; buyBtn.classList.remove('hidden'); }
+  else { buyBtn.classList.add('hidden'); }
+  const cover = document.getElementById('album-cover-thumb');
+  const img = media.find(m => m.type === 'image');
+  cover.innerHTML = img ? `<img src="${img.url}" alt="">` : '📁';
+  const grid = document.getElementById('album-photo-grid');
+  const empty = document.getElementById('album-empty');
+  lbItems = media;
+  if (!media.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  grid.innerHTML = media.map((m, i) => {
+    if (m.type === 'video') {
+      return `<div class="photo-item" onclick="openLightbox(${i})">
+        <div class="photo-wrapper">
+          <video src="${m.url}" muted></video>
+          <div class="video-play-overlay"><div class="play-circle">▶</div></div>
+        </div>
+        ${m.name ? `<div class="photo-label">${esc(m.name)}</div>` : ''}
+      </div>`;
+    }
+    return `<div class="photo-item" onclick="openLightbox(${i})">
+      <div class="photo-wrapper"><img src="${m.url}" alt="${esc(m.name || '')}"></div>
+      ${m.name ? `<div class="photo-label">${esc(m.name)}</div>` : ''}
     </div>`;
   }).join('');
 }
-function populateUploadSelect(){
-  const sel=document.getElementById('upload-album-select');
-  sel.innerHTML='<option value="">— Choose album —</option>'+db.albums.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
-}
-function openNewAlbumModal(){
-  editAlbumId=null;
-  document.getElementById('album-modal-title').textContent='New Album';
-  ['album-name-input','album-tag-input','album-desc-input','album-paylink-input'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('album-media-section').style.display='none';
-  document.getElementById('album-modal').classList.add('open');
-}
-function openEditAlbum(id){
-  editAlbumId=id; const a=db.albums.find(x=>x.id===id); if(!a)return;
-  document.getElementById('album-modal-title').textContent='Edit Album';
-  document.getElementById('album-name-input').value=a.name;
-  document.getElementById('album-tag-input').value=a.tag||'';
-  document.getElementById('album-desc-input').value=a.desc||'';
-  document.getElementById('album-paylink-input').value=a.payLink||'';
-  document.getElementById('album-media-section').style.display='block';
-  renderAlbumMediaAdmin(a); document.getElementById('album-modal').classList.add('open');
-}
-function renderAlbumMediaAdmin(alb){
-  const grid=document.getElementById('album-media-grid'), media=alb.media||[];
-  if(!media.length){grid.innerHTML='<span style="color:var(--gray-400);font-size:12px;">No media yet.</span>';return;}
-  grid.innerHTML=media.map((m,i)=>`
-    <div class="admin-media-item">
-      ${m.type==='video'?`<video src="${m.data}" muted></video><span class="vbadge">VIDEO</span>`:`<img src="${m.data}" alt="">`}
-      <button class="remove-media" onclick="removeMedia('${alb.id}',${i})">✕</button>
-    </div>`).join('');
-}
-function removeMedia(albumId,idx){
-  const a=db.albums.find(x=>x.id===albumId);if(!a)return;
-  a.media.splice(idx,1); saveDB();renderAlbumMediaAdmin(a);renderDashboard();toast('Media removed');
-}
-function closeAlbumModal(){document.getElementById('album-modal').classList.remove('open');}
-function saveAlbum(){
-  const name=document.getElementById('album-name-input').value.trim();
-  if(!name){toast('Album name is required');return;}
-  const tag=document.getElementById('album-tag-input').value.trim();
-  const desc=document.getElementById('album-desc-input').value.trim();
-  const payLink=document.getElementById('album-paylink-input').value.trim();
-  if(editAlbumId){const a=db.albums.find(x=>x.id===editAlbumId);if(a){a.name=name;a.tag=tag;a.desc=desc;a.payLink=payLink;}}
-  else{db.albums.push({id:uid(),name,tag,desc,payLink,media:[]});}
-  saveDB();renderAdminAlbums();renderDashboard();closeAlbumModal();toast('Album saved!',true);
-}
-function deleteAlbum(id){
-  if(!confirm('Delete this album and all its media?'))return;
-  db.albums=db.albums.filter(a=>a.id!==id);
-  saveDB();renderAdminAlbums();renderDashboard();toast('Album deleted');
-}
 
-let filePreviews=[];
-function handleFiles(files){Array.from(files).forEach(f=>filePreviews.push(f));renderPreviews();document.getElementById('upload-btn').disabled=filePreviews.length===0;}
-function handleDrop(e){e.preventDefault();document.getElementById('drop-zone').classList.remove('dragover');handleFiles(e.dataTransfer.files);}
-function renderPreviews(){
-  document.getElementById('upload-preview').innerHTML=filePreviews.map((f,i)=>{
-    const isVid=f.type.startsWith('video'),url=URL.createObjectURL(f);
-    return `<div class="preview-item">${isVid?`<video src="${url}" muted></video>`:`<img src="${url}" alt="">`}<button class="preview-remove" onclick="removePreview(${i})">✕</button></div>`;
-  }).join('');
+// ─── LIGHTBOX ──────────────────────────────────────────────────────────────
+function openLightbox(idx) {
+  lbIndex = idx; updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
 }
-function removePreview(i){filePreviews.splice(i,1);renderPreviews();document.getElementById('upload-btn').disabled=filePreviews.length===0;}
-function doUpload(){
-  const albumId=document.getElementById('upload-album-select').value;
-  if(!albumId){toast('Please select an album first');return;}
-  if(!filePreviews.length){toast('No files selected');return;}
-  const alb=db.albums.find(a=>a.id===albumId);if(!alb)return;
-  const btn=document.getElementById('upload-btn'),status=document.getElementById('upload-status');
-  btn.disabled=true;btn.textContent='Uploading...';
-  let done=0;const total=filePreviews.length;
-  function readNext(idx){
-    if(idx>=total){
-      saveDB();renderDashboard();renderAdminAlbums();
-      btn.textContent='Upload to Album';btn.disabled=false;
-      filePreviews=[];renderPreviews();status.textContent='';
-      toast(`${total} file${total>1?'s':''} uploaded!`,true);return;
-    }
-    const f=filePreviews[idx],reader=new FileReader();
-    reader.onload=ev=>{
-      alb.media=alb.media||[];
-      alb.media.push({type:f.type.startsWith('video')?'video':'image',data:ev.target.result,name:f.name.replace(/\.[^.]+$/,'')});
-      done++;status.textContent=`${done}/${total} uploaded`;readNext(idx+1);
-    };
-    reader.readAsDataURL(f);
+function closeLightbox(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lb-video').pause();
+}
+function lbNav(d) {
+  lbIndex = (lbIndex + d + lbItems.length) % lbItems.length;
+  updateLightbox();
+}
+function updateLightbox() {
+  const m = lbItems[lbIndex];
+  const img = document.getElementById('lb-img');
+  const vid = document.getElementById('lb-video');
+  document.getElementById('lb-caption').textContent = `${lbIndex + 1} / ${lbItems.length}${m.name ? ' · ' + m.name : ''}`;
+  if (m.type === 'video') {
+    img.style.display = 'none'; vid.style.display = 'block'; vid.src = m.url;
+  } else {
+    vid.style.display = 'none'; vid.src = ''; img.style.display = 'block'; img.src = m.url;
   }
-  readNext(0);
 }
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('open');
+});
 
-function saveSettings(){
-  const email=document.getElementById('set-email').value.trim(),pass=document.getElementById('set-pass').value;
-  if(email)db.creds.email=email;if(pass)db.creds.pass=pass;
-  saveDB();toast('Credentials saved!',true);
-}
-function saveStoreInfo(){
-  db.store=db.store||{};
-  db.store.name=document.getElementById('set-storename').value.trim()||'YLASPORT';
-  db.store.tagline=document.getElementById('set-tagline').value.trim();
-  saveDB();toast('Store info saved!',true);
-}
-function clearAllData(){
-  if(!confirm('Delete ALL data? This cannot be undone.'))return;
-  db={albums:[],creds:db.creds,store:db.store,presetsAdded:false};
-  saveDB();ensurePresets();renderDashboard();renderAdminAlbums();toast('All data cleared');
-}
+// ─── HELPERS ───────────────────────────────────────────────────────────────
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
-function uid(){return Math.random().toString(36).slice(2,10)+Date.now().toString(36);}
-function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-let toastTimer;
-function toast(msg,green=false){
-  const t=document.getElementById('toast');t.textContent=msg;
-  t.className='toast show'+(green?' green':'');
-  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.className='toast',2800);
-}
+// ─── INIT ──────────────────────────────────────────────────────────────────
+showHome();
 </script>
 </body>
 </html>
