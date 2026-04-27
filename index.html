@@ -124,6 +124,80 @@
   .loading-spinner { display: flex; align-items: center; justify-content: center; padding: 60px; }
   .spinner { width: 36px; height: 36px; border: 3px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── MOBILE RESPONSIVE ────────────────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    /* Header */
+    .pub-header-inner { padding: 0 16px; gap: 8px; height: 56px; flex-wrap: nowrap; }
+    .logo { font-size: 22px; letter-spacing: 2px; }
+    .pub-nav { display: none; }
+    .pub-search { margin-left: auto; }
+    .pub-search input { width: 130px; padding: 6px 12px; font-size: 12px; }
+    .btn-green { padding: 6px 12px; font-size: 11px; }
+
+    /* Bottom nav for mobile */
+    .mobile-bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: var(--white); border-top: 1.5px solid var(--gray-200); height: 60px; }
+    .mobile-bottom-nav button { flex: 1; background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-family: var(--font-body); font-size: 10px; font-weight: 600; color: var(--gray-400); cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: color .15s; padding: 0; }
+    .mobile-bottom-nav button .mnav-icon { font-size: 20px; line-height: 1; }
+    .mobile-bottom-nav button.active { color: var(--green-dark); }
+    .mobile-bottom-nav button:hover { color: var(--green); }
+
+    /* Add bottom padding so content isn't hidden behind nav */
+    .view { padding-bottom: 72px; }
+
+    /* Main padding */
+    .pub-main { padding: 20px 16px; }
+
+    /* Hero */
+    .hero-strip { padding: 24px 20px; margin-bottom: 24px; flex-direction: column; align-items: flex-start; gap: 16px; }
+    .hero-strip::after { font-size: 60px; }
+    .hero-text h1 { font-size: 36px; letter-spacing: 2px; }
+    .hero-text p { font-size: 12px; }
+    .hero-badge { padding: 10px 18px; align-self: flex-start; }
+    .hero-badge span { font-size: 30px; }
+
+    /* Section title */
+    .section-title { font-size: 20px; letter-spacing: 2px; }
+
+    /* Album grid — 2 columns */
+    .album-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .album-info h3 { font-size: 13px; }
+    .album-info p { font-size: 11px; }
+    .album-tag { font-size: 9px; padding: 2px 8px; }
+
+    /* Photo grid — 2 columns */
+    .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+    /* Album detail */
+    .album-detail-top { gap: 16px; margin-bottom: 20px; }
+    .album-cover-thumb { width: 80px; height: 80px; }
+    .album-detail-meta h2 { font-size: 26px; letter-spacing: 2px; }
+    .buy-btn { padding: 10px 20px; font-size: 13px; width: 100%; justify-content: center; }
+
+    /* Back button */
+    .back-btn { font-size: 12px; padding: 7px 12px; }
+
+    /* Lightbox */
+    .lightbox img, .lightbox video { max-width: 96vw; max-height: 80vh; }
+    .lightbox-nav { width: 40px; height: 40px; font-size: 22px; }
+    #lb-prev { left: 8px; }
+    #lb-next { right: 8px; }
+    .lightbox-close { top: 12px; right: 12px; width: 38px; height: 38px; font-size: 20px; }
+
+    /* Contact */
+    .contact-card { padding: 32px 20px; }
+    .contact-card h2 { font-size: 26px; }
+    .wechat-box { padding: 16px 24px; }
+    .wechat-label .wc-id { font-size: 22px; }
+
+    /* Footer */
+    .pub-footer { margin-top: 40px; padding: 24px 16px; }
+  }
+
+  /* Desktop: hide mobile nav */
+  @media (min-width: 641px) {
+    .mobile-bottom-nav { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -259,6 +333,20 @@
   <div class="lightbox-caption" id="lb-caption"></div>
 </div>
 
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+  <button id="mnav-home" class="active" onclick="showHome()">
+    <span class="mnav-icon">🏠</span>Home
+  </button>
+  <button id="mnav-albums" onclick="showAlbumsPage()">
+    <span class="mnav-icon">📁</span>Albums
+  </button>
+  <button id="mnav-contact" onclick="showContactPage()">
+    <span class="mnav-icon">💬</span>Contact
+  </button>
+</nav>
+
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -287,11 +375,20 @@ async function fetchAlbums() {
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + id).classList.add('active');
+  // On album detail, keep nav but clear active state
+  if (id === 'album') {
+    ['home','albums','contact'].forEach(n => {
+      const m = document.getElementById('mnav-' + n);
+      if (m) m.classList.remove('active');
+    });
+  }
 }
 function setNav(w) {
   ['home','albums','contact'].forEach(n => {
     const e = document.getElementById('nav-' + n);
     if (e) e.classList.toggle('active', n === w);
+    const m = document.getElementById('mnav-' + n);
+    if (m) m.classList.toggle('active', n === w);
   });
 }
 async function showHome() {
@@ -402,12 +499,10 @@ function renderAlbumDetail(alb) {
           <video src="${m.url}" muted></video>
           <div class="video-play-overlay"><div class="play-circle">▶</div></div>
         </div>
-        ${m.name ? `<div class="photo-label">${esc(m.name)}</div>` : ''}
       </div>`;
     }
     return `<div class="photo-item" onclick="openLightbox(${i})">
-      <div class="photo-wrapper"><img src="${m.url}" alt="${esc(m.name || '')}"></div>
-      ${m.name ? `<div class="photo-label">${esc(m.name)}</div>` : ''}
+      <div class="photo-wrapper"><img src="${m.url}" alt=""></div>
     </div>`;
   }).join('');
 }
@@ -430,7 +525,7 @@ function updateLightbox() {
   const m = lbItems[lbIndex];
   const img = document.getElementById('lb-img');
   const vid = document.getElementById('lb-video');
-  document.getElementById('lb-caption').textContent = `${lbIndex + 1} / ${lbItems.length}${m.name ? ' · ' + m.name : ''}`;
+  document.getElementById('lb-caption').textContent = `${lbIndex + 1} / ${lbItems.length}`;
   if (m.type === 'video') {
     img.style.display = 'none'; vid.style.display = 'block'; vid.src = m.url;
   } else {
