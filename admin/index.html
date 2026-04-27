@@ -231,7 +231,7 @@
 // Replace these with your actual Supabase project values
 const SUPABASE_URL = 'https://whzezjmjcnukixkkmyan.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoemV6am1qY251a2l4a2tteWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMDExMTgsImV4cCI6MjA5Mjg3NzExOH0.NwynrNjmxDX6rXuDB9hjmQHLNGam9aqb3QIc8Gw7PsE';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ─── STATE ─────────────────────────────────────────────────────────────────
 let albums = [];
@@ -240,7 +240,7 @@ let filePreviews = [];
 
 // ─── AUTH ──────────────────────────────────────────────────────────────────
 async function init() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await sb.auth.getSession();
   document.getElementById('loading-overlay').style.display = 'none';
   if (session) {
     showAdmin();
@@ -256,7 +256,7 @@ async function doLogin() {
   const btn = document.getElementById('login-btn');
   err.classList.remove('show');
   btn.textContent = 'Entrando...'; btn.disabled = true;
-  const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
   btn.textContent = 'Entrar'; btn.disabled = false;
   if (error) { err.textContent = 'E-mail ou senha inválidos.'; err.classList.add('show'); return; }
   document.getElementById('screen-login').classList.remove('active');
@@ -264,7 +264,7 @@ async function doLogin() {
 }
 
 async function doLogout() {
-  await supabase.auth.signOut();
+  await sb.auth.signOut();
   document.getElementById('screen-admin').classList.remove('active');
   document.getElementById('screen-login').classList.add('active');
   document.getElementById('login-email').value = '';
@@ -299,31 +299,31 @@ async function fetchAlbums() {
 }
 
 async function createAlbum(payload) {
-  const { data, error } = await supabase.from('albums').insert([payload]).select().single();
+  const { data, error } = await sb.from('albums').insert([payload]).select().single();
   if (error) throw error;
   return data;
 }
 
 async function updateAlbum(id, payload) {
-  const { error } = await supabase.from('albums').update(payload).eq('id', id);
+  const { error } = await sb.from('albums').update(payload).eq('id', id);
   if (error) throw error;
 }
 
 async function deleteAlbumDB(id) {
   // Delete media first (or use cascade in Supabase)
-  await supabase.from('media').delete().eq('album_id', id);
-  const { error } = await supabase.from('albums').delete().eq('id', id);
+  await sb.from('media').delete().eq('album_id', id);
+  const { error } = await sb.from('albums').delete().eq('id', id);
   if (error) throw error;
 }
 
 async function insertMedia(albumId, mediaArray) {
   const rows = mediaArray.map(m => ({ album_id: albumId, type: m.type, url: m.url, name: m.name }));
-  const { error } = await supabase.from('media').insert(rows);
+  const { error } = await sb.from('media').insert(rows);
   if (error) throw error;
 }
 
 async function deleteMediaItem(mediaId) {
-  const { error } = await supabase.from('media').delete().eq('id', mediaId);
+  const { error } = await sb.from('media').delete().eq('id', mediaId);
   if (error) throw error;
 }
 
@@ -331,9 +331,9 @@ async function deleteMediaItem(mediaId) {
 async function uploadFileToStorage(file, albumId) {
   const ext = file.name.split('.').pop();
   const path = `${albumId}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-  const { error } = await supabase.storage.from('media').upload(path, file, { upsert: false });
+  const { error } = await sb.storage.from('media').upload(path, file, { upsert: false });
   if (error) throw error;
-  const { data } = supabase.storage.from('media').getPublicUrl(path);
+  const { data } = sb.storage.from('media').getPublicUrl(path);
   return data.publicUrl;
 }
 
