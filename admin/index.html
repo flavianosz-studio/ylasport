@@ -296,7 +296,7 @@ function adminNav(page, btn) {
 async function fetchAlbums() {
   const { data, error } = await sb
     .from('albums')
-    .select('*, media(*)')
+    .select('*, media!media_album_id_fkey(*)')
     .order('created_at', { ascending: false });
   if (error) { console.error(error); toast('Erro ao carregar albums'); return []; }
   return data || [];
