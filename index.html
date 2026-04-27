@@ -266,7 +266,7 @@
 // Replace these with your actual Supabase project values
 const SUPABASE_URL = 'https://whzezjmjcnukixkkmyan.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoemV6am1qY251a2l4a2tteWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMDExMTgsImV4cCI6MjA5Mjg3NzExOH0.NwynrNjmxDX6rXuDB9hjmQHLNGam9aqb3QIc8Gw7PsE';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ─── STATE ─────────────────────────────────────────────────────────────────
 let albums = [];
@@ -275,7 +275,7 @@ let lbItems = [], lbIndex = 0, lastView = 'home';
 
 // ─── SUPABASE DATA ─────────────────────────────────────────────────────────
 async function fetchAlbums() {
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from('albums')
     .select('*, media(*)') 
     .order('created_at', { ascending: false });
