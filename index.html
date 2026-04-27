@@ -234,8 +234,8 @@
     <div class="section-title">Contact</div>
     <div class="contact-wrap">
       <div class="contact-card">
-        <h2>Contact Us</h2>
-        <p>For questions or larger orders, contact us on WeChat.</p>
+        <h2>Fale Conosco</h2>
+        <p>Para dúvidas, encomendas e parcerias, nos chame no WeChat.</p>
         <div class="wechat-box">
           <span class="wc-icon">💬</span>
           <div class="wechat-label">
@@ -277,7 +277,7 @@ let lbItems = [], lbIndex = 0, lastView = 'home';
 async function fetchAlbums() {
   const { data, error } = await sb
     .from('albums')
-    .select('*, media(*)') 
+    .select('*, media!media_album_id_fkey(*)') 
     .order('created_at', { ascending: false });
   if (error) { console.error('Supabase fetch error:', error); return []; }
   return data || [];
