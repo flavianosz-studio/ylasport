@@ -389,7 +389,7 @@ function openEditAlbum(id) {
   document.getElementById('album-modal-title').textContent = 'Editar Album';
   document.getElementById('album-name-input').value = a.name;
   document.getElementById('album-tag-input').value = a.tag || '';
-  document.getElementById('album-desc-input').value = a.desc || '';
+  document.getElementById('album-desc-input').value = a.description || '';
   document.getElementById('album-paylink-input').value = a.pay_link || '';
   document.getElementById('album-media-section').style.display = 'block';
   renderAlbumMediaAdmin(a);
@@ -421,15 +421,15 @@ async function saveAlbum() {
   const name = document.getElementById('album-name-input').value.trim();
   if (!name) { toast('Nome do album é obrigatório'); return; }
   const tag = document.getElementById('album-tag-input').value.trim();
-  const desc = document.getElementById('album-desc-input').value.trim();
+  const description = document.getElementById('album-desc-input').value.trim();
   const pay_link = document.getElementById('album-paylink-input').value.trim();
   const btn = document.getElementById('save-album-btn');
   btn.textContent = 'Salvando...'; btn.disabled = true;
   try {
     if (editAlbumId) {
-      await updateAlbum(editAlbumId, { name, tag, desc, pay_link });
+      await updateAlbum(editAlbumId, { name, tag, description, pay_link });
     } else {
-      await createAlbum({ name, tag, desc, pay_link });
+      await createAlbum({ name, tag, description, pay_link });
     }
     albums = await fetchAlbums();
     renderAdminAlbums(); renderDashboard(); populateUploadSelect();
