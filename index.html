@@ -370,7 +370,7 @@ function renderAlbumDetail(alb) {
   document.getElementById('album-detail-title').textContent = alb.name;
   const media = alb.media || [];
   document.getElementById('album-detail-count').textContent = `${media.length} item${media.length !== 1 ? 's' : ''}`;
-  document.getElementById('album-desc-display').textContent = alb.desc || '';
+  document.getElementById('album-desc-display').textContent = alb.description || '';
   const buyBtn = document.getElementById('album-buy-btn');
   if (alb.pay_link) { buyBtn.href = alb.pay_link; buyBtn.classList.remove('hidden'); }
   else { buyBtn.classList.add('hidden'); }
