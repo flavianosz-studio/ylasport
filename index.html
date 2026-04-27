@@ -234,8 +234,8 @@
     <div class="section-title">Contact</div>
     <div class="contact-wrap">
       <div class="contact-card">
-        <h2>Fale Conosco</h2>
-        <p>Para dúvidas, encomendas e parcerias, nos chame no WeChat.</p>
+        <h2>Contact Us</h2>
+        <p>For questions or larger orders, contact us on WeChat.</p>
         <div class="wechat-box">
           <span class="wc-icon">💬</span>
           <div class="wechat-label">
@@ -316,7 +316,7 @@ function goBack() { lastView === 'home' ? showHome() : showAlbumsPage(); }
 // ─── RENDER ────────────────────────────────────────────────────────────────
 function albumCardHTML(a) {
   const media = a.media || [];
-  const cover = media.find(m => m.type === 'image');
+  const cover = media.find(m => m.id === a.cover_media_id) || media.find(m => m.type === 'image');
   const thumb = cover ? `<img src="${cover.url}" alt="">` : '📁';
   return `<div class="album-card" onclick="openAlbum('${a.id}')">
     <div class="album-thumb">${thumb}</div>
@@ -375,7 +375,7 @@ function renderAlbumDetail(alb) {
   if (alb.pay_link) { buyBtn.href = alb.pay_link; buyBtn.classList.remove('hidden'); }
   else { buyBtn.classList.add('hidden'); }
   const cover = document.getElementById('album-cover-thumb');
-  const img = media.find(m => m.type === 'image');
+  const img = media.find(m => m.id === alb.cover_media_id) || media.find(m => m.type === 'image');
   cover.innerHTML = img ? `<img src="${img.url}" alt="">` : '📁';
   const grid = document.getElementById('album-photo-grid');
   const empty = document.getElementById('album-empty');
