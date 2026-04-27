@@ -99,6 +99,10 @@
   .admin-media-item img, .admin-media-item video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
   .remove-media { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .vbadge { position: absolute; bottom: 4px; left: 4px; background: var(--gray-900); color: white; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+  .set-cover-btn { position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.55); color: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .set-cover-btn:hover { background: rgba(255,200,0,0.85); color: #fff; }
+  .set-cover-btn.is-cover { background: rgba(255,180,0,0.9); color: #fff; }
+  .cover-badge { position: absolute; top: 4px; left: 4px; background: rgba(255,180,0,0.92); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px; }
   .toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: var(--gray-900); color: white; border-radius: var(--radius); padding: 12px 20px; font-size: 13px; font-weight: 500; transform: translateY(80px); opacity: 0; transition: all .3s; pointer-events: none; box-shadow: var(--shadow-md); }
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast.green { background: var(--green); }
@@ -356,7 +360,7 @@ function renderAdminAlbums() {
   if (!list.length) { el.innerHTML = '<div style="color:var(--gray-400);font-size:13px;padding:12px 0;">Nenhum album ainda.</div>'; return; }
   el.innerHTML = list.map(a => {
     const media = a.media || [];
-    const cover = media.find(m => m.type === 'image');
+    const cover = media.find(m => m.id === a.cover_media_id) || media.find(m => m.type === 'image');
     const thumb = cover ? `<img src="${cover.url}" alt="">` : '📁';
     return `<div class="admin-album-row">
       <div class="admin-album-thumb">${thumb}</div>
@@ -399,11 +403,27 @@ function renderAlbumMediaAdmin(alb) {
   const grid = document.getElementById('album-media-grid');
   const media = alb.media || [];
   if (!media.length) { grid.innerHTML = '<span style="color:var(--gray-400);font-size:12px;">Sem mídia ainda.</span>'; return; }
-  grid.innerHTML = media.map(m => `
+  grid.innerHTML = media.map(m => {
+    const isCover = m.id === alb.cover_media_id;
+    return `
     <div class="admin-media-item">
       ${m.type === 'video' ? `<video src="${m.url}" muted></video><span class="vbadge">VIDEO</span>` : `<img src="${m.url}" alt="">`}
+      ${isCover ? `<span class="cover-badge">★ CAPA</span>` : ''}
+      ${m.type === 'image' ? `<button class="set-cover-btn ${isCover ? 'is-cover' : ''}" title="${isCover ? 'Capa atual' : 'Definir como capa'}" onclick="setCover('${alb.id}','${m.id}')">★</button>` : ''}
       <button class="remove-media" onclick="removeMedia('${m.id}','${alb.id}')">✕</button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+}
+
+async function setCover(albumId, mediaId) {
+  try {
+    await updateAlbum(albumId, { cover_media_id: mediaId });
+    albums = await fetchAlbums();
+    const alb = albums.find(a => String(a.id) === String(albumId));
+    if (alb) renderAlbumMediaAdmin(alb);
+    renderAdminAlbums();
+    toast('Foto de capa definida!', true);
+  } catch (e) { toast('Erro ao definir capa'); }
 }
 async function removeMedia(mediaId, albumId) {
   try {
