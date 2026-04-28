@@ -124,14 +124,98 @@
   .buy-clicks-table tr:last-child td { border-bottom: none; }
   .buy-clicks-table tr:hover td { background: var(--gray-50); }
   .analytics-card { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); margin-top: 16px; }
+  .flag { font-size: 18px; line-height: 1; }
   .analytics-card h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-600); margin-bottom: 12px; }
   .period-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
   .period-tab { background: var(--gray-100); border: none; border-radius: 8px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: var(--gray-600); cursor: pointer; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.5px; transition: all .15s; }
   .period-tab.active { background: var(--green); color: var(--white); }
 
+
+  /* ── MOBILE RESPONSIVE ADMIN ─────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    /* Sidebar vira drawer deslizante */
+    .admin-sidebar {
+      position: fixed; top: 0; left: 0; height: 100vh; z-index: 400;
+      transform: translateX(-100%); transition: transform .25s ease;
+      width: 260px; box-shadow: var(--shadow-md);
+    }
+    .admin-sidebar.open { transform: translateX(0); }
+
+    /* Overlay escuro atrás do drawer */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+      z-index: 399;
+    }
+    .sidebar-overlay.open { display: block; }
+
+    /* Admin layout em coluna */
+    #screen-admin.active { flex-direction: column; }
+    .admin-content { padding: 16px; padding-top: 72px; }
+
+    /* Header mobile fixo no topo */
+    .admin-mobile-header {
+      display: flex; align-items: center; justify-content: space-between;
+      position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 300;
+      background: var(--gray-900); padding: 0 16px;
+    }
+    .admin-mobile-header .mob-logo {
+      font-family: var(--font-display); font-size: 20px; letter-spacing: 3px;
+      font-weight: 800; text-transform: uppercase; color: var(--white);
+    }
+    .admin-mobile-header .mob-logo span { color: var(--green); }
+    .hamburger {
+      background: none; border: none; cursor: pointer;
+      display: flex; flex-direction: column; gap: 5px; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white); border-radius: 2px; transition: all .2s;
+    }
+
+    /* Page title menor */
+    .admin-page-title { font-size: 22px; letter-spacing: 2px; margin-bottom: 16px; }
+
+    /* Stats grid em 2 cols */
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+    .stat-value { font-size: 32px; }
+
+    /* Period tabs wrap */
+    .period-tabs { flex-wrap: wrap; gap: 6px; }
+    .period-tab { padding: 6px 12px; font-size: 11px; }
+
+    /* Two-col analytics → single col */
+    .analytics-two-col { grid-template-columns: 1fr !important; }
+
+    /* Album rows em mobile */
+    .admin-album-row { flex-wrap: wrap; gap: 12px; }
+    .admin-album-actions { width: 100%; justify-content: flex-end; }
+
+    /* Modal full-screen */
+    .modal { max-width: 100%; max-height: 100vh; border-radius: 0; margin: 0; padding: 20px 16px; }
+    .modal-overlay.open { align-items: flex-end; }
+
+    /* Toast acima de tudo */
+    .toast { bottom: 16px; right: 16px; left: 16px; text-align: center; }
+
+    /* Upload area menor */
+    .upload-area { padding: 20px; }
+
+    /* Login card */
+    .login-card { padding: 32px 20px; }
+  }
+
+  @media (min-width: 769px) {
+    .admin-mobile-header { display: none; }
+    .sidebar-overlay { display: none !important; }
+  }
+
 </style>
 </head>
 <body>
+
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <!-- LOADING -->
 <div class="loading-overlay" id="loading-overlay">
@@ -158,7 +242,15 @@
 
 <!-- ADMIN PANEL -->
 <div id="screen-admin">
-  <aside class="admin-sidebar">
+  <!-- MOBILE HEADER -->
+  <header class="admin-mobile-header">
+    <span class="mob-logo">YLA<span>SPORT</span> <span style="font-size:11px;letter-spacing:1px;color:rgba(255,255,255,0.4);font-family:var(--font-body);font-weight:400;">ADMIN</span></span>
+    <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+    <aside class="admin-sidebar" id="admin-sidebar">
     <div class="sidebar-logo">YLA<span>SPORT</span></div>
     <nav class="sidebar-nav">
       <button class="active" onclick="adminNav('dashboard',this)"><span class="icon">⬛</span> Dashboard</button>
@@ -213,15 +305,36 @@
           </div>
         </div>
 
-        <!-- Buy clicks table per album -->
-        <div class="analytics-card">
-          <h4>🏆 Clicks por Album <span id="clicks-period-label" style="font-weight:400;color:var(--gray-400);text-transform:none;letter-spacing:0;">(hoje)</span></h4>
-          <div id="buy-clicks-table-wrap">
+        <!-- Two column tables -->
+        <div class="analytics-two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0;">
+
+          <!-- Buy clicks per album -->
+          <div class="analytics-card" style="margin-top:0;">
+            <h4>🏆 Clicks por Album <span id="clicks-period-label" style="font-weight:400;color:var(--gray-400);text-transform:none;letter-spacing:0;">(hoje)</span></h4>
             <table class="buy-clicks-table">
               <thead><tr><th>Album</th><th style="text-align:right;">Clicks</th></tr></thead>
               <tbody id="buy-clicks-tbody"><tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:24px;">Carregando...</td></tr></tbody>
             </table>
           </div>
+
+          <!-- Visits by country -->
+          <div class="analytics-card" style="margin-top:0;">
+            <h4>🌍 Visitas por País</h4>
+            <table class="buy-clicks-table">
+              <thead><tr><th>País</th><th style="text-align:right;">Visitas</th></tr></thead>
+              <tbody id="visits-country-tbody"><tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:24px;">Carregando...</td></tr></tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- Clicks by country -->
+        <div class="analytics-card" style="margin-top:16px;">
+          <h4>🗺️ Clicks por País</h4>
+          <table class="buy-clicks-table">
+            <thead><tr><th>País</th><th style="text-align:right;">Clicks</th><th style="text-align:right;">% do total</th></tr></thead>
+            <tbody id="clicks-country-tbody"><tr><td colspan="3" style="color:var(--gray-400);text-align:center;padding:24px;">Carregando...</td></tr></tbody>
+          </table>
         </div>
 
       </div>
@@ -295,6 +408,17 @@
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+
+// ─── MOBILE SIDEBAR ────────────────────────────────────────────────────────
+function toggleSidebar() {
+  document.getElementById('admin-sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('admin-sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
 // ─── SUPABASE CONFIG ───────────────────────────────────────────────────────
 // Replace these with your actual Supabase project values
 const SUPABASE_URL = 'https://whzezjmjcnukixkkmyan.supabase.co';
@@ -349,6 +473,7 @@ async function showAdmin() {
 }
 
 function adminNav(page, btn) {
+  closeSidebar();
   document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sidebar-nav button').forEach(b => b.classList.remove('active'));
   document.getElementById('admin-' + page).classList.add('active');
@@ -458,24 +583,77 @@ async function loadAnalytics(period, tabEl) {
   document.getElementById('stat-buyclicks').textContent = totalClicks;
   document.getElementById('stat-conversion').textContent = conversion;
 
+  // Load visits with country
+  let visitsGeoQuery = sb.from('page_views').select('country, country_code');
+  if (since) visitsGeoQuery = visitsGeoQuery.gte('visited_at', since);
+  const { data: visitsGeoData } = await visitsGeoQuery;
+
   // Group clicks by album
   const byAlbum = {};
   (clicksData || []).forEach(c => {
     byAlbum[c.album_name] = (byAlbum[c.album_name] || 0) + 1;
   });
-  const sorted = Object.entries(byAlbum).sort((a, b) => b[1] - a[1]);
+  const sortedAlbum = Object.entries(byAlbum).sort((a, b) => b[1] - a[1]);
 
   const tbody = document.getElementById('buy-clicks-tbody');
-  if (!sorted.length) {
+  if (!sortedAlbum.length) {
     tbody.innerHTML = '<tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:24px;">Nenhum click no período</td></tr>';
-    return;
+  } else {
+    tbody.innerHTML = sortedAlbum.map(([name, count], i) => `
+      <tr>
+        <td>${i === 0 ? '🥇 ' : i === 1 ? '🥈 ' : i === 2 ? '🥉 ' : ''}${name}</td>
+        <td style="text-align:right;font-weight:700;color:var(--green-dark);">${count}</td>
+      </tr>
+    `).join('');
   }
-  tbody.innerHTML = sorted.map(([name, count], i) => `
-    <tr>
-      <td>${i === 0 ? '🥇 ' : i === 1 ? '🥈 ' : i === 2 ? '🥉 ' : ''}${name}</td>
-      <td style="text-align:right;font-weight:700;color:var(--green-dark);">${count}</td>
-    </tr>
-  `).join('');
+
+  // Group visits by country
+  const byCountryVisit = {};
+  (visitsGeoData || []).forEach(v => {
+    const key = v.country || 'Desconhecido';
+    const code = v.country_code || '';
+    if (!byCountryVisit[key]) byCountryVisit[key] = { count: 0, code };
+    byCountryVisit[key].count++;
+  });
+  const sortedVisitCountry = Object.entries(byCountryVisit).sort((a, b) => b[1].count - a[1].count);
+
+  const visitTbody = document.getElementById('visits-country-tbody');
+  if (!sortedVisitCountry.length) {
+    visitTbody.innerHTML = '<tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:24px;">Sem dados</td></tr>';
+  } else {
+    visitTbody.innerHTML = sortedVisitCountry.map(([country, d]) => {
+      const flag = d.code ? String.fromCodePoint(...[...d.code.toUpperCase()].map(c => 0x1F1E6 - 65 + c.charCodeAt(0))) : '🌐';
+      return `<tr>
+        <td><span class="flag">${flag}</span> ${country}</td>
+        <td style="text-align:right;font-weight:700;">${d.count}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Group clicks by country
+  const byCountryClick = {};
+  (clicksData || []).forEach(c => {
+    const key = c.country || 'Desconhecido';
+    const code = c.country_code || '';
+    if (!byCountryClick[key]) byCountryClick[key] = { count: 0, code };
+    byCountryClick[key].count++;
+  });
+  const sortedClickCountry = Object.entries(byCountryClick).sort((a, b) => b[1].count - a[1].count);
+
+  const clickTbody = document.getElementById('clicks-country-tbody');
+  if (!sortedClickCountry.length) {
+    clickTbody.innerHTML = '<tr><td colspan="3" style="color:var(--gray-400);text-align:center;padding:24px;">Nenhum click no período</td></tr>';
+  } else {
+    clickTbody.innerHTML = sortedClickCountry.map(([country, d]) => {
+      const flag = d.code ? String.fromCodePoint(...[...d.code.toUpperCase()].map(c => 0x1F1E6 - 65 + c.charCodeAt(0))) : '🌐';
+      const pct = totalClicks > 0 ? ((d.count / totalClicks) * 100).toFixed(1) + '%' : '0%';
+      return `<tr>
+        <td><span class="flag">${flag}</span> ${country}</td>
+        <td style="text-align:right;font-weight:700;color:var(--green-dark);">${d.count}</td>
+        <td style="text-align:right;color:var(--gray-400);">${pct}</td>
+      </tr>`;
+    }).join('');
+  }
 }
 
 // ─── ALBUMS LIST ───────────────────────────────────────────────────────────
