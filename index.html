@@ -482,8 +482,11 @@ function renderAlbumDetail(alb) {
   document.getElementById('album-detail-count').textContent = `${media.length} item${media.length !== 1 ? 's' : ''}`;
   document.getElementById('album-desc-display').textContent = alb.description || '';
   const buyBtn = document.getElementById('album-buy-btn');
-  if (alb.pay_link) { buyBtn.href = alb.pay_link; buyBtn.classList.remove('hidden'); }
-  else { buyBtn.classList.add('hidden'); }
+  if (alb.pay_link) {
+    buyBtn.href = alb.pay_link;
+    buyBtn.classList.remove('hidden');
+    buyBtn.onclick = () => trackBuyClick(alb.id, alb.name);
+  } else { buyBtn.classList.add('hidden'); }
   const cover = document.getElementById('album-cover-thumb');
   const img = media.find(m => m.id === alb.cover_media_id) || media.find(m => m.type === 'image');
   cover.innerHTML = img ? `<img src="${img.url}" alt="">` : '📁';
@@ -543,8 +546,24 @@ document.addEventListener('keydown', e => {
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 function slugify(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
 
+
+// ─── ANALYTICS TRACKING ───────────────────────────────────────────────────
+async function trackVisit() {
+  try {
+    await sb.from('page_views').insert([{ visited_at: new Date().toISOString() }]);
+  } catch(e) { /* silently ignore */ }
+}
+
+async function trackBuyClick(albumId, albumName) {
+  try {
+    await sb.from('buy_clicks').insert([{ album_id: albumId, album_name: albumName, clicked_at: new Date().toISOString() }]);
+  } catch(e) { /* silently ignore */ }
+}
+
 // ─── HASH ROUTER ──────────────────────────────────────────────────────────
+let _tracked = false;
 async function handleRoute() {
+  if (!_tracked) { _tracked = true; trackVisit(); }
   const hash = window.location.hash.replace(/^#\/?/, '');
   if (!hash || hash === '') {
     await showHome();
