@@ -109,6 +109,26 @@
   .loading-overlay { position: fixed; inset: 0; background: var(--gray-50); display: flex; align-items: center; justify-content: center; z-index: 9999; }
   .spinner { width: 40px; height: 40px; border: 3px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  .analytics-section { margin-top: 32px; }
+  .analytics-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-900); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .stat-card.green { border-color: var(--green); background: var(--green-xlight); }
+  .stat-card.green .stat-value { color: var(--green-dark); }
+  .stat-card.blue { border-color: #60a5fa; background: #eff6ff; }
+  .stat-card.blue .stat-value { color: #2563eb; }
+  .stat-card.orange { border-color: #fb923c; background: #fff7ed; }
+  .stat-card.orange .stat-value { color: #ea580c; }
+  .buy-clicks-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  .buy-clicks-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); border-bottom: 1.5px solid var(--gray-200); }
+  .buy-clicks-table td { padding: 10px 12px; border-bottom: 1px solid var(--gray-100); color: var(--gray-900); }
+  .buy-clicks-table tr:last-child td { border-bottom: none; }
+  .buy-clicks-table tr:hover td { background: var(--gray-50); }
+  .analytics-card { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); margin-top: 16px; }
+  .analytics-card h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-600); margin-bottom: 12px; }
+  .period-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+  .period-tab { background: var(--gray-100); border: none; border-radius: 8px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: var(--gray-600); cursor: pointer; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.5px; transition: all .15s; }
+  .period-tab.active { background: var(--green); color: var(--white); }
+
 </style>
 </head>
 <body>
@@ -154,13 +174,57 @@
 
     <div class="admin-page active" id="admin-dashboard">
       <div class="admin-page-title">Dashboard</div>
+
+      <!-- Content stats -->
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-label">Albums</div><div class="stat-value" id="stat-albums">0</div><div class="stat-sub">total criados</div></div>
         <div class="stat-card"><div class="stat-label">Fotos</div><div class="stat-value" id="stat-photos">0</div><div class="stat-sub">enviadas</div></div>
         <div class="stat-card"><div class="stat-label">Vídeos</div><div class="stat-value" id="stat-videos">0</div><div class="stat-sub">enviados</div></div>
         <div class="stat-card"><div class="stat-label">Total Mídia</div><div class="stat-value" id="stat-total">0</div><div class="stat-sub">itens</div></div>
       </div>
-      <div style="font-size:13px;color:var(--gray-400);">ℹ️ Dados armazenados no Supabase.</div>
+
+      <!-- Analytics section -->
+      <div class="analytics-section">
+        <div class="analytics-title">📊 Analytics</div>
+
+        <div class="period-tabs">
+          <button class="period-tab active" onclick="loadAnalytics('today',this)">Hoje</button>
+          <button class="period-tab" onclick="loadAnalytics('week',this)">7 dias</button>
+          <button class="period-tab" onclick="loadAnalytics('month',this)">30 dias</button>
+          <button class="period-tab" onclick="loadAnalytics('all',this)">Todos</button>
+        </div>
+
+        <!-- Visits -->
+        <div class="stats-grid" style="margin-bottom:16px;">
+          <div class="stat-card green">
+            <div class="stat-label">👁️ Visitas</div>
+            <div class="stat-value" id="stat-visits">—</div>
+            <div class="stat-sub" id="stat-visits-sub">no período</div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-label">🛒 Clicks Comprar</div>
+            <div class="stat-value" id="stat-buyclicks">—</div>
+            <div class="stat-sub">no período</div>
+          </div>
+          <div class="stat-card orange">
+            <div class="stat-label">🔁 Conversão</div>
+            <div class="stat-value" id="stat-conversion">—</div>
+            <div class="stat-sub">clicks / visitas</div>
+          </div>
+        </div>
+
+        <!-- Buy clicks table per album -->
+        <div class="analytics-card">
+          <h4>🏆 Clicks por Album <span id="clicks-period-label" style="font-weight:400;color:var(--gray-400);text-transform:none;letter-spacing:0;">(hoje)</span></h4>
+          <div id="buy-clicks-table-wrap">
+            <table class="buy-clicks-table">
+              <thead><tr><th>Album</th><th style="text-align:right;">Clicks</th></tr></thead>
+              <tbody id="buy-clicks-tbody"><tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:24px;">Carregando...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <div class="admin-page" id="admin-albums">
@@ -349,6 +413,69 @@ function renderDashboard() {
   document.getElementById('stat-photos').textContent = photos;
   document.getElementById('stat-videos').textContent = videos;
   document.getElementById('stat-total').textContent = photos + videos;
+  loadAnalytics('today', null);
+}
+
+// ─── ANALYTICS ─────────────────────────────────────────────────────────────
+async function loadAnalytics(period, tabEl) {
+  // Update tab UI
+  if (tabEl) {
+    document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+  }
+
+  const labels = { today: 'hoje', week: 'últimos 7 dias', month: 'últimos 30 dias', all: 'todos os tempos' };
+  document.getElementById('clicks-period-label').textContent = '(' + labels[period] + ')';
+
+  // Compute date filter
+  const now = new Date();
+  let since = null;
+  if (period === 'today') {
+    const d = new Date(now); d.setHours(0,0,0,0);
+    since = d.toISOString();
+  } else if (period === 'week') {
+    const d = new Date(now); d.setDate(d.getDate() - 7);
+    since = d.toISOString();
+  } else if (period === 'month') {
+    const d = new Date(now); d.setDate(d.getDate() - 30);
+    since = d.toISOString();
+  }
+
+  // Load visits
+  let visitsQuery = sb.from('page_views').select('*', { count: 'exact', head: true });
+  if (since) visitsQuery = visitsQuery.gte('visited_at', since);
+  const { count: visitCount } = await visitsQuery;
+
+  // Load buy clicks
+  let clicksQuery = sb.from('buy_clicks').select('album_name, clicked_at');
+  if (since) clicksQuery = clicksQuery.gte('clicked_at', since);
+  const { data: clicksData } = await clicksQuery;
+
+  const totalClicks = (clicksData || []).length;
+  const conversion = visitCount > 0 ? ((totalClicks / visitCount) * 100).toFixed(1) + '%' : '0%';
+
+  document.getElementById('stat-visits').textContent = visitCount ?? 0;
+  document.getElementById('stat-buyclicks').textContent = totalClicks;
+  document.getElementById('stat-conversion').textContent = conversion;
+
+  // Group clicks by album
+  const byAlbum = {};
+  (clicksData || []).forEach(c => {
+    byAlbum[c.album_name] = (byAlbum[c.album_name] || 0) + 1;
+  });
+  const sorted = Object.entries(byAlbum).sort((a, b) => b[1] - a[1]);
+
+  const tbody = document.getElementById('buy-clicks-tbody');
+  if (!sorted.length) {
+    tbody.innerHTML = '<tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:24px;">Nenhum click no período</td></tr>';
+    return;
+  }
+  tbody.innerHTML = sorted.map(([name, count], i) => `
+    <tr>
+      <td>${i === 0 ? '🥇 ' : i === 1 ? '🥈 ' : i === 2 ? '🥉 ' : ''}${name}</td>
+      <td style="text-align:right;font-weight:700;color:var(--green-dark);">${count}</td>
+    </tr>
+  `).join('');
 }
 
 // ─── ALBUMS LIST ───────────────────────────────────────────────────────────
