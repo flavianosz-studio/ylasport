@@ -548,15 +548,28 @@ function slugify(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g
 
 
 // ─── ANALYTICS TRACKING ───────────────────────────────────────────────────
+let _geoCache = null;
+async function getGeo() {
+  if (_geoCache) return _geoCache;
+  try {
+    const r = await fetch('https://ipapi.co/json/');
+    const d = await r.json();
+    _geoCache = { country: d.country_name || null, country_code: d.country_code || null, city: d.city || null };
+  } catch(e) { _geoCache = { country: null, country_code: null, city: null }; }
+  return _geoCache;
+}
+
 async function trackVisit() {
   try {
-    await sb.from('page_views').insert([{ visited_at: new Date().toISOString() }]);
+    const geo = await getGeo();
+    await sb.from('page_views').insert([{ visited_at: new Date().toISOString(), country: geo.country, country_code: geo.country_code, city: geo.city }]);
   } catch(e) { /* silently ignore */ }
 }
 
 async function trackBuyClick(albumId, albumName) {
   try {
-    await sb.from('buy_clicks').insert([{ album_id: albumId, album_name: albumName, clicked_at: new Date().toISOString() }]);
+    const geo = await getGeo();
+    await sb.from('buy_clicks').insert([{ album_id: albumId, album_name: albumName, clicked_at: new Date().toISOString(), country: geo.country, country_code: geo.country_code, city: geo.city }]);
   } catch(e) { /* silently ignore */ }
 }
 
