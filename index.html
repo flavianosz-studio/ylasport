@@ -351,10 +351,40 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ─── SUPABASE CONFIG ───────────────────────────────────────────────────────
-// Replace these with your actual Supabase project values
 const SUPABASE_URL = 'https://whzezjmjcnukixkkmyan.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoemV6am1qY251a2l4a2tteWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMDExMTgsImV4cCI6MjA5Mjg3NzExOH0.NwynrNjmxDX6rXuDB9hjmQHLNGam9aqb3QIc8Gw7PsE';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ─── SECURITY: RATE LIMITER ────────────────────────────────────────────────
+const _rl = {};
+function rateLimit(key, maxCalls = 10, windowMs = 60000) {
+  const now = Date.now();
+  if (!_rl[key]) _rl[key] = [];
+  _rl[key] = _rl[key].filter(t => now - t < windowMs);
+  if (_rl[key].length >= maxCalls) return false;
+  _rl[key].push(now);
+  return true;
+}
+
+// ─── SECURITY: INPUT SANITIZER ────────────────────────────────────────────
+function sanitize(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/[<>"'`]/g, c => ({'<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'}[c])).trim().slice(0, 500);
+}
+
+// ─── SECURITY: SAFE FETCH WRAPPER ─────────────────────────────────────────
+async function safeFetch(fn, rlKey = 'default', maxCalls = 20) {
+  if (!rateLimit(rlKey, maxCalls)) {
+    console.warn('Rate limit reached for:', rlKey);
+    return null;
+  }
+  try {
+    return await fn();
+  } catch(e) {
+    console.error('Safe fetch error:', e);
+    return null;
+  }
+}
 
 // ─── STATE ─────────────────────────────────────────────────────────────────
 let albums = [];
@@ -363,12 +393,15 @@ let lbItems = [], lbIndex = 0, lastView = 'home';
 
 // ─── SUPABASE DATA ─────────────────────────────────────────────────────────
 async function fetchAlbums() {
-  const { data, error } = await sb
-    .from('albums')
-    .select('*, media!media_album_id_fkey(*)') 
-    .order('created_at', { ascending: false });
-  if (error) { console.error('Supabase fetch error:', error); return []; }
-  return data || [];
+  const result = await safeFetch(async () => {
+    const { data, error } = await sb
+      .from('albums')
+      .select('id, name, tag, description, pay_link, cover_media_id, created_at, media!media_album_id_fkey(id, url, type, album_id)')
+      .order('created_at', { ascending: false });
+    if (error) { console.error('Supabase fetch error:', error); return []; }
+    return data || [];
+  }, 'fetchAlbums', 30);
+  return result || [];
 }
 
 // ─── VIEWS ─────────────────────────────────────────────────────────────────
@@ -421,8 +454,9 @@ function goBack() {
 function albumCardHTML(a) {
   const media = a.media || [];
   const cover = media.find(m => m.id === a.cover_media_id) || media.find(m => m.type === 'image');
-  const thumb = cover ? `<img src="${cover.url}" alt="">` : '📁';
-  return `<div class="album-card" onclick="openAlbum('${a.id}')">
+  const coverUrl = cover ? safeUrl(cover.url) : '';
+  const thumb = coverUrl ? `<img src="${coverUrl}" alt="" loading="lazy">` : '📁';
+  return `<div class="album-card" onclick="openAlbum('${esc(String(a.id))}')">
     <div class="album-thumb">${thumb}</div>
     <div class="album-info">
       <h3>${esc(a.name)}</h3>
@@ -460,8 +494,8 @@ function renderAllAlbums(q = '') {
     document.getElementById('all-empty').style.display = 'none';
   }
 }
-function liveSearch(q) { renderHomeAlbums(q); }
-function liveSearch2(q) { renderAllAlbums(q); }
+function liveSearch(q) { if (!rateLimit('search', 30)) return; renderHomeAlbums(sanitize(q)); }
+function liveSearch2(q) { if (!rateLimit('search', 30)) return; renderAllAlbums(sanitize(q)); }
 
 async function openAlbum(id) {
   if (!albums.length) albums = await fetchAlbums();
@@ -483,29 +517,35 @@ function renderAlbumDetail(alb) {
   document.getElementById('album-desc-display').textContent = alb.description || '';
   const buyBtn = document.getElementById('album-buy-btn');
   if (alb.pay_link) {
-    buyBtn.href = alb.pay_link;
-    buyBtn.classList.remove('hidden');
-    buyBtn.onclick = () => trackBuyClick(alb.id, alb.name);
+    const safePayLink = safeUrl(alb.pay_link);
+    if (safePayLink) {
+      buyBtn.href = safePayLink;
+      buyBtn.classList.remove('hidden');
+      buyBtn.onclick = () => trackBuyClick(alb.id, alb.name);
+    } else { buyBtn.classList.add('hidden'); }
   } else { buyBtn.classList.add('hidden'); }
   const cover = document.getElementById('album-cover-thumb');
   const img = media.find(m => m.id === alb.cover_media_id) || media.find(m => m.type === 'image');
-  cover.innerHTML = img ? `<img src="${img.url}" alt="">` : '📁';
+  const coverUrl = img ? safeUrl(img.url) : '';
+  cover.innerHTML = coverUrl ? `<img src="${coverUrl}" alt="">` : '📁';
   const grid = document.getElementById('album-photo-grid');
   const empty = document.getElementById('album-empty');
   lbItems = media;
   if (!media.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
   empty.style.display = 'none';
   grid.innerHTML = media.map((m, i) => {
+    const mUrl = safeUrl(m.url);
+    if (!mUrl) return '';
     if (m.type === 'video') {
       return `<div class="photo-item" onclick="openLightbox(${i})">
         <div class="photo-wrapper">
-          <video src="${m.url}" muted></video>
+          <video src="${mUrl}" muted loading="lazy"></video>
           <div class="video-play-overlay"><div class="play-circle">▶</div></div>
         </div>
       </div>`;
     }
     return `<div class="photo-item" onclick="openLightbox(${i})">
-      <div class="photo-wrapper"><img src="${m.url}" alt=""></div>
+      <div class="photo-wrapper"><img src="${mUrl}" alt="" loading="lazy"></div>
     </div>`;
   }).join('');
 }
@@ -543,8 +583,17 @@ document.addEventListener('keydown', e => {
 });
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────
-function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-function slugify(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+function esc(s) { return sanitize(String(s || '')); }
+function slugify(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+
+// ─── SECURITY: Validate URLs before rendering ─────────────────────────────
+function safeUrl(url) {
+  try {
+    const u = new URL(url);
+    if (!['https:', 'http:'].includes(u.protocol)) return '';
+    return u.href;
+  } catch { return ''; }
+}
 
 
 // ─── ANALYTICS TRACKING ───────────────────────────────────────────────────
@@ -560,17 +609,17 @@ async function getGeo() {
 }
 
 async function trackVisit() {
-  try {
+  await safeFetch(async () => {
     const geo = await getGeo();
     await sb.from('page_views').insert([{ visited_at: new Date().toISOString(), country: geo.country, country_code: geo.country_code, city: geo.city }]);
-  } catch(e) { /* silently ignore */ }
+  }, 'trackVisit', 5);
 }
 
 async function trackBuyClick(albumId, albumName) {
-  try {
+  await safeFetch(async () => {
     const geo = await getGeo();
-    await sb.from('buy_clicks').insert([{ album_id: albumId, album_name: albumName, clicked_at: new Date().toISOString(), country: geo.country, country_code: geo.country_code, city: geo.city }]);
-  } catch(e) { /* silently ignore */ }
+    await sb.from('buy_clicks').insert([{ album_id: albumId, album_name: sanitize(albumName), clicked_at: new Date().toISOString(), country: geo.country, country_code: geo.country_code, city: geo.city }]);
+  }, 'trackBuy', 20);
 }
 
 // ─── HASH ROUTER ──────────────────────────────────────────────────────────
