@@ -117,10 +117,6 @@
     <div class="login-sub">Painel Administrativo</div>
     <div class="error-msg" id="login-error"></div>
     <div class="field">
-      <label>Email</label>
-      <input type="email" id="login-email" placeholder="seu@email.com" autocomplete="email">
-    </div>
-    <div class="field">
       <label>Senha</label>
       <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
     </div>
@@ -238,7 +234,7 @@
 <div class="toast" id="toast"></div>
 
 <!-- Supabase SDK (só para autenticação) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 // ══════════════════════════════════════════════════════════════════
 // ⚙️  CONFIGURAÇÕES — preencha antes de usar
@@ -249,14 +245,14 @@ const SUPABASE_URL = 'https://whzezjmjcnukixkkmyan.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoemV6am1qY251a2l4a2tteWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMDExMTgsImV4cCI6MjA5Mjg3NzExOH0.NwynrNjmxDX6rXuDB9hjmQHLNGam9aqb3QIc8Gw7PsE';
 
 // 2. GitHub — onde ficam as fotos e o data.json
-const GITHUB_TOKEN  = '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';  //
+const GITHUB_TOKEN  = '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';
 const GITHUB_OWNER  = 'flavianosz-studio';
 const GITHUB_REPO   = 'ylasport';
 const GITHUB_BRANCH = 'main';
 
 // ══════════════════════════════════════════════════════════════════
 
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Supabase removido — usando apenas GitHub
 
 // ─── STATE ────────────────────────────────────────────────────────
 let localData = { albums: [] };        // dados em memória
@@ -267,21 +263,28 @@ let coverMediaId = null;               // capa selecionada (novo álbum)
 let currentPhotosAlbumId = null;       // álbum aberto no modal de fotos
 
 // ─── AUTENTICAÇÃO ─────────────────────────────────────────────────
+// Hash SHA256 da senha (a senha real não fica exposta no código)
+// Senha atual: (protegida)
+// Para trocar: gere um novo hash em: https://emn178.github.io/online-tools/sha256.html
+const ADMIN_HASH = '36f8d3cfbf212f1beff9b3f6d992a96f6a2b2ea1257c0a2ba71e56146fc6bc00';
+
+async function hashStr(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
 async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass  = document.getElementById('login-password').value;
-  const btn   = document.getElementById('login-btn');
-  const err   = document.getElementById('login-error');
+  const pass = document.getElementById('login-password').value;
+  const err  = document.getElementById('login-error');
   err.style.display = 'none';
-  if (!email || !pass) { showError('Preencha email e senha.'); return; }
-  btn.disabled = true; btn.textContent = 'Entrando...';
-  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-  btn.disabled = false; btn.textContent = 'Entrar';
-  if (error) { showError('Email ou senha incorretos.'); return; }
+  if (!pass) { showError('Digite a senha.'); return; }
+  const h = await hashStr(pass);
+  if (h !== ADMIN_HASH) { showError('Senha incorreta.'); return; }
+  sessionStorage.setItem('yla_admin', '1');
   enterAdmin();
 }
-async function doLogout() {
-  await sb.auth.signOut();
+function doLogout() {
+  sessionStorage.removeItem('yla_admin');
   document.getElementById('admin-screen').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
 }
@@ -290,11 +293,9 @@ function showError(msg) {
   e.textContent = msg; e.style.display = 'block';
 }
 async function enterAdmin() {
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) return;
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('admin-screen').style.display = 'block';
-  document.getElementById('admin-email-display').textContent = user.email;
+  document.getElementById('admin-email-display').textContent = 'Admin';
   await loadData();
 }
 document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
@@ -646,10 +647,8 @@ function toast(msg, type = '') {
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
 // ─── INIT ─────────────────────────────────────────────────────────
-(async () => {
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) { enterAdmin(); }
-})();
+// Verificar sessão salva
+if (sessionStorage.getItem('yla_admin') === '1') { enterAdmin(); }
 </script>
 </body>
 </html>
