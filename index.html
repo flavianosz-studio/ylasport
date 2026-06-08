@@ -297,8 +297,7 @@ async function trackVisit() {
     // Fetch current data.json
     const f = await fetch(`${GH_API}/data.json?ref=${GH_BRANCH}&t=${Date.now()}`, {headers:ghH()}).then(r=>r.json()).catch(()=>null);
     if (!f) return;
-    const data = JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/
-/g,'')))));
+    const data = JSON.parse(decodeURIComponent(escape(atob(f.content.split('\n').join('')))));
     if (!data.analytics) data.analytics = {visits:[], buy_clicks:[]};
     data.analytics.visits.push({date:new Date().toISOString().slice(0,10), country, city});
     // Keep last 5000 visits max
@@ -312,8 +311,7 @@ async function trackBuyClick(albumId, albumName) {
   try {
     const f = await fetch(`${GH_API}/data.json?ref=${GH_BRANCH}&t=${Date.now()}`, {headers:ghH()}).then(r=>r.json()).catch(()=>null);
     if (!f) return;
-    const data = JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/
-/g,'')))));
+    const data = JSON.parse(decodeURIComponent(escape(atob(f.content.split('\n').join('')))));
     if (!data.analytics) data.analytics = {visits:[], buy_clicks:[]};
     data.analytics.buy_clicks.push({album_id:albumId, album_name:albumName, date:new Date().toISOString().slice(0,10)});
     const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
@@ -340,7 +338,7 @@ async function fetchAlbums() {
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-function slugify(s) { return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+function slugify(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,''); }
 
 // ─── VIEWS ─────────────────────────────────────────────────────────────────
 function showView(id) {
