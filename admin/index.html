@@ -394,8 +394,15 @@ async function ghGet(path) {
 async function ghPut(path, b64, msg, sha) {
   const body = {message:msg, content:b64, branch:GITHUB_BRANCH};
   if (sha) body.sha = sha;
-  const r = await fetch(`${GH_API}/${path}`, {method:'PUT', headers:ghHeaders(), body:JSON.stringify(body)});
-  return r.json();
+  try {
+    const r = await fetch(`${GH_API}/${path}`, {method:'PUT', headers:ghHeaders(), body:JSON.stringify(body)});
+    const data = await r.json();
+    if (!r.ok) console.error('ghPut error:', data);
+    return data;
+  } catch(e) {
+    console.error('ghPut failed:', e);
+    return null;
+  }
 }
 async function ghDelete(path, msg, sha) {
   const body = {message:msg, sha, branch:GITHUB_BRANCH};
@@ -406,10 +413,13 @@ async function ghDelete(path, msg, sha) {
 // ══════════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════════
+let _dataSha = null; // Cache SHA to avoid re-fetching
+
 async function loadData() {
   try {
     const file = await ghGet('data.json');
     if (file) {
+      _dataSha = file.sha; // Cache SHA
       const content = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
       localData = JSON.parse(content);
       if (!localData.analytics) localData.analytics = {visits:[],buy_clicks:[]};
@@ -419,11 +429,13 @@ async function loadData() {
 
 async function saveData(msg='Atualizar dados') {
   document.getElementById('save-badge').style.display='inline-block';
-  const file = await ghGet('data.json');
-  const sha = file?.sha;
+  // Use cached SHA — avoids extra API call and race conditions
+  const sha = _dataSha;
   const json = JSON.stringify(localData, null, 2);
   const b64 = btoa(unescape(encodeURIComponent(json)));
-  await ghPut('data.json', b64, msg, sha);
+  const result = await ghPut('data.json', b64, msg, sha);
+  // Update cached SHA from response
+  if (result?.content?.sha) _dataSha = result.content.sha;
   document.getElementById('save-badge').style.display='none';
 }
 
