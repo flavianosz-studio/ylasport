@@ -223,11 +223,11 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
             <button class="filter-btn" onclick="setChartFilter('month',this)">30 dias</button>
             <button class="filter-btn" onclick="setChartFilter('all',this)">Total</button>
           </div>
-          <canvas id="chart-visits" height="200"></canvas>
+          <div style="position:relative;height:180px"><canvas id="chart-visits"></canvas></div>
         </div>
         <div class="chart-card">
           <div class="chart-title">Buy Clicks por álbum</div>
-          <canvas id="chart-clicks" height="200"></canvas>
+          <div style="position:relative;height:180px"><canvas id="chart-clicks"></canvas></div>
         </div>
       </div>
 
@@ -484,7 +484,7 @@ function renderVisitChart() {
   visitChart = new Chart(document.getElementById('chart-visits'), {
     type:'line',
     data:{labels,datasets:[{label:'Visitas',data:counts,borderColor:'#3dba7e',backgroundColor:'rgba(61,186,126,.1)',fill:true,tension:.4,pointRadius:3}]},
-    options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}},x:{ticks:{maxRotation:45}}},responsive:true,maintainAspectRatio:false}
+    options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}},x:{ticks:{maxRotation:45,font:{size:10}}}},responsive:true,maintainAspectRatio:false}
   });
 }
 
