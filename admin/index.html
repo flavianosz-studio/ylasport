@@ -3,825 +3,653 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin · YLASPORT</title>
+<title>YLASPORT Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --green: #3dba7e; --green-dark: #2a9a64; --green-light: #e8f9f1; --green-xlight: #f3fdf8;
-    --white: #ffffff; --gray-50: #f9f9f7; --gray-100: #f0efeb; --gray-200: #e0dfd9;
-    --gray-400: #999890; --gray-600: #5a5950; --gray-900: #1a1a18;
+    --green: #3dba7e; --green-dark: #2a9a64; --green-light: #e8f9f1;
+    --white: #ffffff; --gray-50: #f9f9f7; --gray-100: #f0efeb;
+    --gray-200: #e0dfd9; --gray-400: #999890; --gray-600: #5a5950; --gray-900: #1a1a18;
+    --red: #e53e3e; --red-light: #fff5f5;
     --font-display: 'Barlow Condensed', sans-serif; --font-body: 'Barlow', sans-serif;
     --radius: 10px; --radius-lg: 16px;
     --shadow: 0 2px 12px rgba(0,0,0,0.07); --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: var(--font-body); background: var(--white); color: var(--gray-900); }
+  body { font-family: var(--font-body); background: var(--gray-50); color: var(--gray-900); }
 
   /* ── LOGIN ── */
-  #screen-login { display: none; min-height: 100vh; background: var(--gray-50); align-items: center; justify-content: center; }
-  #screen-login.active { display: flex; }
-  .login-card { background: var(--white); border-radius: var(--radius-lg); border: 1.5px solid var(--gray-200); box-shadow: var(--shadow-md); padding: 48px 40px; width: 100%; max-width: 400px; }
-  .login-logo { font-family: var(--font-display); font-size: 36px; letter-spacing: 3px; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 6px; }
+  #login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .login-card { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 48px 40px; width: 100%; max-width: 400px; box-shadow: var(--shadow-md); }
+  .login-logo { font-family: var(--font-display); font-size: 32px; letter-spacing: 3px; font-weight: 800; text-align: center; margin-bottom: 8px; }
   .login-logo span { color: var(--green); }
-  .login-sub { font-size: 13px; color: var(--gray-400); margin-bottom: 32px; }
-  .form-group { margin-bottom: 18px; }
-  .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
-  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1.5px solid var(--gray-200); border-radius: var(--radius); font-size: 13px; font-family: var(--font-body); outline: none; transition: border .15s; background: var(--gray-50); }
-  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--green); background: var(--white); }
-  .login-err { color: #d84e3e; font-size: 12px; margin-bottom: 12px; display: none; }
-  .login-err.show { display: block; }
-  .btn-green { background: var(--green); color: var(--white); border: none; border-radius: 24px; padding: 8px 20px; font-size: 13px; font-weight: 600; font-family: var(--font-body); cursor: pointer; transition: background .15s; letter-spacing: 0.5px; text-transform: uppercase; }
-  .btn-green:hover { background: var(--green-dark); }
-  .btn-full { width: 100%; padding: 12px; font-size: 14px; font-weight: 700; border-radius: var(--radius); letter-spacing: 1px; text-transform: uppercase; }
+  .login-sub { text-align: center; font-size: 12px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 32px; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 11px; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .field input { width: 100%; border: 1.5px solid var(--gray-200); border-radius: var(--radius); padding: 10px 14px; font-size: 14px; font-family: var(--font-body); outline: none; transition: border .15s; background: var(--gray-50); }
+  .field input:focus { border-color: var(--green); background: var(--white); }
+  .btn-primary { width: 100%; background: var(--green); color: var(--white); border: none; border-radius: var(--radius); padding: 12px; font-size: 14px; font-weight: 700; font-family: var(--font-body); cursor: pointer; transition: background .15s; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+  .btn-primary:hover { background: var(--green-dark); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+  .error-msg { background: var(--red-light); border: 1px solid #feb2b2; color: var(--red); border-radius: var(--radius); padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: none; }
 
-  /* ── ADMIN ── */
-  #screen-admin { display: none; flex-direction: row; min-height: 100vh; }
-  #screen-admin.active { display: flex; }
-  .admin-sidebar { width: 240px; min-height: 100vh; background: var(--gray-900); color: var(--white); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
-  .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: var(--font-display); font-size: 24px; letter-spacing: 3px; font-weight: 800; text-transform: uppercase; }
-  .sidebar-logo span { color: var(--green); }
-  .sidebar-nav { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
-  .sidebar-nav button { display: flex; align-items: center; gap: 10px; background: none; border: none; color: rgba(255,255,255,0.65); font-family: var(--font-body); font-size: 13px; font-weight: 500; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: all .15s; text-align: left; width: 100%; }
-  .sidebar-nav button:hover { background: rgba(255,255,255,0.07); color: white; }
-  .sidebar-nav button.active { background: var(--green); color: white; }
-  .sidebar-nav .icon { font-size: 18px; width: 22px; text-align: center; }
-  .sidebar-footer { padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.08); }
-  .sidebar-footer button { display: flex; align-items: center; gap: 8px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 12px; cursor: pointer; padding: 8px 12px; border-radius: 8px; font-family: var(--font-body); width: 100%; transition: all .15s; }
-  .sidebar-footer button:hover { color: white; background: rgba(255,255,255,0.07); }
-  .admin-content { flex: 1; background: var(--gray-50); padding: 32px; overflow-y: auto; }
-  .admin-page { display: none; }
-  .admin-page.active { display: block; }
-  .admin-page-title { font-family: var(--font-display); font-size: 30px; letter-spacing: 3px; font-weight: 800; margin-bottom: 24px; color: var(--gray-900); text-transform: uppercase; }
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
-  .stat-card { background: var(--white); border-radius: var(--radius-lg); border: 1.5px solid var(--gray-200); padding: 20px; box-shadow: var(--shadow); }
-  .stat-label { font-size: 10px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1.5px; }
-  .stat-value { font-family: var(--font-display); font-size: 42px; color: var(--green); margin-top: 4px; font-weight: 800; }
-  .stat-sub { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
-  .admin-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-  .admin-toolbar input { flex: 1; padding: 9px 14px; border: 1.5px solid var(--gray-200); border-radius: var(--radius); font-size: 13px; font-family: var(--font-body); outline: none; background: var(--white); }
-  .admin-toolbar input:focus { border-color: var(--green); }
-  .admin-album-list { display: flex; flex-direction: column; gap: 12px; }
-  .admin-album-row { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow); }
-  .admin-album-thumb { width: 60px; height: 60px; border-radius: 8px; background: var(--gray-100); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--gray-400); }
-  .admin-album-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .admin-album-info { flex: 1; }
-  .admin-album-info h4 { font-size: 14px; font-weight: 600; }
-  .admin-album-info p { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
-  .admin-album-actions { display: flex; gap: 8px; }
-  .btn-sm { padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: var(--font-body); cursor: pointer; border: 1.5px solid; transition: all .15s; }
-  .btn-edit { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
-  .btn-edit:hover { background: var(--green); color: white; }
-  .btn-del { background: #fff0ee; color: #d84e3e; border-color: #f5c0ba; }
-  .btn-del:hover { background: #d84e3e; color: white; }
-  .btn-outline { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius); padding: 9px 18px; font-size: 13px; font-weight: 600; font-family: var(--font-body); cursor: pointer; color: var(--gray-900); transition: all .15s; }
-  .btn-outline:hover { border-color: var(--green); color: var(--green); }
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 500; align-items: center; justify-content: center; }
+  /* ── ADMIN LAYOUT ── */
+  #admin-screen { display: none; }
+  .admin-header { background: var(--gray-900); color: var(--white); padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .admin-logo { font-family: var(--font-display); font-size: 22px; letter-spacing: 3px; font-weight: 800; }
+  .admin-logo span { color: var(--green); }
+  .admin-user { font-size: 12px; color: var(--gray-400); display: flex; align-items: center; gap: 12px; }
+  .btn-logout { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--white); border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; font-family: var(--font-body); transition: background .15s; }
+  .btn-logout:hover { background: rgba(255,255,255,0.2); }
+
+  .admin-body { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .admin-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+  .admin-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+
+  .btn-action { background: var(--green); color: var(--white); border: none; border-radius: var(--radius); padding: 10px 20px; font-size: 13px; font-weight: 700; font-family: var(--font-body); cursor: pointer; transition: background .15s; text-transform: uppercase; letter-spacing: 0.5px; }
+  .btn-action:hover { background: var(--green-dark); }
+  .btn-danger { background: var(--red); }
+  .btn-danger:hover { background: #c53030; }
+  .btn-secondary { background: var(--gray-100); color: var(--gray-900); border: 1.5px solid var(--gray-200); }
+  .btn-secondary:hover { background: var(--gray-200); }
+
+  /* ── ALBUMS LIST ── */
+  .album-list { display: grid; gap: 12px; }
+  .album-row { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow); }
+  .album-row-thumb { width: 60px; height: 60px; border-radius: var(--radius); overflow: hidden; background: var(--gray-100); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .album-row-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .album-row-info { flex: 1; min-width: 0; }
+  .album-row-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .album-row-meta { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
+  .album-row-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+  /* ── MODAL ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.open { display: flex; }
-  .modal { background: var(--white); border-radius: var(--radius-lg); border: 1.5px solid var(--gray-200); box-shadow: var(--shadow-md); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; padding: 32px; }
-  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-  .modal-header h3 { font-family: var(--font-display); font-size: 24px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
-  .modal-close { background: var(--gray-100); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-  .modal-close:hover { background: var(--gray-200); }
-  .settings-section { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow); }
-  .settings-section h4 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--gray-900); letter-spacing: 0.5px; text-transform: uppercase; }
-  .upload-area { border: 2px dashed var(--gray-200); border-radius: var(--radius-lg); padding: 32px; text-align: center; cursor: pointer; transition: all .2s; background: var(--gray-50); margin-top: 12px; }
-  .upload-area:hover, .upload-area.dragover { border-color: var(--green); background: var(--green-xlight); }
-  .upload-area .upload-icon { font-size: 40px; margin-bottom: 10px; }
-  .upload-area p { font-size: 13px; color: var(--gray-600); }
-  .upload-area span { color: var(--green); font-weight: 600; }
-  .upload-area input { display: none; }
-  .upload-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 16px; }
-  .preview-item { position: relative; border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--gray-200); }
-  .preview-item img, .preview-item video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
-  .preview-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .admin-media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 8px; }
-  .admin-media-item { position: relative; border-radius: 8px; overflow: hidden; border: 1.5px solid var(--gray-200); }
-  .admin-media-item img, .admin-media-item video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
-  .remove-media { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .vbadge { position: absolute; bottom: 4px; left: 4px; background: var(--gray-900); color: white; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
-  .set-cover-btn { position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.55); color: #ccc; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
-  .set-cover-btn:hover { background: rgba(255,200,0,0.85); color: #fff; }
-  .set-cover-btn.is-cover { background: rgba(255,180,0,0.9); color: #fff; }
-  .cover-badge { position: absolute; top: 4px; left: 4px; background: rgba(255,180,0,0.92); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px; }
-  .toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: var(--gray-900); color: white; border-radius: var(--radius); padding: 12px 20px; font-size: 13px; font-weight: 500; transform: translateY(80px); opacity: 0; transition: all .3s; pointer-events: none; box-shadow: var(--shadow-md); }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .toast.green { background: var(--green); }
-  .loading-overlay { position: fixed; inset: 0; background: var(--gray-50); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-  .spinner { width: 40px; height: 40px; border: 3px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; }
+  .modal { background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-md); }
+  .modal-header { padding: 20px 24px 16px; border-bottom: 1.5px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
+  .modal-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+  .modal-close { background: var(--gray-100); border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+  .modal-body { padding: 24px; }
+  .modal-footer { padding: 16px 24px; border-top: 1.5px solid var(--gray-200); display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* ── UPLOAD AREA ── */
+  .upload-area { border: 2px dashed var(--gray-200); border-radius: var(--radius-lg); padding: 32px; text-align: center; cursor: pointer; transition: all .2s; background: var(--gray-50); }
+  .upload-area:hover, .upload-area.drag { border-color: var(--green); background: var(--green-light); }
+  .upload-area .up-icon { font-size: 36px; margin-bottom: 10px; }
+  .upload-area p { font-size: 14px; color: var(--gray-600); }
+  .upload-area span { font-size: 12px; color: var(--gray-400); }
+  #file-input { display: none; }
+
+  .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 16px; }
+  .preview-item { position: relative; border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--gray-200); aspect-ratio: 1; background: var(--gray-100); }
+  .preview-item img, .preview-item video { width: 100%; height: 100%; object-fit: cover; }
+  .preview-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+  .preview-cover-btn { position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 10px; font-weight: 700; }
+  .preview-cover-btn.active { background: var(--green); }
+
+  /* ── PROGRESS ── */
+  .progress-bar { background: var(--gray-100); border-radius: 20px; height: 8px; overflow: hidden; margin-top: 12px; }
+  .progress-fill { background: var(--green); height: 100%; border-radius: 20px; transition: width .3s; width: 0; }
+  .progress-text { font-size: 12px; color: var(--gray-600); margin-top: 6px; }
+
+  /* ── TOAST ── */
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--gray-900); color: var(--white); border-radius: var(--radius); padding: 12px 20px; font-size: 13px; font-weight: 500; z-index: 9999; opacity: 0; transform: translateY(10px); transition: all .3s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { background: var(--green-dark); }
+  .toast.error { background: var(--red); }
+
+  .loading-spinner { display: flex; align-items: center; justify-content: center; padding: 60px; }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .analytics-section { margin-top: 32px; }
-  .analytics-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-900); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .stat-card.green { border-color: var(--green); background: var(--green-xlight); }
-  .stat-card.green .stat-value { color: var(--green-dark); }
-  .stat-card.blue { border-color: #60a5fa; background: #eff6ff; }
-  .stat-card.blue .stat-value { color: #2563eb; }
-  .stat-card.orange { border-color: #fb923c; background: #fff7ed; }
-  .stat-card.orange .stat-value { color: #ea580c; }
-  .buy-clicks-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
-  .buy-clicks-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); border-bottom: 1.5px solid var(--gray-200); }
-  .buy-clicks-table td { padding: 10px 12px; border-bottom: 1px solid var(--gray-100); color: var(--gray-900); }
-  .buy-clicks-table tr:last-child td { border-bottom: none; }
-  .buy-clicks-table tr:hover td { background: var(--gray-50); }
-  .analytics-card { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); margin-top: 16px; }
-  .flag { font-size: 18px; line-height: 1; }
-  .analytics-card h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-600); margin-bottom: 12px; }
-  .period-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
-  .period-tab { background: var(--gray-100); border: none; border-radius: 8px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: var(--gray-600); cursor: pointer; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.5px; transition: all .15s; }
-  .period-tab.active { background: var(--green); color: var(--white); }
-
-
-  /* ── MOBILE RESPONSIVE ADMIN ─────────────────────────────────────────────── */
-  @media (max-width: 768px) {
-    /* Sidebar vira drawer deslizante */
-    .admin-sidebar {
-      position: fixed; top: 0; left: 0; height: 100vh; z-index: 400;
-      transform: translateX(-100%); transition: transform .25s ease;
-      width: 260px; box-shadow: var(--shadow-md);
-    }
-    .admin-sidebar.open { transform: translateX(0); }
-
-    /* Overlay escuro atrás do drawer */
-    .sidebar-overlay {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
-      z-index: 399;
-    }
-    .sidebar-overlay.open { display: block; }
-
-    /* Admin layout em coluna */
-    #screen-admin.active { flex-direction: column; }
-    .admin-content { padding: 16px; padding-top: 72px; }
-
-    /* Header mobile fixo no topo */
-    .admin-mobile-header {
-      display: flex; align-items: center; justify-content: space-between;
-      position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 300;
-      background: var(--gray-900); padding: 0 16px;
-    }
-    .admin-mobile-header .mob-logo {
-      font-family: var(--font-display); font-size: 20px; letter-spacing: 3px;
-      font-weight: 800; text-transform: uppercase; color: var(--white);
-    }
-    .admin-mobile-header .mob-logo span { color: var(--green); }
-    .hamburger {
-      background: none; border: none; cursor: pointer;
-      display: flex; flex-direction: column; gap: 5px; padding: 4px;
-    }
-    .hamburger span {
-      display: block; width: 24px; height: 2px;
-      background: var(--white); border-radius: 2px; transition: all .2s;
-    }
-
-    /* Page title menor */
-    .admin-page-title { font-size: 22px; letter-spacing: 2px; margin-bottom: 16px; }
-
-    /* Stats grid em 2 cols */
-    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
-    .stat-value { font-size: 32px; }
-
-    /* Period tabs wrap */
-    .period-tabs { flex-wrap: wrap; gap: 6px; }
-    .period-tab { padding: 6px 12px; font-size: 11px; }
-
-    /* Two-col analytics → single col */
-    .analytics-two-col { grid-template-columns: 1fr !important; }
-
-    /* Album rows em mobile */
-    .admin-album-row { flex-wrap: wrap; gap: 12px; }
-    .admin-album-actions { width: 100%; justify-content: flex-end; }
-
-    /* Modal full-screen */
-    .modal { max-width: 100%; max-height: 100vh; border-radius: 0; margin: 0; padding: 20px 16px; }
-    .modal-overlay.open { align-items: flex-end; }
-
-    /* Toast acima de tudo */
-    .toast { bottom: 16px; right: 16px; left: 16px; text-align: center; }
-
-    /* Upload area menor */
-    .upload-area { padding: 20px; }
-
-    /* Login card */
-    .login-card { padding: 32px 20px; }
-  }
-
-  @media (min-width: 769px) {
-    .admin-mobile-header { display: none; }
-    .sidebar-overlay { display: none !important; }
-  }
-
+  .status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .status-badge.saving { background: #fef3c7; color: #92400e; }
+  .status-badge.saved { background: var(--green-light); color: var(--green-dark); }
 </style>
 </head>
 <body>
 
-
-<!-- SIDEBAR OVERLAY (mobile) -->
-<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
-
-<!-- LOADING -->
-<div class="loading-overlay" id="loading-overlay">
-  <div class="spinner"></div>
-</div>
-
 <!-- LOGIN -->
-<div id="screen-login">
+<div id="login-screen">
   <div class="login-card">
-    <span class="login-logo">YLA<span>SPORT</span></span>
-    <p class="login-sub">Admin Panel — acesso restrito</p>
-    <div class="login-err" id="login-err">E-mail ou senha inválidos.</div>
-    <div class="form-group">
-      <label>E-mail</label>
-      <input type="email" id="login-email" placeholder="admin@ylasport.com" onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="login-logo">YLA<span>SPORT</span></div>
+    <div class="login-sub">Painel Administrativo</div>
+    <div class="error-msg" id="login-error"></div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="seu@email.com" autocomplete="email">
     </div>
-    <div class="form-group">
+    <div class="field">
       <label>Senha</label>
-      <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
     </div>
-    <button class="btn-green btn-full" onclick="doLogin()" id="login-btn">Entrar</button>
+    <button class="btn-primary" id="login-btn" onclick="doLogin()">Entrar</button>
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
-<div id="screen-admin">
-  <!-- MOBILE HEADER -->
-  <header class="admin-mobile-header">
-    <span class="mob-logo">YLA<span>SPORT</span> <span style="font-size:11px;letter-spacing:1px;color:rgba(255,255,255,0.4);font-family:var(--font-body);font-weight:400;">ADMIN</span></span>
-    <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+<!-- ADMIN -->
+<div id="admin-screen">
+  <header class="admin-header">
+    <div class="admin-logo">YLA<span>SPORT</span> <span style="font-size:13px;color:var(--gray-400);letter-spacing:1px">ADMIN</span></div>
+    <div class="admin-user">
+      <span id="admin-email-display"></span>
+      <button class="btn-logout" onclick="doLogout()">Sair</button>
+    </div>
   </header>
-
-    <aside class="admin-sidebar" id="admin-sidebar">
-    <div class="sidebar-logo">YLA<span>SPORT</span></div>
-    <nav class="sidebar-nav">
-      <button class="active" onclick="adminNav('dashboard',this)"><span class="icon">⬛</span> Dashboard</button>
-      <button onclick="adminNav('albums',this)"><span class="icon">📁</span> Albums</button>
-      <button onclick="adminNav('upload',this)"><span class="icon">⬆</span> Upload Mídia</button>
-      <button onclick="adminNav('settings',this)"><span class="icon">⚙</span> Configurações</button>
-    </nav>
-    <div class="sidebar-footer">
-      <button onclick="doLogout()">⬅ Sair</button>
-    </div>
-  </aside>
-  <div class="admin-content">
-
-    <div class="admin-page active" id="admin-dashboard">
-      <div class="admin-page-title">Dashboard</div>
-
-      <!-- Content stats -->
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-label">Albums</div><div class="stat-value" id="stat-albums">0</div><div class="stat-sub">total criados</div></div>
-        <div class="stat-card"><div class="stat-label">Fotos</div><div class="stat-value" id="stat-photos">0</div><div class="stat-sub">enviadas</div></div>
-        <div class="stat-card"><div class="stat-label">Vídeos</div><div class="stat-value" id="stat-videos">0</div><div class="stat-sub">enviados</div></div>
-        <div class="stat-card"><div class="stat-label">Total Mídia</div><div class="stat-value" id="stat-total">0</div><div class="stat-sub">itens</div></div>
-      </div>
-
-      <!-- Analytics section -->
-      <div class="analytics-section">
-        <div class="analytics-title">📊 Analytics</div>
-
-        <div class="period-tabs">
-          <button class="period-tab active" onclick="loadAnalytics('today',this)">Hoje</button>
-          <button class="period-tab" onclick="loadAnalytics('week',this)">7 dias</button>
-          <button class="period-tab" onclick="loadAnalytics('month',this)">30 dias</button>
-          <button class="period-tab" onclick="loadAnalytics('all',this)">Todos</button>
-        </div>
-
-        <!-- Visits -->
-        <div class="stats-grid" style="margin-bottom:16px;">
-          <div class="stat-card green">
-            <div class="stat-label">👁️ Visitas</div>
-            <div class="stat-value" id="stat-visits">—</div>
-            <div class="stat-sub" id="stat-visits-sub">no período</div>
-          </div>
-          <div class="stat-card blue">
-            <div class="stat-label">🛒 Clicks Comprar</div>
-            <div class="stat-value" id="stat-buyclicks">—</div>
-            <div class="stat-sub">no período</div>
-          </div>
-          <div class="stat-card orange">
-            <div class="stat-label">🔁 Conversão</div>
-            <div class="stat-value" id="stat-conversion">—</div>
-            <div class="stat-sub">clicks / visitas</div>
-          </div>
-        </div>
-
-        <!-- Two column tables -->
-        <div class="analytics-two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0;">
-
-          <!-- Buy clicks per album -->
-          <div class="analytics-card" style="margin-top:0;">
-            <h4>🏆 Clicks por Album <span id="clicks-period-label" style="font-weight:400;color:var(--gray-400);text-transform:none;letter-spacing:0;">(hoje)</span></h4>
-            <table class="buy-clicks-table">
-              <thead><tr><th>Album</th><th style="text-align:right;">Clicks</th></tr></thead>
-              <tbody id="buy-clicks-tbody"><tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:24px;">Carregando...</td></tr></tbody>
-            </table>
-          </div>
-
-          <!-- Visits by country -->
-          <div class="analytics-card" style="margin-top:0;">
-            <h4>🌍 Visitas por País</h4>
-            <table class="buy-clicks-table">
-              <thead><tr><th>País</th><th style="text-align:right;">Visitas</th></tr></thead>
-              <tbody id="visits-country-tbody"><tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:24px;">Carregando...</td></tr></tbody>
-            </table>
-          </div>
-
-        </div>
-
-        <!-- Clicks by country -->
-        <div class="analytics-card" style="margin-top:16px;">
-          <h4>🗺️ Clicks por País</h4>
-          <table class="buy-clicks-table">
-            <thead><tr><th>País</th><th style="text-align:right;">Clicks</th><th style="text-align:right;">% do total</th></tr></thead>
-            <tbody id="clicks-country-tbody"><tr><td colspan="3" style="color:var(--gray-400);text-align:center;padding:24px;">Carregando...</td></tr></tbody>
-          </table>
-        </div>
-
+  <div class="admin-body">
+    <div class="admin-toolbar">
+      <div class="admin-title">Álbuns</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <span class="status-badge" id="save-status" style="display:none"></span>
+        <button class="btn-action" onclick="openNewAlbumModal()">+ Novo Álbum</button>
       </div>
     </div>
-
-    <div class="admin-page" id="admin-albums">
-      <div class="admin-page-title">Albums</div>
-      <div class="admin-toolbar">
-        <input type="text" id="admin-album-search" placeholder="Buscar albums..." oninput="renderAdminAlbums()">
-        <button class="btn-green" onclick="openNewAlbumModal()">+ Novo Album</button>
-      </div>
-      <div class="admin-album-list" id="admin-album-list"></div>
+    <div class="loading-spinner" id="admin-loading"><div class="spinner"></div></div>
+    <div class="album-list" id="admin-album-list" style="display:none"></div>
+    <div style="text-align:center;padding:60px;color:var(--gray-400);display:none" id="admin-empty">
+      <div style="font-size:48px;margin-bottom:12px">📁</div>
+      <div style="font-size:16px;font-weight:600">Nenhum álbum ainda</div>
+      <div style="font-size:13px;margin-top:6px">Clique em "Novo Álbum" para começar</div>
     </div>
-
-    <div class="admin-page" id="admin-upload">
-      <div class="admin-page-title">Upload Mídia</div>
-      <div class="settings-section">
-        <div class="form-group">
-          <label>Selecionar Album</label>
-          <select id="upload-album-select" style="width:100%;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:13px;font-family:var(--font-body);outline:none;background:var(--white);"><option value="">— Escolha um album —</option></select>
-        </div>
-        <div class="upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)">
-          <input type="file" id="file-input" multiple accept="image/*,video/*" onchange="handleFiles(this.files)">
-          <div class="upload-icon">📂</div>
-          <p>Arraste fotos/vídeos ou <span>selecione arquivos</span></p>
-          <p style="font-size:12px;color:var(--gray-400);margin-top:4px;">JPG, PNG, GIF, MP4, MOV, WebM</p>
-        </div>
-        <div class="upload-preview" id="upload-preview"></div>
-        <div style="margin-top:20px;display:flex;gap:10px;align-items:center;">
-          <button class="btn-green" onclick="doUpload()" id="upload-btn" disabled>Enviar para Album</button>
-          <span id="upload-status" style="font-size:13px;color:var(--gray-400)"></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="admin-page" id="admin-settings">
-      <div class="admin-page-title">Configurações</div>
-      <div class="settings-section">
-        <h4>Zona de Perigo</h4>
-        <p style="font-size:13px;color:var(--gray-400);margin-bottom:16px;">Para alterar credenciais, use o painel do Supabase → Authentication → Users.</p>
-      </div>
-    </div>
-
   </div>
 </div>
 
-<!-- ALBUM MODAL -->
+<!-- MODAL: NOVO/EDITAR ÁLBUM -->
 <div class="modal-overlay" id="album-modal">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="album-modal-title">Novo Album</h3>
-      <button class="modal-close" onclick="closeAlbumModal()">✕</button>
+      <div class="modal-title" id="modal-title">Novo Álbum</div>
+      <button class="modal-close" onclick="closeModal('album-modal')">✕</button>
     </div>
-    <div class="form-group"><label>Nome do Album *</label><input type="text" id="album-name-input" placeholder="ex: YoungLA X Batman"></div>
-    <div class="form-group"><label>Categoria / Tag</label><input type="text" id="album-tag-input" placeholder="ex: Collab, Signature"></div>
-    <div class="form-group"><label>Descrição</label><textarea id="album-desc-input" rows="3" style="resize:vertical;" placeholder="Descreva esta coleção..."></textarea></div>
-    <div class="form-group"><label>Link de Compra</label><input type="url" id="album-paylink-input" placeholder="https://... (botão Comprar)"></div>
-    <div style="display:flex;gap:10px;margin-top:8px;">
-      <button class="btn-green" onclick="saveAlbum()" id="save-album-btn">Salvar Album</button>
-      <button class="btn-outline" onclick="closeAlbumModal()">Cancelar</button>
+    <div class="modal-body">
+      <div class="field">
+        <label>Nome do Álbum *</label>
+        <input type="text" id="f-name" placeholder="Ex: Coleção Verão 2026">
+      </div>
+      <div class="field">
+        <label>Tag (opcional)</label>
+        <input type="text" id="f-tag" placeholder="Ex: NEW, SALE, LIMITED">
+      </div>
+      <div class="field">
+        <label>Descrição (opcional)</label>
+        <input type="text" id="f-desc" placeholder="Descrição curta do álbum">
+      </div>
+      <div class="field">
+        <label>Link de compra (opcional)</label>
+        <input type="url" id="f-pay" placeholder="https://...">
+      </div>
+      <div class="field" style="margin-top:20px">
+        <label>Fotos / Vídeos</label>
+        <div class="upload-area" onclick="document.getElementById('file-input').click()" id="upload-area"
+          ondragover="event.preventDefault();this.classList.add('drag')"
+          ondragleave="this.classList.remove('drag')"
+          ondrop="handleDrop(event)">
+          <div class="up-icon">📸</div>
+          <p>Clique ou arraste fotos/vídeos aqui</p>
+          <span>JPG, PNG, WEBP, MP4 · Máx 10MB por arquivo</span>
+        </div>
+        <input type="file" id="file-input" multiple accept="image/*,video/*" onchange="handleFiles(this.files)">
+        <div class="preview-grid" id="preview-grid"></div>
+      </div>
+      <div id="upload-progress" style="display:none">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-text" id="progress-text">Enviando...</div>
+      </div>
     </div>
-    <div id="album-media-section" style="display:none;margin-top:24px;border-top:1.5px solid var(--gray-200);padding-top:20px;">
-      <div style="font-weight:600;font-size:14px;margin-bottom:8px;">Mídia neste album</div>
-      <div class="admin-media-grid" id="album-media-grid"></div>
+    <div class="modal-footer">
+      <button class="btn-action btn-secondary" onclick="closeModal('album-modal')">Cancelar</button>
+      <button class="btn-action" id="save-album-btn" onclick="saveAlbum()">Salvar Álbum</button>
     </div>
   </div>
 </div>
 
+<!-- MODAL: GERENCIAR FOTOS DO ÁLBUM -->
+<div class="modal-overlay" id="photos-modal">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header">
+      <div class="modal-title" id="photos-modal-title">Fotos</div>
+      <button class="modal-close" onclick="closeModal('photos-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:16px">
+        <div class="upload-area" onclick="document.getElementById('file-input2').click()" 
+          ondragover="event.preventDefault();this.classList.add('drag')"
+          ondragleave="this.classList.remove('drag')"
+          ondrop="handleDrop2(event)">
+          <div class="up-icon">➕</div>
+          <p>Adicionar mais fotos/vídeos</p>
+        </div>
+        <input type="file" id="file-input2" multiple accept="image/*,video/*" onchange="handleFiles2(this.files)">
+      </div>
+      <div id="upload-progress2" style="display:none">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill2"></div></div>
+        <div class="progress-text" id="progress-text2">Enviando...</div>
+      </div>
+      <div class="preview-grid" id="existing-photos-grid"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-action" onclick="closeModal('photos-modal')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- Supabase SDK -->
+<!-- Supabase SDK (só para autenticação) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// ══════════════════════════════════════════════════════════════════
+// ⚙️  CONFIGURAÇÕES — preencha antes de usar
+// ══════════════════════════════════════════════════════════════════
 
-// ─── MOBILE SIDEBAR ────────────────────────────────────────────────────────
-function toggleSidebar() {
-  document.getElementById('admin-sidebar').classList.toggle('open');
-  document.getElementById('sidebar-overlay').classList.toggle('open');
-}
-function closeSidebar() {
-  document.getElementById('admin-sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('open');
-}
-
-// ─── SUPABASE CONFIG ───────────────────────────────────────────────────────
-// Replace these with your actual Supabase project values
+// 1. Supabase (só para login/auth — sem storage, sem banco de dados)
 const SUPABASE_URL = 'https://whzezjmjcnukixkkmyan.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoemV6am1qY251a2l4a2tteWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMDExMTgsImV4cCI6MjA5Mjg3NzExOH0.NwynrNjmxDX6rXuDB9hjmQHLNGam9aqb3QIc8Gw7PsE';
+
+// 2. GitHub — onde ficam as fotos e o data.json
+const GITHUB_TOKEN  = 'COLE_SEU_NOVO_TOKEN_AQUI';  // ⚠️ Gere um novo token em github.com
+const GITHUB_OWNER  = 'flavianosz-studio';
+const GITHUB_REPO   = 'ylasport';
+const GITHUB_BRANCH = 'main';
+
+// ══════════════════════════════════════════════════════════════════
+
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ─── STATE ─────────────────────────────────────────────────────────────────
-let albums = [];
-let editAlbumId = null;
-let filePreviews = [];
+// ─── STATE ────────────────────────────────────────────────────────
+let localData = { albums: [] };        // dados em memória
+let editingAlbumId = null;             // álbum sendo editado
+let pendingFiles = [];                 // arquivos aguardando upload (novo álbum)
+let pendingFiles2 = [];                // arquivos aguardando upload (editar álbum)
+let coverMediaId = null;               // capa selecionada (novo álbum)
+let currentPhotosAlbumId = null;       // álbum aberto no modal de fotos
 
-// ─── AUTH ──────────────────────────────────────────────────────────────────
-async function init() {
-  const { data: { session } } = await sb.auth.getSession();
-  document.getElementById('loading-overlay').style.display = 'none';
-  if (session) {
-    showAdmin();
-  } else {
-    document.getElementById('screen-login').classList.add('active');
-  }
-}
-
+// ─── AUTENTICAÇÃO ─────────────────────────────────────────────────
 async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-pass').value;
-  const err = document.getElementById('login-err');
-  const btn = document.getElementById('login-btn');
-  err.classList.remove('show');
-  btn.textContent = 'Entrando...'; btn.disabled = true;
+  const pass  = document.getElementById('login-password').value;
+  const btn   = document.getElementById('login-btn');
+  const err   = document.getElementById('login-error');
+  err.style.display = 'none';
+  if (!email || !pass) { showError('Preencha email e senha.'); return; }
+  btn.disabled = true; btn.textContent = 'Entrando...';
   const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-  btn.textContent = 'Entrar'; btn.disabled = false;
-  if (error) { err.textContent = 'E-mail ou senha inválidos.'; err.classList.add('show'); return; }
-  document.getElementById('screen-login').classList.remove('active');
-  showAdmin();
+  btn.disabled = false; btn.textContent = 'Entrar';
+  if (error) { showError('Email ou senha incorretos.'); return; }
+  enterAdmin();
 }
-
 async function doLogout() {
   await sb.auth.signOut();
-  document.getElementById('screen-admin').classList.remove('active');
-  document.getElementById('screen-login').classList.add('active');
-  document.getElementById('login-email').value = '';
-  document.getElementById('login-pass').value = '';
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+function showError(msg) {
+  const e = document.getElementById('login-error');
+  e.textContent = msg; e.style.display = 'block';
+}
+async function enterAdmin() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-screen').style.display = 'block';
+  document.getElementById('admin-email-display').textContent = user.email;
+  await loadData();
+}
+document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ─── GITHUB API ───────────────────────────────────────────────────
+const GH_API = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents`;
+const GH_HEADERS = () => ({
+  'Authorization': `Bearer ${GITHUB_TOKEN}`,
+  'Accept': 'application/vnd.github.v3+json',
+  'Content-Type': 'application/json'
+});
+
+async function ghGet(path) {
+  const r = await fetch(`${GH_API}/${path}?ref=${GITHUB_BRANCH}`, { headers: GH_HEADERS() });
+  if (!r.ok) return null;
+  return r.json();
 }
 
-// ─── ADMIN SETUP ───────────────────────────────────────────────────────────
-async function showAdmin() {
-  document.getElementById('screen-admin').classList.add('active');
-  albums = await fetchAlbums();
-  renderDashboard();
+async function ghPut(path, content, message, sha) {
+  const body = { message, content: btoa(unescape(encodeURIComponent(content))), branch: GITHUB_BRANCH };
+  if (sha) body.sha = sha;
+  const r = await fetch(`${GH_API}/${path}`, { method: 'PUT', headers: GH_HEADERS(), body: JSON.stringify(body) });
+  return r.ok;
+}
+
+async function ghPutBinary(path, base64Content, message, sha) {
+  const body = { message, content: base64Content, branch: GITHUB_BRANCH };
+  if (sha) body.sha = sha;
+  const r = await fetch(`${GH_API}/${path}`, { method: 'PUT', headers: GH_HEADERS(), body: JSON.stringify(body) });
+  return r.json();
+}
+
+async function ghDelete(path, message, sha) {
+  const body = { message, sha, branch: GITHUB_BRANCH };
+  const r = await fetch(`${GH_API}/${path}`, { method: 'DELETE', headers: GH_HEADERS(), body: JSON.stringify(body) });
+  return r.ok;
+}
+
+// ─── DATA.JSON ────────────────────────────────────────────────────
+async function loadData() {
+  document.getElementById('admin-loading').style.display = 'flex';
+  document.getElementById('admin-album-list').style.display = 'none';
+  try {
+    const file = await ghGet('data.json');
+    if (file) {
+      const content = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
+      localData = JSON.parse(content);
+    } else {
+      localData = { albums: [] };
+      await saveData('Inicializar data.json');
+    }
+  } catch(e) { localData = { albums: [] }; }
   renderAdminAlbums();
-  populateUploadSelect();
 }
 
-function adminNav(page, btn) {
-  closeSidebar();
-  document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sidebar-nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById('admin-' + page).classList.add('active');
-  btn.classList.add('active');
-  if (page === 'upload') populateUploadSelect();
+async function saveData(msg = 'Atualizar álbuns') {
+  setSaveStatus('saving');
+  const file = await ghGet('data.json');
+  const sha = file ? file.sha : undefined;
+  const json = JSON.stringify(localData, null, 2);
+  const ok = await ghPut('data.json', json, msg, sha);
+  setSaveStatus(ok ? 'saved' : 'error');
+  return ok;
 }
 
-// ─── SUPABASE CRUD ─────────────────────────────────────────────────────────
-async function fetchAlbums() {
-  const { data, error } = await sb
-    .from('albums')
-    .select('*, media!media_album_id_fkey(*)')
-    .order('created_at', { ascending: false });
-  if (error) { console.error(error); toast('Erro ao carregar albums'); return []; }
-  return data || [];
+function setSaveStatus(s) {
+  const el = document.getElementById('save-status');
+  el.style.display = 'inline-block';
+  if (s === 'saving') { el.className = 'status-badge saving'; el.textContent = '⏳ Salvando...'; }
+  else if (s === 'saved') { el.className = 'status-badge saved'; el.textContent = '✅ Salvo'; setTimeout(() => el.style.display='none', 3000); }
+  else { el.className = 'status-badge'; el.style.background='#fee'; el.style.color='#c00'; el.textContent = '❌ Erro ao salvar'; }
 }
 
-async function createAlbum(payload) {
-  const { data, error } = await sb.from('albums').insert([payload]).select().single();
-  if (error) throw error;
-  return data;
+// ─── UPLOAD DE ARQUIVO PARA GITHUB ────────────────────────────────
+function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
 }
 
-async function updateAlbum(id, payload) {
-  const { error } = await sb.from('albums').update(payload).eq('id', id);
-  if (error) throw error;
-}
-
-async function deleteAlbumDB(id) {
-  // Delete media first (or use cascade in Supabase)
-  await sb.from('media').delete().eq('album_id', id);
-  const { error } = await sb.from('albums').delete().eq('id', id);
-  if (error) throw error;
-}
-
-async function insertMedia(albumId, mediaArray) {
-  const rows = mediaArray.map(m => ({ album_id: albumId, type: m.type, url: m.url, name: m.name }));
-  const { error } = await sb.from('media').insert(rows);
-  if (error) throw error;
-}
-
-async function deleteMediaItem(mediaId) {
-  const { error } = await sb.from('media').delete().eq('id', mediaId);
-  if (error) throw error;
-}
-
-// ─── UPLOAD TO SUPABASE STORAGE ────────────────────────────────────────────
-async function uploadFileToStorage(file, albumId) {
+async function uploadFileToGitHub(file, albumId) {
   const ext = file.name.split('.').pop();
-  const path = `${albumId}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-  const { error } = await sb.storage.from('media').upload(path, file, { upsert: false });
-  if (error) throw error;
-  const { data } = sb.storage.from('media').getPublicUrl(path);
-  return data.publicUrl;
+  const id = Date.now() + '_' + Math.random().toString(36).slice(2,8);
+  const path = `media/${albumId}/${id}.${ext}`;
+  const b64 = await fileToBase64(file);
+  const result = await ghPutBinary(path, b64, `Upload: ${file.name}`, undefined);
+  if (!result || !result.content) return null;
+  const url = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${path}`;
+  return { id, url, type: file.type.startsWith('video') ? 'video' : 'image', path };
 }
 
-// ─── DASHBOARD ─────────────────────────────────────────────────────────────
-function renderDashboard() {
-  let photos = 0, videos = 0;
-  albums.forEach(a => (a.media || []).forEach(m => m.type === 'video' ? videos++ : photos++));
-  document.getElementById('stat-albums').textContent = albums.length;
-  document.getElementById('stat-photos').textContent = photos;
-  document.getElementById('stat-videos').textContent = videos;
-  document.getElementById('stat-total').textContent = photos + videos;
-  loadAnalytics('today', null);
-}
-
-// ─── ANALYTICS ─────────────────────────────────────────────────────────────
-async function loadAnalytics(period, tabEl) {
-  // Update tab UI
-  if (tabEl) {
-    document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
-    tabEl.classList.add('active');
-  }
-
-  const labels = { today: 'hoje', week: 'últimos 7 dias', month: 'últimos 30 dias', all: 'todos os tempos' };
-  document.getElementById('clicks-period-label').textContent = '(' + labels[period] + ')';
-
-  // Compute date filter
-  const now = new Date();
-  let since = null;
-  if (period === 'today') {
-    const d = new Date(now); d.setHours(0,0,0,0);
-    since = d.toISOString();
-  } else if (period === 'week') {
-    const d = new Date(now); d.setDate(d.getDate() - 7);
-    since = d.toISOString();
-  } else if (period === 'month') {
-    const d = new Date(now); d.setDate(d.getDate() - 30);
-    since = d.toISOString();
-  }
-
-  // Load visits
-  let visitsQuery = sb.from('page_views').select('*', { count: 'exact', head: true });
-  if (since) visitsQuery = visitsQuery.gte('visited_at', since);
-  const { count: visitCount } = await visitsQuery;
-
-  // Load buy clicks
-  let clicksQuery = sb.from('buy_clicks').select('album_name, clicked_at');
-  if (since) clicksQuery = clicksQuery.gte('clicked_at', since);
-  const { data: clicksData } = await clicksQuery;
-
-  const totalClicks = (clicksData || []).length;
-  const conversion = visitCount > 0 ? ((totalClicks / visitCount) * 100).toFixed(1) + '%' : '0%';
-
-  document.getElementById('stat-visits').textContent = visitCount ?? 0;
-  document.getElementById('stat-buyclicks').textContent = totalClicks;
-  document.getElementById('stat-conversion').textContent = conversion;
-
-  // Load visits with country
-  let visitsGeoQuery = sb.from('page_views').select('country, country_code');
-  if (since) visitsGeoQuery = visitsGeoQuery.gte('visited_at', since);
-  const { data: visitsGeoData } = await visitsGeoQuery;
-
-  // Group clicks by album
-  const byAlbum = {};
-  (clicksData || []).forEach(c => {
-    byAlbum[c.album_name] = (byAlbum[c.album_name] || 0) + 1;
-  });
-  const sortedAlbum = Object.entries(byAlbum).sort((a, b) => b[1] - a[1]);
-
-  const tbody = document.getElementById('buy-clicks-tbody');
-  if (!sortedAlbum.length) {
-    tbody.innerHTML = '<tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:24px;">Nenhum click no período</td></tr>';
-  } else {
-    tbody.innerHTML = sortedAlbum.map(([name, count], i) => `
-      <tr>
-        <td>${i === 0 ? '🥇 ' : i === 1 ? '🥈 ' : i === 2 ? '🥉 ' : ''}${name}</td>
-        <td style="text-align:right;font-weight:700;color:var(--green-dark);">${count}</td>
-      </tr>
-    `).join('');
-  }
-
-  // Group visits by country
-  const byCountryVisit = {};
-  (visitsGeoData || []).forEach(v => {
-    const key = v.country || 'Desconhecido';
-    const code = v.country_code || '';
-    if (!byCountryVisit[key]) byCountryVisit[key] = { count: 0, code };
-    byCountryVisit[key].count++;
-  });
-  const sortedVisitCountry = Object.entries(byCountryVisit).sort((a, b) => b[1].count - a[1].count);
-
-  const visitTbody = document.getElementById('visits-country-tbody');
-  if (!sortedVisitCountry.length) {
-    visitTbody.innerHTML = '<tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:24px;">Sem dados</td></tr>';
-  } else {
-    visitTbody.innerHTML = sortedVisitCountry.map(([country, d]) => {
-      const flag = d.code ? String.fromCodePoint(...[...d.code.toUpperCase()].map(c => 0x1F1E6 - 65 + c.charCodeAt(0))) : '🌐';
-      return `<tr>
-        <td><span class="flag">${flag}</span> ${country}</td>
-        <td style="text-align:right;font-weight:700;">${d.count}</td>
-      </tr>`;
-    }).join('');
-  }
-
-  // Group clicks by country
-  const byCountryClick = {};
-  (clicksData || []).forEach(c => {
-    const key = c.country || 'Desconhecido';
-    const code = c.country_code || '';
-    if (!byCountryClick[key]) byCountryClick[key] = { count: 0, code };
-    byCountryClick[key].count++;
-  });
-  const sortedClickCountry = Object.entries(byCountryClick).sort((a, b) => b[1].count - a[1].count);
-
-  const clickTbody = document.getElementById('clicks-country-tbody');
-  if (!sortedClickCountry.length) {
-    clickTbody.innerHTML = '<tr><td colspan="3" style="color:var(--gray-400);text-align:center;padding:24px;">Nenhum click no período</td></tr>';
-  } else {
-    clickTbody.innerHTML = sortedClickCountry.map(([country, d]) => {
-      const flag = d.code ? String.fromCodePoint(...[...d.code.toUpperCase()].map(c => 0x1F1E6 - 65 + c.charCodeAt(0))) : '🌐';
-      const pct = totalClicks > 0 ? ((d.count / totalClicks) * 100).toFixed(1) + '%' : '0%';
-      return `<tr>
-        <td><span class="flag">${flag}</span> ${country}</td>
-        <td style="text-align:right;font-weight:700;color:var(--green-dark);">${d.count}</td>
-        <td style="text-align:right;color:var(--gray-400);">${pct}</td>
-      </tr>`;
-    }).join('');
-  }
-}
-
-// ─── ALBUMS LIST ───────────────────────────────────────────────────────────
+// ─── RENDER ÁLBUNS ADMIN ──────────────────────────────────────────
 function renderAdminAlbums() {
-  const q = (document.getElementById('admin-album-search').value || '').toLowerCase();
-  let list = albums;
-  if (q) list = albums.filter(a => a.name.toLowerCase().includes(q));
-  const el = document.getElementById('admin-album-list');
-  if (!list.length) { el.innerHTML = '<div style="color:var(--gray-400);font-size:13px;padding:12px 0;">Nenhum album ainda.</div>'; return; }
-  el.innerHTML = list.map(a => {
+  document.getElementById('admin-loading').style.display = 'none';
+  const list = document.getElementById('admin-album-list');
+  const empty = document.getElementById('admin-empty');
+  const albums = localData.albums || [];
+  if (!albums.length) { list.style.display='none'; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  list.style.display = 'grid';
+  list.innerHTML = albums.map(a => {
     const media = a.media || [];
     const cover = media.find(m => m.id === a.cover_media_id) || media.find(m => m.type === 'image');
     const thumb = cover ? `<img src="${cover.url}" alt="">` : '📁';
-    return `<div class="admin-album-row">
-      <div class="admin-album-thumb">${thumb}</div>
-      <div class="admin-album-info"><h4>${esc(a.name)}</h4><p>${media.length} itens${a.tag ? ' · ' + esc(a.tag) : ''}${a.pay_link ? ' · 🛒 Link de compra' : ''}</p></div>
-      <div class="admin-album-actions">
-        <button class="btn-sm btn-edit" onclick="openEditAlbum('${a.id}')">Editar</button>
-        <button class="btn-sm btn-del" onclick="deleteAlbum('${a.id}')">Deletar</button>
+    return `<div class="album-row">
+      <div class="album-row-thumb">${thumb}</div>
+      <div class="album-row-info">
+        <div class="album-row-name">${esc(a.name)}</div>
+        <div class="album-row-meta">${media.length} mídia${media.length!==1?'s':''} ${a.tag ? '· '+esc(a.tag) : ''}</div>
+      </div>
+      <div class="album-row-actions">
+        <button class="btn-action btn-secondary" style="padding:8px 14px;font-size:12px" onclick="openPhotosModal('${a.id}')">📷 Fotos</button>
+        <button class="btn-action btn-secondary" style="padding:8px 14px;font-size:12px" onclick="editAlbum('${a.id}')">✏️ Editar</button>
+        <button class="btn-action btn-danger" style="padding:8px 14px;font-size:12px" onclick="deleteAlbum('${a.id}')">🗑️</button>
       </div>
     </div>`;
   }).join('');
 }
 
-function populateUploadSelect() {
-  const sel = document.getElementById('upload-album-select');
-  sel.innerHTML = '<option value="">— Escolha um album —</option>' + albums.map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join('');
-}
-
-// ─── ALBUM MODAL ───────────────────────────────────────────────────────────
+// ─── MODAL NOVO ÁLBUM ─────────────────────────────────────────────
 function openNewAlbumModal() {
-  editAlbumId = null;
-  document.getElementById('album-modal-title').textContent = 'Novo Album';
-  ['album-name-input','album-tag-input','album-desc-input','album-paylink-input'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('album-media-section').style.display = 'none';
-  document.getElementById('album-modal').classList.add('open');
-}
-function openEditAlbum(id) {
-  editAlbumId = id;
-  const a = albums.find(x => String(x.id) === String(id));
-  if (!a) return;
-  document.getElementById('album-modal-title').textContent = 'Editar Album';
-  document.getElementById('album-name-input').value = a.name;
-  document.getElementById('album-tag-input').value = a.tag || '';
-  document.getElementById('album-desc-input').value = a.description || '';
-  document.getElementById('album-paylink-input').value = a.pay_link || '';
-  document.getElementById('album-media-section').style.display = 'block';
-  renderAlbumMediaAdmin(a);
-  document.getElementById('album-modal').classList.add('open');
-}
-function renderAlbumMediaAdmin(alb) {
-  const grid = document.getElementById('album-media-grid');
-  const media = alb.media || [];
-  if (!media.length) { grid.innerHTML = '<span style="color:var(--gray-400);font-size:12px;">Sem mídia ainda.</span>'; return; }
-  grid.innerHTML = media.map(m => {
-    const isCover = m.id === alb.cover_media_id;
-    return `
-    <div class="admin-media-item">
-      ${m.type === 'video' ? `<video src="${m.url}" muted></video><span class="vbadge">VIDEO</span>` : `<img src="${m.url}" alt="">`}
-      ${isCover ? `<span class="cover-badge">★ CAPA</span>` : ''}
-      ${m.type === 'image' ? `<button class="set-cover-btn ${isCover ? 'is-cover' : ''}" title="${isCover ? 'Capa atual' : 'Definir como capa'}" onclick="setCover('${alb.id}','${m.id}')">★</button>` : ''}
-      <button class="remove-media" onclick="removeMedia('${m.id}','${alb.id}')">✕</button>
-    </div>`;
-  }).join('');
+  editingAlbumId = null; pendingFiles = []; coverMediaId = null;
+  document.getElementById('modal-title').textContent = 'Novo Álbum';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-tag').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-pay').value = '';
+  document.getElementById('preview-grid').innerHTML = '';
+  document.getElementById('upload-progress').style.display = 'none';
+  openModal('album-modal');
 }
 
-async function setCover(albumId, mediaId) {
-  try {
-    await updateAlbum(albumId, { cover_media_id: mediaId });
-    albums = await fetchAlbums();
-    const alb = albums.find(a => String(a.id) === String(albumId));
-    if (alb) renderAlbumMediaAdmin(alb);
-    renderAdminAlbums();
-    toast('Foto de capa definida!', true);
-  } catch (e) { toast('Erro ao definir capa'); }
+function editAlbum(id) {
+  const alb = localData.albums.find(a => a.id === id);
+  if (!alb) return;
+  editingAlbumId = id; pendingFiles = []; coverMediaId = alb.cover_media_id;
+  document.getElementById('modal-title').textContent = 'Editar Álbum';
+  document.getElementById('f-name').value = alb.name || '';
+  document.getElementById('f-tag').value = alb.tag || '';
+  document.getElementById('f-desc').value = alb.description || '';
+  document.getElementById('f-pay').value = alb.pay_link || '';
+  // Mostrar mídias existentes
+  const grid = document.getElementById('preview-grid');
+  grid.innerHTML = (alb.media || []).map(m => existingMediaHTML(m, 'pendingFiles', id)).join('');
+  openModal('album-modal');
 }
-async function removeMedia(mediaId, albumId) {
-  try {
-    await deleteMediaItem(mediaId);
-    albums = await fetchAlbums();
-    const alb = albums.find(a => String(a.id) === String(albumId));
-    if (alb) renderAlbumMediaAdmin(alb);
-    renderDashboard();
-    toast('Mídia removida');
-  } catch (e) { toast('Erro ao remover'); }
-}
-function closeAlbumModal() { document.getElementById('album-modal').classList.remove('open'); }
 
+function existingMediaHTML(m, ctx, albumId) {
+  const isCover = m.id === coverMediaId;
+  const preview = m.type === 'video'
+    ? `<video src="${m.url}" muted></video>`
+    : `<img src="${m.url}" alt="">`;
+  return `<div class="preview-item" id="prev-${m.id}">
+    ${preview}
+    <button class="preview-remove" onclick="removeExistingMedia('${m.id}','${albumId}')">✕</button>
+    <button class="preview-cover-btn ${isCover?'active':''}" onclick="setCover('${m.id}','${albumId || editingAlbumId}',this)">⭐</button>
+  </div>`;
+}
+
+function setCover(mediaId, albumId, btn) {
+  coverMediaId = mediaId;
+  document.querySelectorAll('.preview-cover-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (albumId) {
+    const alb = localData.albums.find(a => a.id === albumId);
+    if (alb) { alb.cover_media_id = mediaId; saveData('Atualizar capa'); }
+  }
+}
+
+async function removeExistingMedia(mediaId, albumId) {
+  if (!confirm('Remover esta mídia?')) return;
+  const alb = localData.albums.find(a => a.id === albumId);
+  if (!alb) return;
+  const m = (alb.media || []).find(x => x.id === mediaId);
+  if (m && m.path) {
+    const file = await ghGet(m.path);
+    if (file) await ghDelete(m.path, `Remover mídia: ${mediaId}`, file.sha);
+  }
+  alb.media = (alb.media || []).filter(x => x.id !== mediaId);
+  if (alb.cover_media_id === mediaId) alb.cover_media_id = null;
+  document.getElementById('prev-' + mediaId)?.remove();
+  await saveData('Remover mídia');
+  renderAdminAlbums();
+  toast('Mídia removida', 'success');
+}
+
+// ─── UPLOAD HANDLER ───────────────────────────────────────────────
+function handleFiles(files) {
+  for (const f of files) {
+    if (f.size > 10 * 1024 * 1024) { toast(`${f.name} excede 10MB`, 'error'); continue; }
+    pendingFiles.push(f);
+    addPreview(f, pendingFiles.length - 1);
+  }
+}
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-area').classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+}
+function addPreview(file, idx) {
+  const grid = document.getElementById('preview-grid');
+  const div = document.createElement('div');
+  div.className = 'preview-item'; div.id = `pf-${idx}`;
+  const url = URL.createObjectURL(file);
+  div.innerHTML = file.type.startsWith('video')
+    ? `<video src="${url}" muted></video>`
+    : `<img src="${url}" alt="">`;
+  div.innerHTML += `<button class="preview-remove" onclick="removePending(${idx})">✕</button>
+    <button class="preview-cover-btn" onclick="setPendingCover(${idx},this)">⭐</button>`;
+  grid.appendChild(div);
+}
+function removePending(idx) {
+  pendingFiles[idx] = null;
+  document.getElementById(`pf-${idx}`)?.remove();
+}
+function setPendingCover(idx, btn) {
+  document.querySelectorAll('.preview-cover-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  coverMediaId = `pending_${idx}`;
+}
+
+// ─── SALVAR ÁLBUM ─────────────────────────────────────────────────
 async function saveAlbum() {
-  const name = document.getElementById('album-name-input').value.trim();
-  if (!name) { toast('Nome do album é obrigatório'); return; }
-  const tag = document.getElementById('album-tag-input').value.trim();
-  const description = document.getElementById('album-desc-input').value.trim();
-  const pay_link = document.getElementById('album-paylink-input').value.trim();
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { toast('Nome do álbum é obrigatório', 'error'); return; }
   const btn = document.getElementById('save-album-btn');
-  btn.textContent = 'Salvando...'; btn.disabled = true;
-  try {
-    if (editAlbumId) {
-      await updateAlbum(editAlbumId, { name, tag, description, pay_link });
-    } else {
-      await createAlbum({ name, tag, description, pay_link });
+  btn.disabled = true; btn.textContent = 'Salvando...';
+
+  const files = pendingFiles.filter(Boolean);
+  let albumId = editingAlbumId || (Date.now().toString());
+  let alb = localData.albums.find(a => a.id === albumId);
+  if (!alb) {
+    alb = { id: albumId, name, tag: '', description: '', pay_link: '', cover_media_id: null, created_at: new Date().toISOString(), media: [] };
+    localData.albums.unshift(alb);
+  }
+  alb.name = name;
+  alb.tag = document.getElementById('f-tag').value.trim();
+  alb.description = document.getElementById('f-desc').value.trim();
+  alb.pay_link = document.getElementById('f-pay').value.trim();
+
+  // Upload dos arquivos
+  if (files.length) {
+    document.getElementById('upload-progress').style.display = 'block';
+    for (let i = 0; i < files.length; i++) {
+      document.getElementById('progress-fill').style.width = `${Math.round((i/files.length)*100)}%`;
+      document.getElementById('progress-text').textContent = `Enviando ${i+1} de ${files.length}...`;
+      const result = await uploadFileToGitHub(files[i], albumId);
+      if (result) {
+        alb.media = alb.media || [];
+        alb.media.push(result);
+        // Define capa se selecionada ou se é a primeira
+        if (coverMediaId === `pending_${pendingFiles.indexOf(files[i])}` || (!alb.cover_media_id && result.type === 'image')) {
+          alb.cover_media_id = result.id;
+        }
+      }
     }
-    albums = await fetchAlbums();
-    renderAdminAlbums(); renderDashboard(); populateUploadSelect();
-    closeAlbumModal(); toast('Album salvo!', true);
-  } catch (e) { toast('Erro ao salvar album'); }
-  btn.textContent = 'Salvar Album'; btn.disabled = false;
+    document.getElementById('progress-fill').style.width = '100%';
+    document.getElementById('progress-text').textContent = 'Upload completo!';
+  }
+
+  await saveData(editingAlbumId ? 'Editar álbum' : 'Novo álbum');
+  renderAdminAlbums();
+  closeModal('album-modal');
+  btn.disabled = false; btn.textContent = 'Salvar Álbum';
+  toast(editingAlbumId ? 'Álbum atualizado!' : 'Álbum criado!', 'success');
 }
 
+// ─── MODAL FOTOS ──────────────────────────────────────────────────
+function openPhotosModal(albumId) {
+  currentPhotosAlbumId = albumId;
+  const alb = localData.albums.find(a => a.id === albumId);
+  document.getElementById('photos-modal-title').textContent = alb ? alb.name.toUpperCase() : 'Fotos';
+  const grid = document.getElementById('existing-photos-grid');
+  grid.innerHTML = (alb?.media || []).map(m => existingMediaHTML(m, 'photos', albumId)).join('');
+  pendingFiles2 = [];
+  document.getElementById('upload-progress2').style.display = 'none';
+  openModal('photos-modal');
+}
+function handleFiles2(files) {
+  const albumId = currentPhotosAlbumId;
+  for (const f of files) {
+    if (f.size > 10 * 1024 * 1024) { toast(`${f.name} excede 10MB`, 'error'); continue; }
+    pendingFiles2.push({ file: f, albumId });
+    uploadSingle(f, albumId);
+  }
+}
+function handleDrop2(e) {
+  e.preventDefault();
+  handleFiles2(e.dataTransfer.files);
+}
+async function uploadSingle(file, albumId) {
+  const prog = document.getElementById('upload-progress2');
+  prog.style.display = 'block';
+  document.getElementById('progress-text2').textContent = `Enviando ${file.name}...`;
+  const result = await uploadFileToGitHub(file, albumId);
+  if (result) {
+    const alb = localData.albums.find(a => a.id === albumId);
+    if (alb) {
+      alb.media = alb.media || [];
+      alb.media.push(result);
+      if (!alb.cover_media_id && result.type === 'image') alb.cover_media_id = result.id;
+      await saveData('Adicionar mídia');
+      const grid = document.getElementById('existing-photos-grid');
+      const div = document.createElement('div');
+      div.innerHTML = existingMediaHTML(result, 'photos', albumId);
+      grid.appendChild(div.firstChild);
+      renderAdminAlbums();
+      toast('Foto enviada!', 'success');
+    }
+  } else {
+    toast('Erro ao enviar ' + file.name, 'error');
+  }
+  prog.style.display = 'none';
+}
+
+// ─── DELETAR ÁLBUM ────────────────────────────────────────────────
 async function deleteAlbum(id) {
-  if (!confirm('Deletar este album e toda sua mídia?')) return;
-  try {
-    await deleteAlbumDB(id);
-    albums = await fetchAlbums();
-    renderAdminAlbums(); renderDashboard();
-    toast('Album deletado');
-  } catch (e) { toast('Erro ao deletar'); }
-}
-
-// ─── UPLOAD ────────────────────────────────────────────────────────────────
-function handleFiles(files) { Array.from(files).forEach(f => filePreviews.push(f)); renderPreviews(); document.getElementById('upload-btn').disabled = filePreviews.length === 0; }
-function handleDrop(e) { e.preventDefault(); document.getElementById('drop-zone').classList.remove('dragover'); handleFiles(e.dataTransfer.files); }
-function renderPreviews() {
-  document.getElementById('upload-preview').innerHTML = filePreviews.map((f, i) => {
-    const isVid = f.type.startsWith('video'), url = URL.createObjectURL(f);
-    return `<div class="preview-item">${isVid ? `<video src="${url}" muted></video>` : `<img src="${url}" alt="">`}<button class="preview-remove" onclick="removePreview(${i})">✕</button></div>`;
-  }).join('');
-}
-function removePreview(i) { filePreviews.splice(i, 1); renderPreviews(); document.getElementById('upload-btn').disabled = filePreviews.length === 0; }
-
-async function doUpload() {
-  const albumId = document.getElementById('upload-album-select').value;
-  if (!albumId) { toast('Selecione um album primeiro'); return; }
-  if (!filePreviews.length) { toast('Nenhum arquivo selecionado'); return; }
-  const btn = document.getElementById('upload-btn');
-  const status = document.getElementById('upload-status');
-  btn.disabled = true; btn.textContent = 'Enviando...';
-  const total = filePreviews.length;
-  const uploaded = [];
-  for (let i = 0; i < filePreviews.length; i++) {
-    const f = filePreviews[i];
-    status.textContent = `${i + 1}/${total} enviando...`;
-    try {
-      const url = await uploadFileToStorage(f, albumId);
-      uploaded.push({ type: f.type.startsWith('video') ? 'video' : 'image', url, name: f.name.replace(/\.[^.]+$/, '') });
-    } catch (e) { console.error(e); toast(`Erro no arquivo ${f.name}`); }
+  if (!confirm('Deletar este álbum e todas as fotos? Esta ação não pode ser desfeita.')) return;
+  const alb = localData.albums.find(a => a.id === id);
+  if (!alb) return;
+  // Deletar arquivos do GitHub
+  for (const m of (alb.media || [])) {
+    if (m.path) {
+      const file = await ghGet(m.path);
+      if (file) await ghDelete(m.path, `Remover mídia: ${m.id}`, file.sha);
+    }
   }
-  if (uploaded.length) {
-    try { await insertMedia(albumId, uploaded); } catch (e) { toast('Erro ao salvar mídia'); }
-  }
-  albums = await fetchAlbums();
-  renderDashboard(); renderAdminAlbums();
-  btn.textContent = 'Enviar para Album'; btn.disabled = false;
-  filePreviews = []; renderPreviews(); status.textContent = '';
-  toast(`${uploaded.length} arquivo(s) enviado(s)!`, true);
+  localData.albums = localData.albums.filter(a => a.id !== id);
+  await saveData('Deletar álbum');
+  renderAdminAlbums();
+  toast('Álbum deletado', 'success');
 }
 
-// ─── HELPERS ───────────────────────────────────────────────────────────────
+// ─── MODAL HELPERS ────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ─── TOAST ────────────────────────────────────────────────────────
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = `toast ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────────
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-let toastTimer;
-function toast(msg, green = false) {
-  const t = document.getElementById('toast'); t.textContent = msg;
-  t.className = 'toast show' + (green ? ' green' : '');
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.className = 'toast', 2800);
-}
 
-// ─── BOOT ──────────────────────────────────────────────────────────────────
-init();
+// ─── INIT ─────────────────────────────────────────────────────────
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) { enterAdmin(); }
+})();
 </script>
 </body>
 </html>
