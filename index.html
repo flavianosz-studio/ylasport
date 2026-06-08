@@ -4,34 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YLASPORT</title>
-<script>
-// ─── SERVICE WORKER: Cache de imagens para reduzir egress ─────────────────
-if ('serviceWorker' in navigator) {
-  // O SW precisa estar num arquivo separado (sw.js) no mesmo domínio.
-  // Registra se existir:
-  navigator.serviceWorker.register('/sw.js').catch(() => {});
-}
-</script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --green: #3dba7e;
-    --green-dark: #2a9a64;
-    --green-light: #e8f9f1;
-    --green-xlight: #f3fdf8;
-    --white: #ffffff;
-    --gray-50: #f9f9f7;
-    --gray-100: #f0efeb;
-    --gray-200: #e0dfd9;
-    --gray-400: #999890;
-    --gray-600: #5a5950;
-    --gray-900: #1a1a18;
-    --font-display: 'Barlow Condensed', sans-serif;
-    --font-body: 'Barlow', sans-serif;
-    --radius: 10px;
-    --radius-lg: 16px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.07);
-    --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+    --green: #3dba7e; --green-dark: #2a9a64; --green-light: #e8f9f1;
+    --white: #ffffff; --gray-50: #f9f9f7; --gray-100: #f0efeb;
+    --gray-200: #e0dfd9; --gray-400: #999890; --gray-600: #5a5950; --gray-900: #1a1a18;
+    --font-display: 'Barlow Condensed', sans-serif; --font-body: 'Barlow', sans-serif;
+    --radius: 10px; --radius-lg: 16px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07); --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: var(--font-body); background: var(--white); color: var(--gray-900); overflow-x: hidden; }
@@ -53,7 +34,6 @@ if ('serviceWorker' in navigator) {
   .btn-green:hover { background: var(--green-dark); }
 
   .pub-main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
-
   .hero-strip { background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); border-radius: var(--radius-lg); padding: 40px 48px; margin-bottom: 40px; display: flex; align-items: center; justify-content: space-between; overflow: hidden; position: relative; }
   .hero-strip::after { content: 'YLASPORT'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); font-family: var(--font-display); font-size: 120px; color: rgba(255,255,255,0.08); letter-spacing: 4px; pointer-events: none; font-weight: 800; }
   .hero-text h1 { font-family: var(--font-display); font-size: 52px; color: var(--white); letter-spacing: 4px; font-weight: 800; text-transform: uppercase; }
@@ -81,9 +61,9 @@ if ('serviceWorker' in navigator) {
   .album-cover-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .album-detail-meta { flex: 1; min-width: 200px; }
   .album-detail-meta h2 { font-family: var(--font-display); font-size: 38px; letter-spacing: 3px; font-weight: 800; text-transform: uppercase; line-height: 1; }
-  .album-item-count { font-size: 13px; color: var(--gray-400); margin-top: 6px; letter-spacing: 0.5px; }
+  .album-item-count { font-size: 13px; color: var(--gray-400); margin-top: 6px; }
   .album-desc-display { font-size: 14px; color: var(--gray-600); margin-top: 10px; line-height: 1.6; max-width: 500px; }
-  .buy-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); border: none; border-radius: 24px; padding: 11px 26px; font-size: 14px; font-weight: 700; font-family: var(--font-body); cursor: pointer; transition: background .15s; letter-spacing: 0.5px; text-decoration: none; margin-top: 14px; text-transform: uppercase; }
+  .buy-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); border: none; border-radius: 24px; padding: 11px 26px; font-size: 14px; font-weight: 700; font-family: var(--font-body); cursor: pointer; transition: background .15s; text-decoration: none; margin-top: 14px; text-transform: uppercase; }
   .buy-btn:hover { background: var(--green-dark); }
   .buy-btn.hidden { display: none; }
 
@@ -92,7 +72,6 @@ if ('serviceWorker' in navigator) {
   .photo-item:hover { transform: scale(1.02); border-color: var(--green); }
   .photo-item img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
   .photo-item video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; pointer-events: none; }
-  .photo-label { padding: 8px 10px; font-size: 11px; font-weight: 500; color: var(--gray-600); background: var(--white); }
   .photo-wrapper { position: relative; }
   .video-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); }
   .play-circle { width: 52px; height: 52px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
@@ -104,7 +83,7 @@ if ('serviceWorker' in navigator) {
   .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.12); border: none; color: white; font-size: 28px; width: 52px; height: 52px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s; }
   .lightbox-nav:hover { background: rgba(255,255,255,0.22); }
   #lb-prev { left: 20px; } #lb-next { right: 20px; }
-  .lightbox-caption { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 12px; letter-spacing: 1px; }
+  .lightbox-caption { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 12px; }
 
   .empty-state { text-align: center; padding: 80px 20px; color: var(--gray-400); }
   .empty-state .icon { font-size: 56px; margin-bottom: 16px; }
@@ -117,7 +96,6 @@ if ('serviceWorker' in navigator) {
   .contact-card p { font-size: 14px; color: var(--gray-600); line-height: 1.7; margin-bottom: 32px; }
   .wechat-box { display: inline-flex; align-items: center; gap: 14px; background: var(--white); border: 2px solid var(--green); border-radius: var(--radius-lg); padding: 20px 36px; box-shadow: var(--shadow); }
   .wechat-box .wc-icon { font-size: 32px; }
-  .wechat-label { text-align: left; }
   .wechat-label .wc-title { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; }
   .wechat-label .wc-id { font-family: var(--font-display); font-size: 26px; font-weight: 800; color: var(--green); letter-spacing: 1px; }
 
@@ -126,86 +104,34 @@ if ('serviceWorker' in navigator) {
   .logo-footer { font-family: var(--font-display); font-size: 22px; color: var(--gray-900); letter-spacing: 3px; font-weight: 800; }
   .logo-footer span { color: var(--green); }
   .footer-links { display: flex; justify-content: center; gap: 24px; margin-top: 12px; flex-wrap: wrap; }
-  .footer-links a { font-size: 12px; color: var(--gray-400); text-decoration: none; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 500; transition: color .15s; cursor: pointer; }
+  .footer-links a { font-size: 12px; color: var(--gray-400); text-decoration: none; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 500; cursor: pointer; transition: color .15s; }
   .footer-links a:hover { color: var(--green); }
 
   .loading-spinner { display: flex; align-items: center; justify-content: center; padding: 60px; }
   .spinner { width: 36px; height: 36px; border: 3px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── MOBILE RESPONSIVE ────────────────────────────────────────────────────── */
   @media (max-width: 640px) {
-    /* Header */
-    .pub-header-inner { padding: 0 16px; gap: 8px; height: 56px; flex-wrap: nowrap; }
+    .pub-header-inner { padding: 0 16px; gap: 8px; height: 56px; }
     .logo { font-size: 22px; letter-spacing: 2px; }
     .pub-nav { display: none; }
-    .pub-search { margin-left: auto; }
     .pub-search input { width: 130px; padding: 6px 12px; font-size: 12px; }
     .btn-green { padding: 6px 12px; font-size: 11px; }
-
-    /* Bottom nav for mobile */
     .mobile-bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: var(--white); border-top: 1.5px solid var(--gray-200); height: 60px; }
-    .mobile-bottom-nav button { flex: 1; background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-family: var(--font-body); font-size: 10px; font-weight: 600; color: var(--gray-400); cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: color .15s; padding: 0; }
+    .mobile-bottom-nav button { flex: 1; background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-family: var(--font-body); font-size: 10px; font-weight: 600; color: var(--gray-400); cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: color .15s; }
     .mobile-bottom-nav button .mnav-icon { font-size: 20px; line-height: 1; }
     .mobile-bottom-nav button.active { color: var(--green-dark); }
-    .mobile-bottom-nav button:hover { color: var(--green); }
-
-    /* Add bottom padding so content isn't hidden behind nav */
     .view { padding-bottom: 72px; }
-
-    /* Main padding */
     .pub-main { padding: 20px 16px; }
-
-    /* Hero */
     .hero-strip { padding: 24px 20px; margin-bottom: 24px; flex-direction: column; align-items: flex-start; gap: 16px; }
     .hero-strip::after { font-size: 60px; }
-    .hero-text h1 { font-size: 36px; letter-spacing: 2px; }
-    .hero-text p { font-size: 12px; }
-    .hero-badge { padding: 10px 18px; align-self: flex-start; }
-    .hero-badge span { font-size: 30px; }
-
-    /* Section title */
-    .section-title { font-size: 20px; letter-spacing: 2px; }
-
-    /* Album grid — 2 columns */
+    .hero-text h1 { font-size: 36px; }
     .album-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .album-info h3 { font-size: 13px; }
-    .album-info p { font-size: 11px; }
-    .album-tag { font-size: 9px; padding: 2px 8px; }
-
-    /* Photo grid — 2 columns */
     .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-
-    /* Album detail */
-    .album-detail-top { gap: 16px; margin-bottom: 20px; }
-    .album-cover-thumb { width: 80px; height: 80px; }
-    .album-detail-meta h2 { font-size: 26px; letter-spacing: 2px; }
-    .buy-btn { padding: 10px 20px; font-size: 13px; width: 100%; justify-content: center; }
-
-    /* Back button */
-    .back-btn { font-size: 12px; padding: 7px 12px; }
-
-    /* Lightbox */
-    .lightbox img, .lightbox video { max-width: 96vw; max-height: 80vh; }
-    .lightbox-nav { width: 40px; height: 40px; font-size: 22px; }
-    #lb-prev { left: 8px; }
-    #lb-next { right: 8px; }
-    .lightbox-close { top: 12px; right: 12px; width: 38px; height: 38px; font-size: 20px; }
-
-    /* Contact */
+    .album-detail-meta h2 { font-size: 26px; }
     .contact-card { padding: 32px 20px; }
-    .contact-card h2 { font-size: 26px; }
-    .wechat-box { padding: 16px 24px; }
-    .wechat-label .wc-id { font-size: 22px; }
-
-    /* Footer */
-    .pub-footer { margin-top: 40px; padding: 24px 16px; }
   }
-
-  /* Desktop: hide mobile nav */
-  @media (min-width: 641px) {
-    .mobile-bottom-nav { display: none; }
-  }
+  @media (min-width: 641px) { .mobile-bottom-nav { display: none; } }
 </style>
 </head>
 <body>
@@ -267,7 +193,7 @@ if ('serviceWorker' in navigator) {
     <div class="section-title">All Albums</div>
     <div class="loading-spinner" id="all-loading"><div class="spinner"></div></div>
     <div class="album-grid" id="all-album-grid" style="display:none"></div>
-    <div class="empty-state" id="all-empty" style="display:none"><div class="icon">📁</div><h3>No albums found</h3><p>Try a different search or check back soon.</p></div>
+    <div class="empty-state" id="all-empty" style="display:none"><div class="icon">📁</div><h3>No albums found</h3></div>
   </div>
   <footer class="pub-footer"><div class="logo-footer">YLA<span>SPORT</span></div><p style="margin-top:8px">© 2026 YLASPORT · All rights reserved</p></footer>
 </div>
@@ -296,7 +222,7 @@ if ('serviceWorker' in navigator) {
       </div>
     </div>
     <div class="photo-grid" id="album-photo-grid"></div>
-    <div class="empty-state" id="album-empty" style="display:none"><div class="icon">🖼️</div><h3>No media yet</h3><p>Photos and videos will appear here.</p></div>
+    <div class="empty-state" id="album-empty" style="display:none"><div class="icon">🖼️</div><h3>No media yet</h3></div>
   </div>
 </div>
 
@@ -313,7 +239,6 @@ if ('serviceWorker' in navigator) {
     </div>
   </header>
   <div class="pub-main">
-    <div class="section-title">Contact</div>
     <div class="contact-wrap">
       <div class="contact-card">
         <h2>Contact US</h2>
@@ -341,88 +266,44 @@ if ('serviceWorker' in navigator) {
   <div class="lightbox-caption" id="lb-caption"></div>
 </div>
 
-
 <!-- MOBILE BOTTOM NAV -->
 <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
-  <button id="mnav-home" class="active" onclick="showHome()">
-    <span class="mnav-icon">🏠</span>Home
-  </button>
-  <button id="mnav-albums" onclick="showAlbumsPage()">
-    <span class="mnav-icon">📁</span>Albums
-  </button>
-  <button id="mnav-contact" onclick="showContactPage()">
-    <span class="mnav-icon">💬</span>Contact
-  </button>
+  <button id="mnav-home" class="active" onclick="showHome()"><span class="mnav-icon">🏠</span>Home</button>
+  <button id="mnav-albums" onclick="showAlbumsPage()"><span class="mnav-icon">📁</span>Albums</button>
+  <button id="mnav-contact" onclick="showContactPage()"><span class="mnav-icon">💬</span>Contact</button>
 </nav>
 
-<!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ─── SUPABASE CONFIG ───────────────────────────────────────────────────────
-const SUPABASE_URL = 'https://whzezjmjcnukixkkmyan.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoemV6am1qY251a2l4a2tteWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMDExMTgsImV4cCI6MjA5Mjg3NzExOH0.NwynrNjmxDX6rXuDB9hjmQHLNGam9aqb3QIc8Gw7PsE';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// ─── SECURITY: RATE LIMITER ────────────────────────────────────────────────
-const _rl = {};
-function rateLimit(key, maxCalls = 10, windowMs = 60000) {
-  const now = Date.now();
-  if (!_rl[key]) _rl[key] = [];
-  _rl[key] = _rl[key].filter(t => now - t < windowMs);
-  if (_rl[key].length >= maxCalls) return false;
-  _rl[key].push(now);
-  return true;
-}
-
-// ─── SECURITY: INPUT SANITIZER ────────────────────────────────────────────
-function sanitize(str) {
-  if (typeof str !== 'string') return '';
-  return str.replace(/[<>"'`]/g, c => ({'<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'}[c])).trim().slice(0, 500);
-}
-
-// ─── SECURITY: SAFE FETCH WRAPPER ─────────────────────────────────────────
-async function safeFetch(fn, rlKey = 'default', maxCalls = 20) {
-  if (!rateLimit(rlKey, maxCalls)) {
-    console.warn('Rate limit reached for:', rlKey);
-    return null;
-  }
-  try {
-    return await fn();
-  } catch(e) {
-    console.error('Safe fetch error:', e);
-    return null;
-  }
-}
+// ─── CONFIG ────────────────────────────────────────────────────────────────
+// URL raw do data.json no seu repositório GitHub
+// Exemplo: https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPO/main/data.json
+const DATA_URL = 'https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/data.json';
 
 // ─── STATE ─────────────────────────────────────────────────────────────────
 let albums = [];
-let currentAlbumId = null;
 let lbItems = [], lbIndex = 0, lastView = 'home';
 
-// ─── SUPABASE DATA ─────────────────────────────────────────────────────────
+// ─── FETCH DATA ────────────────────────────────────────────────────────────
 async function fetchAlbums() {
-  const result = await safeFetch(async () => {
-    const { data, error } = await sb
-      .from('albums')
-      .select('id, name, tag, description, pay_link, cover_media_id, created_at, media!media_album_id_fkey(id, url, type, album_id)')
-      .order('created_at', { ascending: false });
-    if (error) { console.error('Supabase fetch error:', error); return []; }
-    return data || [];
-  }, 'fetchAlbums', 30);
-  return result || [];
+  try {
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
+    if (!r.ok) return [];
+    const data = await r.json();
+    return data.albums || [];
+  } catch(e) {
+    console.error('Erro ao carregar data.json:', e);
+    return [];
+  }
 }
+
+// ─── HELPERS ───────────────────────────────────────────────────────────────
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function slugify(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
 
 // ─── VIEWS ─────────────────────────────────────────────────────────────────
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + id).classList.add('active');
-  // On album detail, keep nav but clear active state
-  if (id === 'album') {
-    ['home','albums','contact'].forEach(n => {
-      const m = document.getElementById('mnav-' + n);
-      if (m) m.classList.remove('active');
-    });
-  }
 }
 function setNav(w) {
   ['home','albums','contact'].forEach(n => {
@@ -455,15 +336,14 @@ function showContactPage() {
   showView('contact'); setNav('contact');
 }
 function goBack() {
-  if (lastView === 'home') { showHome(); } else { showAlbumsPage(); }
+  if (lastView === 'home') showHome(); else showAlbumsPage();
 }
 
 // ─── RENDER ────────────────────────────────────────────────────────────────
 function albumCardHTML(a) {
   const media = a.media || [];
   const cover = media.find(m => m.id === a.cover_media_id) || media.find(m => m.type === 'image');
-  const coverUrl = cover ? safeUrl(cover.url) : '';
-  const thumb = coverUrl ? `<img src="${coverUrl}" alt="" loading="lazy">` : '📁';
+  const thumb = cover ? `<img src="${cover.url}" alt="" loading="lazy">` : '📁';
   return `<div class="album-card" onclick="openAlbum('${esc(String(a.id))}')">
     <div class="album-thumb">${thumb}</div>
     <div class="album-info">
@@ -476,8 +356,7 @@ function albumCardHTML(a) {
 function renderHomeAlbums(q = '') {
   document.getElementById('home-loading').style.display = 'none';
   const grid = document.getElementById('home-album-grid');
-  let list = albums;
-  if (q) list = albums.filter(a => a.name.toLowerCase().includes(q.toLowerCase()));
+  let list = q ? albums.filter(a => a.name.toLowerCase().includes(q.toLowerCase())) : albums;
   document.getElementById('hero-count').textContent = albums.length;
   if (!list.length) {
     grid.style.display = 'none';
@@ -491,8 +370,7 @@ function renderHomeAlbums(q = '') {
 function renderAllAlbums(q = '') {
   document.getElementById('all-loading').style.display = 'none';
   const grid = document.getElementById('all-album-grid');
-  let list = albums;
-  if (q) list = albums.filter(a => a.name.toLowerCase().includes(q.toLowerCase()));
+  let list = q ? albums.filter(a => a.name.toLowerCase().includes(q.toLowerCase())) : albums;
   if (!list.length) {
     grid.style.display = 'none';
     document.getElementById('all-empty').style.display = 'block';
@@ -502,86 +380,56 @@ function renderAllAlbums(q = '') {
     document.getElementById('all-empty').style.display = 'none';
   }
 }
-function liveSearch(q) { if (!rateLimit('search', 30)) return; renderHomeAlbums(sanitize(q)); }
-function liveSearch2(q) { if (!rateLimit('search', 30)) return; renderAllAlbums(sanitize(q)); }
+function liveSearch(q) { renderHomeAlbums(q); }
+function liveSearch2(q) { renderAllAlbums(q); }
 
 async function openAlbum(id) {
   if (!albums.length) albums = await fetchAlbums();
-  const albForSlug = albums.find(a => String(a.id) === String(id));
-  const slug = albForSlug ? slugify(albForSlug.name) : id;
-  history.pushState(null, '', `#album/${slug}`);
-  if (!albums.length) albums = await fetchAlbums();
   const alb = albums.find(a => String(a.id) === String(id));
   if (!alb) return;
+  const slug = slugify(alb.name);
+  history.pushState(null, '', `#album/${slug}`);
   renderAlbumDetail(alb);
   showView('album');
   window.scrollTo(0, 0);
 }
 function renderAlbumDetail(alb) {
-  currentAlbumId = alb.id;
   document.getElementById('album-detail-title').textContent = alb.name;
   const media = alb.media || [];
   document.getElementById('album-detail-count').textContent = `${media.length} item${media.length !== 1 ? 's' : ''}`;
   document.getElementById('album-desc-display').textContent = alb.description || '';
   const buyBtn = document.getElementById('album-buy-btn');
-  if (alb.pay_link) {
-    const safePayLink = safeUrl(alb.pay_link);
-    if (safePayLink) {
-      buyBtn.href = safePayLink;
-      buyBtn.classList.remove('hidden');
-      buyBtn.onclick = () => trackBuyClick(alb.id, alb.name);
-    } else { buyBtn.classList.add('hidden'); }
-  } else { buyBtn.classList.add('hidden'); }
+  if (alb.pay_link) { buyBtn.href = alb.pay_link; buyBtn.classList.remove('hidden'); }
+  else { buyBtn.classList.add('hidden'); }
   const cover = document.getElementById('album-cover-thumb');
   const img = media.find(m => m.id === alb.cover_media_id) || media.find(m => m.type === 'image');
-  const coverUrl = img ? safeUrl(img.url) : '';
-  cover.innerHTML = coverUrl ? `<img src="${coverUrl}" alt="">` : '📁';
+  cover.innerHTML = img ? `<img src="${img.url}" alt="">` : '📁';
   const grid = document.getElementById('album-photo-grid');
   const empty = document.getElementById('album-empty');
   lbItems = media;
   if (!media.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
   empty.style.display = 'none';
   grid.innerHTML = media.map((m, i) => {
-    const mUrl = safeUrl(m.url);
-    if (!mUrl) return '';
-    if (m.type === 'video') {
-      return `<div class="photo-item" onclick="openLightbox(${i})">
-        <div class="photo-wrapper">
-          <video src="${mUrl}" muted loading="lazy"></video>
-          <div class="video-play-overlay"><div class="play-circle">▶</div></div>
-        </div>
-      </div>`;
-    }
-    return `<div class="photo-item" onclick="openLightbox(${i})">
-      <div class="photo-wrapper"><img src="${mUrl}" alt="" loading="lazy"></div>
-    </div>`;
+    if (m.type === 'video') return `<div class="photo-item" onclick="openLightbox(${i})"><div class="photo-wrapper"><video src="${m.url}" muted loading="lazy"></video><div class="video-play-overlay"><div class="play-circle">▶</div></div></div></div>`;
+    return `<div class="photo-item" onclick="openLightbox(${i})"><div class="photo-wrapper"><img src="${m.url}" alt="" loading="lazy"></div></div>`;
   }).join('');
 }
 
 // ─── LIGHTBOX ──────────────────────────────────────────────────────────────
-function openLightbox(idx) {
-  lbIndex = idx; updateLightbox();
-  document.getElementById('lightbox').classList.add('open');
-}
+function openLightbox(idx) { lbIndex = idx; updateLightbox(); document.getElementById('lightbox').classList.add('open'); }
 function closeLightbox(e) {
   if (e && e.target !== e.currentTarget) return;
   document.getElementById('lightbox').classList.remove('open');
   document.getElementById('lb-video').pause();
 }
-function lbNav(d) {
-  lbIndex = (lbIndex + d + lbItems.length) % lbItems.length;
-  updateLightbox();
-}
+function lbNav(d) { lbIndex = (lbIndex + d + lbItems.length) % lbItems.length; updateLightbox(); }
 function updateLightbox() {
   const m = lbItems[lbIndex];
   const img = document.getElementById('lb-img');
   const vid = document.getElementById('lb-video');
   document.getElementById('lb-caption').textContent = `${lbIndex + 1} / ${lbItems.length}`;
-  if (m.type === 'video') {
-    img.style.display = 'none'; vid.style.display = 'block'; vid.src = m.url;
-  } else {
-    vid.style.display = 'none'; vid.src = ''; img.style.display = 'block'; img.src = m.url;
-  }
+  if (m.type === 'video') { img.style.display='none'; vid.style.display='block'; vid.src=m.url; }
+  else { vid.style.display='none'; vid.src=''; img.style.display='block'; img.src=m.url; }
 }
 document.addEventListener('keydown', e => {
   if (!document.getElementById('lightbox').classList.contains('open')) return;
@@ -590,76 +438,21 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('open');
 });
 
-// ─── HELPERS ───────────────────────────────────────────────────────────────
-function esc(s) { return sanitize(String(s || '')); }
-function slugify(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
-
-// ─── SECURITY: Validate URLs before rendering ─────────────────────────────
-function safeUrl(url) {
-  try {
-    const u = new URL(url);
-    if (!['https:', 'http:'].includes(u.protocol)) return '';
-    return u.href;
-  } catch { return ''; }
-}
-
-
-// ─── ANALYTICS TRACKING ───────────────────────────────────────────────────
-let _geoCache = null;
-async function getGeo() {
-  if (_geoCache) return _geoCache;
-  try {
-    const r = await fetch('https://ipapi.co/json/');
-    const d = await r.json();
-    _geoCache = { country: d.country_name || null, country_code: d.country_code || null, city: d.city || null };
-  } catch(e) { _geoCache = { country: null, country_code: null, city: null }; }
-  return _geoCache;
-}
-
-async function trackVisit() {
-  await safeFetch(async () => {
-    const geo = await getGeo();
-    await sb.from('page_views').insert([{ visited_at: new Date().toISOString(), country: geo.country, country_code: geo.country_code, city: geo.city }]);
-  }, 'trackVisit', 5);
-}
-
-async function trackBuyClick(albumId, albumName) {
-  await safeFetch(async () => {
-    const geo = await getGeo();
-    await sb.from('buy_clicks').insert([{ album_id: albumId, album_name: sanitize(albumName), clicked_at: new Date().toISOString(), country: geo.country, country_code: geo.country_code, city: geo.city }]);
-  }, 'trackBuy', 20);
-}
-
-// ─── HASH ROUTER ──────────────────────────────────────────────────────────
-let _tracked = false;
+// ─── ROUTER ────────────────────────────────────────────────────────────────
 async function handleRoute() {
-  if (!_tracked) { _tracked = true; trackVisit(); }
   const hash = window.location.hash.replace(/^#\/?/, '');
-  if (!hash || hash === '') {
-    await showHome();
-  } else if (hash === 'albums') {
-    await showAlbumsPage();
-  } else if (hash === 'contact') {
-    showContactPage();
-  } else if (hash.startsWith('album/')) {
+  if (!hash || hash === '') { await showHome(); }
+  else if (hash === 'albums') { await showAlbumsPage(); }
+  else if (hash === 'contact') { showContactPage(); }
+  else if (hash.startsWith('album/')) {
     const slug = hash.replace('album/', '');
     if (!albums.length) albums = await fetchAlbums();
     const alb = albums.find(a => slugify(a.name) === slug);
-    if (alb) {
-      lastView = 'albums';
-      renderAlbumDetail(alb);
-      showView('album');
-    } else {
-      await showHome();
-    }
-  } else {
-    await showHome();
-  }
+    if (alb) { lastView = 'albums'; renderAlbumDetail(alb); showView('album'); }
+    else { await showHome(); }
+  } else { await showHome(); }
 }
-
 window.addEventListener('popstate', handleRoute);
-
-// ─── INIT ──────────────────────────────────────────────────────────────────
 handleRoute();
 </script>
 </body>
