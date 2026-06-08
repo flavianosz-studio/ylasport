@@ -5,107 +5,156 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YLASPORT Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  :root {
-    --green: #3dba7e; --green-dark: #2a9a64; --green-light: #e8f9f1;
-    --white: #ffffff; --gray-50: #f9f9f7; --gray-100: #f0efeb;
-    --gray-200: #e0dfd9; --gray-400: #999890; --gray-600: #5a5950; --gray-900: #1a1a18;
-    --red: #e53e3e; --red-light: #fff5f5;
-    --font-display: 'Barlow Condensed', sans-serif; --font-body: 'Barlow', sans-serif;
-    --radius: 10px; --radius-lg: 16px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.07); --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: var(--font-body); background: var(--gray-50); color: var(--gray-900); }
+:root {
+  --green:#3dba7e;--green-dark:#2a9a64;--green-light:#e8f9f1;
+  --white:#fff;--gray-50:#f9f9f7;--gray-100:#f0efeb;--gray-200:#e0dfd9;
+  --gray-400:#999890;--gray-600:#5a5950;--gray-900:#1a1a18;
+  --red:#e53e3e;--red-light:#fff5f5;--blue:#3b82f6;--purple:#8b5cf6;--orange:#f59e0b;
+  --font-d:'Barlow Condensed',sans-serif;--font-b:'Barlow',sans-serif;
+  --r:10px;--rl:16px;--sh:0 2px 12px rgba(0,0,0,.07);--shm:0 4px 24px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
 
-  /* ── LOGIN ── */
-  #login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-  .login-card { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 48px 40px; width: 100%; max-width: 400px; box-shadow: var(--shadow-md); }
-  .login-logo { font-family: var(--font-display); font-size: 32px; letter-spacing: 3px; font-weight: 800; text-align: center; margin-bottom: 8px; }
-  .login-logo span { color: var(--green); }
-  .login-sub { text-align: center; font-size: 12px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 32px; }
-  .field { margin-bottom: 16px; }
-  .field label { display: block; font-size: 11px; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .field input { width: 100%; border: 1.5px solid var(--gray-200); border-radius: var(--radius); padding: 10px 14px; font-size: 14px; font-family: var(--font-body); outline: none; transition: border .15s; background: var(--gray-50); }
-  .field input:focus { border-color: var(--green); background: var(--white); }
-  .btn-primary { width: 100%; background: var(--green); color: var(--white); border: none; border-radius: var(--radius); padding: 12px; font-size: 14px; font-weight: 700; font-family: var(--font-body); cursor: pointer; transition: background .15s; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
-  .btn-primary:hover { background: var(--green-dark); }
-  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
-  .error-msg { background: var(--red-light); border: 1px solid #feb2b2; color: var(--red); border-radius: var(--radius); padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: none; }
+/* LOGIN */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;}
+.login-card{background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--rl);padding:48px 40px;width:100%;max-width:400px;box-shadow:var(--shm);}
+.login-logo{font-family:var(--font-d);font-size:32px;letter-spacing:3px;font-weight:800;text-align:center;margin-bottom:4px;}
+.login-logo span{color:var(--green);}
+.login-sub{text-align:center;font-size:12px;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;margin-bottom:32px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--gray-200);border-radius:var(--r);padding:10px 14px;font-size:14px;font-family:var(--font-b);outline:none;transition:border .15s;background:var(--gray-50);}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green);background:var(--white);}
+.field textarea{resize:vertical;min-height:70px;}
+.btn-primary{width:100%;background:var(--green);color:var(--white);border:none;border-radius:var(--r);padding:12px;font-size:14px;font-weight:700;font-family:var(--font-b);cursor:pointer;transition:background .15s;text-transform:uppercase;letter-spacing:1px;margin-top:8px;}
+.btn-primary:hover{background:var(--green-dark);}
+.error-msg{background:var(--red-light);border:1px solid #feb2b2;color:var(--red);border-radius:var(--r);padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;}
 
-  /* ── ADMIN LAYOUT ── */
-  #admin-screen { display: none; }
-  .admin-header { background: var(--gray-900); color: var(--white); padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .admin-logo { font-family: var(--font-display); font-size: 22px; letter-spacing: 3px; font-weight: 800; }
-  .admin-logo span { color: var(--green); }
-  .admin-user { font-size: 12px; color: var(--gray-400); display: flex; align-items: center; gap: 12px; }
-  .btn-logout { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--white); border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; font-family: var(--font-body); transition: background .15s; }
-  .btn-logout:hover { background: rgba(255,255,255,0.2); }
+/* LAYOUT */
+#admin-screen{display:none;min-height:100vh;}
+.admin-header{background:var(--gray-900);color:var(--white);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.admin-logo{font-family:var(--font-d);font-size:22px;letter-spacing:3px;font-weight:800;}
+.admin-logo span{color:var(--green);}
+.header-right{display:flex;align-items:center;gap:12px;}
+.btn-logout{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--white);border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-family:var(--font-b);}
+.btn-logout:hover{background:rgba(255,255,255,.2);}
 
-  .admin-body { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
-  .admin-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
-  .admin-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+.admin-nav{background:var(--white);border-bottom:1.5px solid var(--gray-200);display:flex;gap:0;overflow-x:auto;}
+.nav-tab{background:none;border:none;border-bottom:3px solid transparent;padding:14px 24px;font-size:13px;font-weight:600;font-family:var(--font-b);color:var(--gray-600);cursor:pointer;white-space:nowrap;transition:all .15s;text-transform:uppercase;letter-spacing:.5px;}
+.nav-tab:hover{color:var(--gray-900);}
+.nav-tab.active{color:var(--green-dark);border-bottom-color:var(--green);}
 
-  .btn-action { background: var(--green); color: var(--white); border: none; border-radius: var(--radius); padding: 10px 20px; font-size: 13px; font-weight: 700; font-family: var(--font-body); cursor: pointer; transition: background .15s; text-transform: uppercase; letter-spacing: 0.5px; }
-  .btn-action:hover { background: var(--green-dark); }
-  .btn-danger { background: var(--red); }
-  .btn-danger:hover { background: #c53030; }
-  .btn-secondary { background: var(--gray-100); color: var(--gray-900); border: 1.5px solid var(--gray-200); }
-  .btn-secondary:hover { background: var(--gray-200); }
+.admin-body{max-width:1200px;margin:0 auto;padding:28px 24px;}
+.page{display:none;}
+.page.active{display:block;}
 
-  /* ── ALBUMS LIST ── */
-  .album-list { display: grid; gap: 12px; }
-  .album-row { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); padding: 16px 20px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow); }
-  .album-row-thumb { width: 60px; height: 60px; border-radius: var(--radius); overflow: hidden; background: var(--gray-100); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-  .album-row-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .album-row-info { flex: 1; min-width: 0; }
-  .album-row-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-  .album-row-meta { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
-  .album-row-actions { display: flex; gap: 8px; flex-shrink: 0; }
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px;}
+.stat-card{background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--rl);padding:20px 24px;box-shadow:var(--sh);}
+.stat-card .stat-label{font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.stat-card .stat-value{font-family:var(--font-d);font-size:36px;font-weight:800;line-height:1;}
+.stat-card .stat-sub{font-size:12px;color:var(--gray-400);margin-top:4px;}
+.stat-card.green .stat-value{color:var(--green-dark);}
+.stat-card.blue .stat-value{color:var(--blue);}
+.stat-card.purple .stat-value{color:var(--purple);}
+.stat-card.orange .stat-value{color:var(--orange);}
 
-  /* ── MODAL ── */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-md); }
-  .modal-header { padding: 20px 24px 16px; border-bottom: 1.5px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
-  .modal-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
-  .modal-close { background: var(--gray-100); border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
-  .modal-body { padding: 24px; }
-  .modal-footer { padding: 16px 24px; border-top: 1.5px solid var(--gray-200); display: flex; gap: 10px; justify-content: flex-end; }
+/* CHARTS */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.chart-card{background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--rl);padding:20px 24px;box-shadow:var(--sh);}
+.chart-title{font-family:var(--font-d);font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;color:var(--gray-900);}
+.chart-filters{display:flex;gap:8px;margin-bottom:12px;}
+.filter-btn{background:var(--gray-100);border:none;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font-b);text-transform:uppercase;color:var(--gray-600);transition:all .15s;}
+.filter-btn.active{background:var(--green);color:var(--white);}
 
-  /* ── UPLOAD AREA ── */
-  .upload-area { border: 2px dashed var(--gray-200); border-radius: var(--radius-lg); padding: 32px; text-align: center; cursor: pointer; transition: all .2s; background: var(--gray-50); }
-  .upload-area:hover, .upload-area.drag { border-color: var(--green); background: var(--green-light); }
-  .upload-area .up-icon { font-size: 36px; margin-bottom: 10px; }
-  .upload-area p { font-size: 14px; color: var(--gray-600); }
-  .upload-area span { font-size: 12px; color: var(--gray-400); }
-  #file-input { display: none; }
+/* TABLES */
+.data-table{width:100%;border-collapse:collapse;font-size:13px;}
+.data-table th{text-align:left;font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;padding:10px 14px;border-bottom:1.5px solid var(--gray-200);}
+.data-table td{padding:10px 14px;border-bottom:1px solid var(--gray-100);vertical-align:middle;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:var(--gray-50);}
+.flag{font-size:18px;margin-right:6px;}
 
-  .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 16px; }
-  .preview-item { position: relative; border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--gray-200); aspect-ratio: 1; background: var(--gray-100); }
-  .preview-item img, .preview-item video { width: 100%; height: 100%; object-fit: cover; }
-  .preview-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
-  .preview-cover-btn { position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 10px; font-weight: 700; }
-  .preview-cover-btn.active { background: var(--green); }
+/* ALBUMS */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.section-title{font-family:var(--font-d);font-size:24px;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
+.btn-action{background:var(--green);color:var(--white);border:none;border-radius:var(--r);padding:10px 20px;font-size:13px;font-weight:700;font-family:var(--font-b);cursor:pointer;transition:background .15s;text-transform:uppercase;letter-spacing:.5px;}
+.btn-action:hover{background:var(--green-dark);}
+.btn-action:disabled{opacity:.6;cursor:not-allowed;}
+.btn-danger{background:var(--red)!important;}
+.btn-danger:hover{background:#c53030!important;}
+.btn-secondary{background:var(--gray-100)!important;color:var(--gray-900)!important;border:1.5px solid var(--gray-200)!important;}
+.btn-secondary:hover{background:var(--gray-200)!important;}
 
-  /* ── PROGRESS ── */
-  .progress-bar { background: var(--gray-100); border-radius: 20px; height: 8px; overflow: hidden; margin-top: 12px; }
-  .progress-fill { background: var(--green); height: 100%; border-radius: 20px; transition: width .3s; width: 0; }
-  .progress-text { font-size: 12px; color: var(--gray-600); margin-top: 6px; }
+.album-list{display:grid;gap:12px;}
+.album-row{background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--rl);padding:16px 20px;display:flex;align-items:center;gap:16px;box-shadow:var(--sh);transition:border .15s;}
+.album-row:hover{border-color:var(--green);}
+.album-row-thumb{width:64px;height:64px;border-radius:var(--r);overflow:hidden;background:var(--gray-100);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.album-row-thumb img{width:100%;height:100%;object-fit:cover;}
+.album-row-info{flex:1;min-width:0;}
+.album-row-name{font-family:var(--font-d);font-size:18px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.album-row-meta{font-size:12px;color:var(--gray-400);margin-top:3px;}
+.album-row-actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;}
+.btn-sm{padding:7px 14px!important;font-size:12px!important;}
 
-  /* ── TOAST ── */
-  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--gray-900); color: var(--white); border-radius: var(--radius); padding: 12px 20px; font-size: 13px; font-weight: 500; z-index: 9999; opacity: 0; transform: translateY(10px); transition: all .3s; pointer-events: none; }
-  .toast.show { opacity: 1; transform: translateY(0); }
-  .toast.success { background: var(--green-dark); }
-  .toast.error { background: var(--red); }
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--white);border-radius:var(--rl);width:100%;max-width:640px;max-height:92vh;overflow-y:auto;box-shadow:var(--shm);}
+.modal-header{padding:20px 24px 16px;border-bottom:1.5px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:10;}
+.modal-title{font-family:var(--font-d);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
+.modal-close{background:var(--gray-100);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.modal-body{padding:24px;}
+.modal-footer{padding:16px 24px;border-top:1.5px solid var(--gray-200);display:flex;gap:10px;justify-content:flex-end;position:sticky;bottom:0;background:var(--white);}
 
-  .loading-spinner { display: flex; align-items: center; justify-content: center; padding: 60px; }
-  .spinner { width: 36px; height: 36px; border: 3px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* UPLOAD */
+.upload-area{border:2px dashed var(--gray-200);border-radius:var(--rl);padding:28px;text-align:center;cursor:pointer;transition:all .2s;background:var(--gray-50);}
+.upload-area:hover,.upload-area.drag{border-color:var(--green);background:var(--green-light);}
+.upload-area .up-icon{font-size:32px;margin-bottom:8px;}
+.upload-area p{font-size:14px;color:var(--gray-600);}
+.upload-area span{font-size:11px;color:var(--gray-400);}
 
-  .status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-  .status-badge.saving { background: #fef3c7; color: #92400e; }
-  .status-badge.saved { background: var(--green-light); color: var(--green-dark); }
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:14px;}
+.preview-item{position:relative;border-radius:var(--r);overflow:hidden;border:2px solid var(--gray-200);aspect-ratio:1;background:var(--gray-100);cursor:pointer;transition:border .15s;}
+.preview-item img,.preview-item video{width:100%;height:100%;object-fit:cover;}
+.preview-item.is-cover{border-color:var(--green)!important;}
+.preview-remove{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.65);color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;}
+.cover-badge{position:absolute;bottom:3px;left:3px;background:var(--green);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase;display:none;}
+.preview-item.is-cover .cover-badge{display:block;}
+
+/* PROGRESS */
+.progress-wrap{margin-top:14px;display:none;}
+.progress-bar{background:var(--gray-100);border-radius:20px;height:8px;overflow:hidden;}
+.progress-fill{background:var(--green);height:100%;border-radius:20px;transition:width .3s;width:0;}
+.progress-text{font-size:12px;color:var(--gray-600);margin-top:6px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--gray-900);color:#fff;border-radius:var(--r);padding:12px 20px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;max-width:320px;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:var(--green-dark);}
+.toast.error{background:var(--red);}
+
+.spinner-wrap{display:flex;align-items:center;justify-content:center;padding:60px;}
+.spinner{width:36px;height:36px;border:3px solid var(--gray-200);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.badge-green{background:var(--green-light);color:var(--green-dark);}
+.badge-saving{background:#fef3c7;color:#92400e;}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--gray-400);}
+.empty-state .icon{font-size:48px;margin-bottom:12px;}
+.empty-state h3{font-size:16px;font-weight:600;color:var(--gray-600);}
+
+@media(max-width:640px){
+  .charts-row{grid-template-columns:1fr;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .album-row-actions{gap:6px;}
+  .admin-body{padding:16px;}
+}
 </style>
 </head>
 <body>
@@ -118,537 +167,616 @@
     <div class="error-msg" id="login-error"></div>
     <div class="field">
       <label>Senha</label>
-      <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+      <input type="password" id="login-password" placeholder="••••••••">
     </div>
-    <button class="btn-primary" id="login-btn" onclick="doLogin()">Entrar</button>
+    <button class="btn-primary" onclick="doLogin()">Entrar</button>
   </div>
 </div>
 
 <!-- ADMIN -->
 <div id="admin-screen">
   <header class="admin-header">
-    <div class="admin-logo">YLA<span>SPORT</span> <span style="font-size:13px;color:var(--gray-400);letter-spacing:1px">ADMIN</span></div>
-    <div class="admin-user">
-      <span id="admin-email-display"></span>
+    <div class="admin-logo">YLA<span>SPORT</span> <span style="font-size:12px;color:var(--gray-400);letter-spacing:1px">ADMIN</span></div>
+    <div class="header-right">
+      <span id="save-badge" class="badge badge-saving" style="display:none">⏳ Salvando...</span>
+      <a href="/" target="_blank" style="color:var(--gray-400);font-size:12px;text-decoration:none">Ver site ↗</a>
       <button class="btn-logout" onclick="doLogout()">Sair</button>
     </div>
   </header>
-  <div class="admin-body">
-    <div class="admin-toolbar">
-      <div class="admin-title">Álbuns</div>
-      <div style="display:flex;gap:10px;align-items:center">
-        <span class="status-badge" id="save-status" style="display:none"></span>
-        <button class="btn-action" onclick="openNewAlbumModal()">+ Novo Álbum</button>
+
+  <nav class="admin-nav">
+    <button class="nav-tab active" onclick="showPage('dashboard')">📊 Dashboard</button>
+    <button class="nav-tab" onclick="showPage('albums')">📁 Álbuns</button>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page active">
+    <div class="admin-body">
+      <div class="stat-grid">
+        <div class="stat-card green">
+          <div class="stat-label">Total de Visitas</div>
+          <div class="stat-value" id="s-visits">—</div>
+          <div class="stat-sub">todas as visitas</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Visitas Hoje</div>
+          <div class="stat-value" id="s-today">—</div>
+          <div class="stat-sub" id="s-yesterday">ontem: —</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-label">Buy Clicks</div>
+          <div class="stat-value" id="s-clicks">—</div>
+          <div class="stat-sub">total de cliques</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-label">Países</div>
+          <div class="stat-value" id="s-countries">—</div>
+          <div class="stat-sub">países únicos</div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title">Visitas por período</div>
+          <div class="chart-filters">
+            <button class="filter-btn active" onclick="setChartFilter('week',this)">7 dias</button>
+            <button class="filter-btn" onclick="setChartFilter('month',this)">30 dias</button>
+            <button class="filter-btn" onclick="setChartFilter('all',this)">Total</button>
+          </div>
+          <canvas id="chart-visits" height="200"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Buy Clicks por álbum</div>
+          <canvas id="chart-clicks" height="200"></canvas>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title">🌍 Top Países</div>
+          <table class="data-table" id="table-countries">
+            <thead><tr><th>País</th><th>Visitas</th><th>%</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">🛒 Top Álbuns (Clicks)</div>
+          <table class="data-table" id="table-albums-clicks">
+            <thead><tr><th>Álbum</th><th>Clicks</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="loading-spinner" id="admin-loading"><div class="spinner"></div></div>
-    <div class="album-list" id="admin-album-list" style="display:none"></div>
-    <div style="text-align:center;padding:60px;color:var(--gray-400);display:none" id="admin-empty">
-      <div style="font-size:48px;margin-bottom:12px">📁</div>
-      <div style="font-size:16px;font-weight:600">Nenhum álbum ainda</div>
-      <div style="font-size:13px;margin-top:6px">Clique em "Novo Álbum" para começar</div>
+  </div>
+
+  <!-- ALBUMS -->
+  <div id="page-albums" class="page">
+    <div class="admin-body">
+      <div class="section-header">
+        <div class="section-title">Álbuns</div>
+        <button class="btn-action" onclick="openNewAlbum()">+ Novo Álbum</button>
+      </div>
+      <div class="spinner-wrap" id="albums-loading"><div class="spinner"></div></div>
+      <div class="album-list" id="album-list" style="display:none"></div>
+      <div class="empty-state" id="albums-empty" style="display:none">
+        <div class="icon">📁</div><h3>Nenhum álbum ainda</h3>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL: NOVO/EDITAR ÁLBUM -->
-<div class="modal-overlay" id="album-modal">
+<!-- MODAL ÁLBUM -->
+<div class="modal-overlay" id="modal-album">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title" id="modal-title">Novo Álbum</div>
-      <button class="modal-close" onclick="closeModal('album-modal')">✕</button>
+      <div class="modal-title" id="modal-album-title">Novo Álbum</div>
+      <button class="modal-close" onclick="closeModal('modal-album')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="field">
-        <label>Nome do Álbum *</label>
-        <input type="text" id="f-name" placeholder="Ex: Coleção Verão 2026">
-      </div>
-      <div class="field">
-        <label>Tag (opcional)</label>
-        <input type="text" id="f-tag" placeholder="Ex: NEW, SALE, LIMITED">
-      </div>
-      <div class="field">
-        <label>Descrição (opcional)</label>
-        <input type="text" id="f-desc" placeholder="Descrição curta do álbum">
-      </div>
-      <div class="field">
-        <label>Link de compra (opcional)</label>
-        <input type="url" id="f-pay" placeholder="https://...">
-      </div>
+      <div class="field"><label>Nome *</label><input id="f-name" placeholder="Ex: Coleção Verão 2026"></div>
+      <div class="field"><label>Tag</label><input id="f-tag" placeholder="Ex: NEW, SALE"></div>
+      <div class="field"><label>Descrição</label><textarea id="f-desc" placeholder="Descrição do álbum"></textarea></div>
+      <div class="field"><label>Link de compra</label><input type="url" id="f-pay" placeholder="https://..."></div>
       <div class="field" style="margin-top:20px">
-        <label>Fotos / Vídeos</label>
-        <div class="upload-area" onclick="document.getElementById('file-input').click()" id="upload-area"
+        <label>Fotos / Vídeos <span style="font-weight:400;color:var(--gray-400)">(clique numa foto para definir a capa)</span></label>
+        <div class="upload-area" onclick="document.getElementById('f-files').click()"
           ondragover="event.preventDefault();this.classList.add('drag')"
           ondragleave="this.classList.remove('drag')"
           ondrop="handleDrop(event)">
           <div class="up-icon">📸</div>
-          <p>Clique ou arraste fotos/vídeos aqui</p>
-          <span>JPG, PNG, WEBP, MP4 · Máx 10MB por arquivo</span>
+          <p>Clique ou arraste fotos/vídeos</p>
+          <span>JPG, PNG, WEBP, MP4 · máx 10MB</span>
         </div>
-        <input type="file" id="file-input" multiple accept="image/*,video/*" onchange="handleFiles(this.files)">
+        <input type="file" id="f-files" multiple accept="image/*,video/*" style="display:none" onchange="handleFiles(this.files)">
         <div class="preview-grid" id="preview-grid"></div>
       </div>
-      <div id="upload-progress" style="display:none">
-        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-        <div class="progress-text" id="progress-text">Enviando...</div>
+      <div class="progress-wrap" id="prog-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+        <div class="progress-text" id="prog-text"></div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn-action btn-secondary" onclick="closeModal('album-modal')">Cancelar</button>
-      <button class="btn-action" id="save-album-btn" onclick="saveAlbum()">Salvar Álbum</button>
+      <button class="btn-action btn-secondary" onclick="closeModal('modal-album')">Cancelar</button>
+      <button class="btn-action" id="btn-save-album" onclick="saveAlbum()">Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: GERENCIAR FOTOS DO ÁLBUM -->
-<div class="modal-overlay" id="photos-modal">
-  <div class="modal" style="max-width:700px">
+<!-- MODAL FOTOS -->
+<div class="modal-overlay" id="modal-photos">
+  <div class="modal" style="max-width:720px">
     <div class="modal-header">
-      <div class="modal-title" id="photos-modal-title">Fotos</div>
-      <button class="modal-close" onclick="closeModal('photos-modal')">✕</button>
+      <div class="modal-title" id="modal-photos-title">Fotos</div>
+      <button class="modal-close" onclick="closeModal('modal-photos')">✕</button>
     </div>
     <div class="modal-body">
-      <div style="margin-bottom:16px">
-        <div class="upload-area" onclick="document.getElementById('file-input2').click()" 
-          ondragover="event.preventDefault();this.classList.add('drag')"
-          ondragleave="this.classList.remove('drag')"
-          ondrop="handleDrop2(event)">
-          <div class="up-icon">➕</div>
-          <p>Adicionar mais fotos/vídeos</p>
-        </div>
-        <input type="file" id="file-input2" multiple accept="image/*,video/*" onchange="handleFiles2(this.files)">
+      <div class="upload-area" onclick="document.getElementById('f-files2').click()"
+        ondragover="event.preventDefault();this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')"
+        ondrop="handleDrop2(event)" style="margin-bottom:16px">
+        <div class="up-icon">➕</div><p>Adicionar mais fotos/vídeos</p>
       </div>
-      <div id="upload-progress2" style="display:none">
-        <div class="progress-bar"><div class="progress-fill" id="progress-fill2"></div></div>
-        <div class="progress-text" id="progress-text2">Enviando...</div>
+      <input type="file" id="f-files2" multiple accept="image/*,video/*" style="display:none" onchange="handleFiles2(this.files)">
+      <div class="progress-wrap" id="prog-wrap2">
+        <div class="progress-bar"><div class="progress-fill" id="prog-fill2"></div></div>
+        <div class="progress-text" id="prog-text2"></div>
       </div>
-      <div class="preview-grid" id="existing-photos-grid"></div>
+      <p style="font-size:12px;color:var(--gray-400);margin-bottom:10px">Clique numa foto para definir como capa</p>
+      <div class="preview-grid" id="existing-grid"></div>
     </div>
     <div class="modal-footer">
-      <button class="btn-action" onclick="closeModal('photos-modal')">Fechar</button>
+      <button class="btn-action" onclick="closeModal('modal-photos')">Fechar</button>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- Supabase SDK (só para autenticação) -->
-
 <script>
-// ══════════════════════════════════════════════════════════════════
-// ⚙️  CONFIGURAÇÕES — preencha antes de usar
-// ══════════════════════════════════════════════════════════════════
-
-// 1. Supabase (só para login/auth — sem storage, sem banco de dados)
-const SUPABASE_URL = 'https://whzezjmjcnukixkkmyan.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoemV6am1qY251a2l4a2tteWFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMDExMTgsImV4cCI6MjA5Mjg3NzExOH0.NwynrNjmxDX6rXuDB9hjmQHLNGam9aqb3QIc8Gw7PsE';
-
-// 2. GitHub — onde ficam as fotos e o data.json
+// ══════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════
+const ADMIN_HASH = '36f8d3cfbf212f1beff9b3f6d992a96f6a2b2ea1257c0a2ba71e56146fc6bc00';
 const GITHUB_TOKEN  = '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';
 const GITHUB_OWNER  = 'flavianosz-studio';
 const GITHUB_REPO   = 'ylasport';
 const GITHUB_BRANCH = 'main';
+const GH_API = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents`;
 
-// ══════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let localData = { albums: [], analytics: { visits: [], buy_clicks: [] } };
+let editingAlbumId = null;
+let pendingFiles = [];
+let pendingCoverId = null;
+let currentPhotosAlbumId = null;
+let visitChart = null, clickChart = null;
+let chartFilter = 'week';
 
-// Supabase removido — usando apenas GitHub
-
-// ─── STATE ────────────────────────────────────────────────────────
-let localData = { albums: [] };        // dados em memória
-let editingAlbumId = null;             // álbum sendo editado
-let pendingFiles = [];                 // arquivos aguardando upload (novo álbum)
-let pendingFiles2 = [];                // arquivos aguardando upload (editar álbum)
-let coverMediaId = null;               // capa selecionada (novo álbum)
-let currentPhotosAlbumId = null;       // álbum aberto no modal de fotos
-
-// ─── AUTENTICAÇÃO ─────────────────────────────────────────────────
-// Hash SHA256 da senha (a senha real não fica exposta no código)
-// Senha atual: (protegida)
-// Para trocar: gere um novo hash em: https://emn178.github.io/online-tools/sha256.html
-const ADMIN_HASH = '36f8d3cfbf212f1beff9b3f6d992a96f6a2b2ea1257c0a2ba71e56146fc6bc00';
-
-async function hashStr(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+// ══════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════
+async function hashStr(s) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-
 async function doLogin() {
   const pass = document.getElementById('login-password').value;
-  const err  = document.getElementById('login-error');
-  err.style.display = 'none';
-  if (!pass) { showError('Digite a senha.'); return; }
+  const err = document.getElementById('login-error');
+  err.style.display='none';
+  if (!pass) { err.textContent='Digite a senha.'; err.style.display='block'; return; }
   const h = await hashStr(pass);
-  if (h !== ADMIN_HASH) { showError('Senha incorreta.'); return; }
-  sessionStorage.setItem('yla_admin', '1');
+  if (h !== ADMIN_HASH) { err.textContent='Senha incorreta.'; err.style.display='block'; return; }
+  sessionStorage.setItem('yla_admin','1');
   enterAdmin();
 }
 function doLogout() {
   sessionStorage.removeItem('yla_admin');
-  document.getElementById('admin-screen').style.display = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-screen').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
 }
-function showError(msg) {
-  const e = document.getElementById('login-error');
-  e.textContent = msg; e.style.display = 'block';
-}
-async function enterAdmin() {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('admin-screen').style.display = 'block';
-  document.getElementById('admin-email-display').textContent = 'Admin';
-  await loadData();
-}
-document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('login-password').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 
-// ─── GITHUB API ───────────────────────────────────────────────────
-const GH_API = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents`;
-const GH_HEADERS = () => ({
+// ══════════════════════════════════════════════
+// GITHUB API
+// ══════════════════════════════════════════════
+const ghHeaders = () => ({
   'Authorization': `Bearer ${GITHUB_TOKEN}`,
   'Accept': 'application/vnd.github.v3+json',
   'Content-Type': 'application/json'
 });
-
 async function ghGet(path) {
-  const r = await fetch(`${GH_API}/${path}?ref=${GITHUB_BRANCH}`, { headers: GH_HEADERS() });
-  if (!r.ok) return null;
+  const r = await fetch(`${GH_API}/${path}?ref=${GITHUB_BRANCH}&t=${Date.now()}`, {headers:ghHeaders()});
+  return r.ok ? r.json() : null;
+}
+async function ghPut(path, b64, msg, sha) {
+  const body = {message:msg, content:b64, branch:GITHUB_BRANCH};
+  if (sha) body.sha = sha;
+  const r = await fetch(`${GH_API}/${path}`, {method:'PUT', headers:ghHeaders(), body:JSON.stringify(body)});
   return r.json();
 }
-
-async function ghPut(path, content, message, sha) {
-  const body = { message, content: btoa(unescape(encodeURIComponent(content))), branch: GITHUB_BRANCH };
-  if (sha) body.sha = sha;
-  const r = await fetch(`${GH_API}/${path}`, { method: 'PUT', headers: GH_HEADERS(), body: JSON.stringify(body) });
+async function ghDelete(path, msg, sha) {
+  const body = {message:msg, sha, branch:GITHUB_BRANCH};
+  const r = await fetch(`${GH_API}/${path}`, {method:'DELETE', headers:ghHeaders(), body:JSON.stringify(body)});
   return r.ok;
 }
 
-async function ghPutBinary(path, base64Content, message, sha) {
-  const body = { message, content: base64Content, branch: GITHUB_BRANCH };
-  if (sha) body.sha = sha;
-  const r = await fetch(`${GH_API}/${path}`, { method: 'PUT', headers: GH_HEADERS(), body: JSON.stringify(body) });
-  return r.json();
-}
-
-async function ghDelete(path, message, sha) {
-  const body = { message, sha, branch: GITHUB_BRANCH };
-  const r = await fetch(`${GH_API}/${path}`, { method: 'DELETE', headers: GH_HEADERS(), body: JSON.stringify(body) });
-  return r.ok;
-}
-
-// ─── DATA.JSON ────────────────────────────────────────────────────
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
 async function loadData() {
-  document.getElementById('admin-loading').style.display = 'flex';
-  document.getElementById('admin-album-list').style.display = 'none';
   try {
     const file = await ghGet('data.json');
     if (file) {
       const content = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
       localData = JSON.parse(content);
-    } else {
-      localData = { albums: [] };
-      await saveData('Inicializar data.json');
+      if (!localData.analytics) localData.analytics = {visits:[],buy_clicks:[]};
     }
-  } catch(e) { localData = { albums: [] }; }
-  renderAdminAlbums();
+  } catch(e) { localData = {albums:[],analytics:{visits:[],buy_clicks:[]}}; }
 }
 
-async function saveData(msg = 'Atualizar álbuns') {
-  setSaveStatus('saving');
+async function saveData(msg='Atualizar dados') {
+  document.getElementById('save-badge').style.display='inline-block';
   const file = await ghGet('data.json');
-  const sha = file ? file.sha : undefined;
+  const sha = file?.sha;
   const json = JSON.stringify(localData, null, 2);
-  const ok = await ghPut('data.json', json, msg, sha);
-  setSaveStatus(ok ? 'saved' : 'error');
-  return ok;
+  const b64 = btoa(unescape(encodeURIComponent(json)));
+  await ghPut('data.json', b64, msg, sha);
+  document.getElementById('save-badge').style.display='none';
 }
 
-function setSaveStatus(s) {
-  const el = document.getElementById('save-status');
-  el.style.display = 'inline-block';
-  if (s === 'saving') { el.className = 'status-badge saving'; el.textContent = '⏳ Salvando...'; }
-  else if (s === 'saved') { el.className = 'status-badge saved'; el.textContent = '✅ Salvo'; setTimeout(() => el.style.display='none', 3000); }
-  else { el.className = 'status-badge'; el.style.background='#fee'; el.style.color='#c00'; el.textContent = '❌ Erro ao salvar'; }
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  event.target.classList.add('active');
+  if (id==='dashboard') renderDashboard();
+  if (id==='albums') renderAlbums();
 }
 
-// ─── UPLOAD DE ARQUIVO PARA GITHUB ────────────────────────────────
-function fileToBase64(file) {
-  return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload = () => res(r.result.split(',')[1]);
-    r.onerror = rej;
-    r.readAsDataURL(file);
+// ══════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════
+function renderDashboard() {
+  const visits = localData.analytics?.visits || [];
+  const clicks = localData.analytics?.buy_clicks || [];
+  const today = new Date().toISOString().slice(0,10);
+  const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+  const todayCount = visits.filter(v=>v.date===today).length;
+  const yesterdayCount = visits.filter(v=>v.date===yesterday).length;
+  const countries = {};
+  visits.forEach(v=>{ if(v.country) countries[v.country]=(countries[v.country]||0)+1; });
+
+  document.getElementById('s-visits').textContent = visits.length;
+  document.getElementById('s-today').textContent = todayCount;
+  document.getElementById('s-yesterday').textContent = `ontem: ${yesterdayCount}`;
+  document.getElementById('s-clicks').textContent = clicks.length;
+  document.getElementById('s-countries').textContent = Object.keys(countries).length;
+
+  renderVisitChart();
+  renderClickChart();
+  renderCountriesTable(countries, visits.length);
+  renderAlbumClicksTable(clicks);
+}
+
+function setChartFilter(f, btn) {
+  chartFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderVisitChart();
+}
+
+function renderVisitChart() {
+  const visits = localData.analytics?.visits || [];
+  const days = chartFilter==='week' ? 7 : chartFilter==='month' ? 30 : 90;
+  const labels = [], counts = [];
+  for (let i=days-1; i>=0; i--) {
+    const d = new Date(Date.now()-i*86400000).toISOString().slice(0,10);
+    labels.push(d.slice(5));
+    counts.push(visits.filter(v=>v.date===d).length);
+  }
+  if (visitChart) visitChart.destroy();
+  visitChart = new Chart(document.getElementById('chart-visits'), {
+    type:'line',
+    data:{labels,datasets:[{label:'Visitas',data:counts,borderColor:'#3dba7e',backgroundColor:'rgba(61,186,126,.1)',fill:true,tension:.4,pointRadius:3}]},
+    options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}},x:{ticks:{maxRotation:45}}},responsive:true,maintainAspectRatio:false}
   });
 }
 
-async function uploadFileToGitHub(file, albumId) {
-  const ext = file.name.split('.').pop();
-  const id = Date.now() + '_' + Math.random().toString(36).slice(2,8);
-  const path = `media/${albumId}/${id}.${ext}`;
-  const b64 = await fileToBase64(file);
-  const result = await ghPutBinary(path, b64, `Upload: ${file.name}`, undefined);
-  if (!result || !result.content) return null;
-  const url = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${path}`;
-  return { id, url, type: file.type.startsWith('video') ? 'video' : 'image', path };
+function renderClickChart() {
+  const clicks = localData.analytics?.buy_clicks || [];
+  const albums = localData.albums || [];
+  const counts = {};
+  clicks.forEach(c=>{ counts[c.album_name]=(counts[c.album_name]||0)+1; });
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  if (clickChart) clickChart.destroy();
+  clickChart = new Chart(document.getElementById('chart-clicks'), {
+    type:'bar',
+    data:{
+      labels:sorted.map(([n])=>n.length>20?n.slice(0,20)+'…':n),
+      datasets:[{label:'Clicks',data:sorted.map(([,v])=>v),backgroundColor:'#8b5cf6',borderRadius:6}]
+    },
+    options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}},responsive:true,maintainAspectRatio:false}
+  });
 }
 
-// ─── RENDER ÁLBUNS ADMIN ──────────────────────────────────────────
-function renderAdminAlbums() {
-  document.getElementById('admin-loading').style.display = 'none';
-  const list = document.getElementById('admin-album-list');
-  const empty = document.getElementById('admin-empty');
+function renderCountriesTable(countries, total) {
+  const sorted = Object.entries(countries).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const tbody = document.querySelector('#table-countries tbody');
+  if (!sorted.length) { tbody.innerHTML='<tr><td colspan="3" style="color:var(--gray-400);text-align:center;padding:20px">Sem dados ainda</td></tr>'; return; }
+  tbody.innerHTML = sorted.map(([c,n])=>`<tr><td>${c}</td><td>${n}</td><td>${Math.round(n/total*100)}%</td></tr>`).join('');
+}
+
+function renderAlbumClicksTable(clicks) {
+  const counts = {};
+  clicks.forEach(c=>{ counts[c.album_name]=(counts[c.album_name]||0)+1; });
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const tbody = document.querySelector('#table-albums-clicks tbody');
+  if (!sorted.length) { tbody.innerHTML='<tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:20px">Sem dados ainda</td></tr>'; return; }
+  tbody.innerHTML = sorted.map(([n,v])=>`<tr><td>${n}</td><td><strong>${v}</strong></td></tr>`).join('');
+}
+
+// ══════════════════════════════════════════════
+// ALBUMS
+// ══════════════════════════════════════════════
+function renderAlbums() {
+  document.getElementById('albums-loading').style.display='none';
+  const list = document.getElementById('album-list');
+  const empty = document.getElementById('albums-empty');
   const albums = localData.albums || [];
   if (!albums.length) { list.style.display='none'; empty.style.display='block'; return; }
-  empty.style.display = 'none';
-  list.style.display = 'grid';
+  empty.style.display='none'; list.style.display='grid';
   list.innerHTML = albums.map(a => {
-    const media = a.media || [];
-    const cover = media.find(m => m.id === a.cover_media_id) || media.find(m => m.type === 'image');
-    const thumb = cover ? `<img src="${cover.url}" alt="">` : '📁';
+    const media = a.media||[];
+    const cover = media.find(m=>m.id===a.cover_media_id)||media.find(m=>m.type==='image');
+    const thumb = cover ? `<img src="${cover.url}" alt="" loading="lazy">` : '📁';
     return `<div class="album-row">
       <div class="album-row-thumb">${thumb}</div>
       <div class="album-row-info">
         <div class="album-row-name">${esc(a.name)}</div>
-        <div class="album-row-meta">${media.length} mídia${media.length!==1?'s':''} ${a.tag ? '· '+esc(a.tag) : ''}</div>
+        <div class="album-row-meta">${media.length} mídia${media.length!==1?'s':''} ${a.tag?'· '+esc(a.tag):''}</div>
       </div>
       <div class="album-row-actions">
-        <button class="btn-action btn-secondary" style="padding:8px 14px;font-size:12px" onclick="openPhotosModal('${a.id}')">📷 Fotos</button>
-        <button class="btn-action btn-secondary" style="padding:8px 14px;font-size:12px" onclick="editAlbum('${a.id}')">✏️ Editar</button>
-        <button class="btn-action btn-danger" style="padding:8px 14px;font-size:12px" onclick="deleteAlbum('${a.id}')">🗑️</button>
+        <button class="btn-action btn-secondary btn-sm" onclick="openPhotos('${a.id}')">📷 Fotos</button>
+        <button class="btn-action btn-secondary btn-sm" onclick="editAlbum('${a.id}')">✏️ Editar</button>
+        <button class="btn-action btn-danger btn-sm" onclick="deleteAlbum('${a.id}')">🗑️</button>
       </div>
     </div>`;
   }).join('');
 }
 
-// ─── MODAL NOVO ÁLBUM ─────────────────────────────────────────────
-function openNewAlbumModal() {
-  editingAlbumId = null; pendingFiles = []; coverMediaId = null;
-  document.getElementById('modal-title').textContent = 'Novo Álbum';
-  document.getElementById('f-name').value = '';
-  document.getElementById('f-tag').value = '';
-  document.getElementById('f-desc').value = '';
-  document.getElementById('f-pay').value = '';
-  document.getElementById('preview-grid').innerHTML = '';
-  document.getElementById('upload-progress').style.display = 'none';
-  openModal('album-modal');
+// ── NOVO ÁLBUM ──
+function openNewAlbum() {
+  editingAlbumId = null; pendingFiles = []; pendingCoverId = null;
+  document.getElementById('modal-album-title').textContent = 'Novo Álbum';
+  ['f-name','f-tag','f-desc','f-pay'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('preview-grid').innerHTML='';
+  document.getElementById('prog-wrap').style.display='none';
+  openModal('modal-album');
 }
 
 function editAlbum(id) {
-  const alb = localData.albums.find(a => a.id === id);
+  const alb = localData.albums.find(a=>a.id===id);
   if (!alb) return;
-  editingAlbumId = id; pendingFiles = []; coverMediaId = alb.cover_media_id;
-  document.getElementById('modal-title').textContent = 'Editar Álbum';
-  document.getElementById('f-name').value = alb.name || '';
-  document.getElementById('f-tag').value = alb.tag || '';
-  document.getElementById('f-desc').value = alb.description || '';
-  document.getElementById('f-pay').value = alb.pay_link || '';
-  // Mostrar mídias existentes
+  editingAlbumId=id; pendingFiles=[]; pendingCoverId=alb.cover_media_id;
+  document.getElementById('modal-album-title').textContent='Editar Álbum';
+  document.getElementById('f-name').value=alb.name||'';
+  document.getElementById('f-tag').value=alb.tag||'';
+  document.getElementById('f-desc').value=alb.description||'';
+  document.getElementById('f-pay').value=alb.pay_link||'';
   const grid = document.getElementById('preview-grid');
-  grid.innerHTML = (alb.media || []).map(m => existingMediaHTML(m, 'pendingFiles', id)).join('');
-  openModal('album-modal');
+  grid.innerHTML=(alb.media||[]).map(m=>existingThumbHTML(m,id)).join('');
+  document.getElementById('prog-wrap').style.display='none';
+  openModal('modal-album');
 }
 
-function existingMediaHTML(m, ctx, albumId) {
-  const isCover = m.id === coverMediaId;
-  const preview = m.type === 'video'
-    ? `<video src="${m.url}" muted></video>`
-    : `<img src="${m.url}" alt="">`;
-  return `<div class="preview-item" id="prev-${m.id}">
+function existingThumbHTML(m, albumId) {
+  const isCover = m.id===(editingAlbumId ? (localData.albums.find(a=>a.id===editingAlbumId)||{}).cover_media_id : pendingCoverId);
+  const preview = m.type==='video' ? `<video src="${m.url}" muted></video>` : `<img src="${m.url}" alt="">`;
+  return `<div class="preview-item${isCover?' is-cover':''}" id="pi-${m.id}" onclick="setExistingCover('${m.id}','${albumId}')">
     ${preview}
-    <button class="preview-remove" onclick="removeExistingMedia('${m.id}','${albumId}')">✕</button>
-    <button class="preview-cover-btn ${isCover?'active':''}" onclick="setCover('${m.id}','${albumId || editingAlbumId}',this)">⭐</button>
+    <button class="preview-remove" onclick="event.stopPropagation();removeMedia('${m.id}','${albumId}')">✕</button>
+    <div class="cover-badge">Capa</div>
   </div>`;
 }
 
-function setCover(mediaId, albumId, btn) {
-  coverMediaId = mediaId;
-  document.querySelectorAll('.preview-cover-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  if (albumId) {
-    const alb = localData.albums.find(a => a.id === albumId);
-    if (alb) { alb.cover_media_id = mediaId; saveData('Atualizar capa'); }
-  }
-}
-
-async function removeExistingMedia(mediaId, albumId) {
-  if (!confirm('Remover esta mídia?')) return;
-  const alb = localData.albums.find(a => a.id === albumId);
+async function setExistingCover(mediaId, albumId) {
+  const alb = localData.albums.find(a=>a.id===albumId);
   if (!alb) return;
-  const m = (alb.media || []).find(x => x.id === mediaId);
-  if (m && m.path) {
-    const file = await ghGet(m.path);
-    if (file) await ghDelete(m.path, `Remover mídia: ${mediaId}`, file.sha);
-  }
-  alb.media = (alb.media || []).filter(x => x.id !== mediaId);
-  if (alb.cover_media_id === mediaId) alb.cover_media_id = null;
-  document.getElementById('prev-' + mediaId)?.remove();
-  await saveData('Remover mídia');
-  renderAdminAlbums();
-  toast('Mídia removida', 'success');
+  alb.cover_media_id = mediaId;
+  document.querySelectorAll('.preview-item').forEach(el=>{
+    el.classList.toggle('is-cover', el.id==='pi-'+mediaId);
+  });
+  await saveData('Atualizar capa');
+  renderAlbums();
+  toast('Capa atualizada!','success');
 }
 
-// ─── UPLOAD HANDLER ───────────────────────────────────────────────
+async function removeMedia(mediaId, albumId) {
+  if (!confirm('Remover esta mídia?')) return;
+  const alb = localData.albums.find(a=>a.id===albumId);
+  if (!alb) return;
+  const m = (alb.media||[]).find(x=>x.id===mediaId);
+  if (m?.path) {
+    const file = await ghGet(m.path);
+    if (file) await ghDelete(m.path, `Remover mídia`, file.sha);
+  }
+  alb.media = (alb.media||[]).filter(x=>x.id!==mediaId);
+  if (alb.cover_media_id===mediaId) alb.cover_media_id=null;
+  document.getElementById('pi-'+mediaId)?.remove();
+  await saveData('Remover mídia');
+  renderAlbums(); toast('Mídia removida','success');
+}
+
+// ── UPLOAD ──
 function handleFiles(files) {
   for (const f of files) {
-    if (f.size > 10 * 1024 * 1024) { toast(`${f.name} excede 10MB`, 'error'); continue; }
+    if (f.size>10*1024*1024) { toast(f.name+' excede 10MB','error'); continue; }
+    const idx = pendingFiles.length;
     pendingFiles.push(f);
-    addPreview(f, pendingFiles.length - 1);
+    addPendingThumb(f, idx);
   }
 }
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('upload-area').classList.remove('drag');
-  handleFiles(e.dataTransfer.files);
-}
-function addPreview(file, idx) {
+function handleDrop(e) { e.preventDefault(); document.querySelector('.upload-area').classList.remove('drag'); handleFiles(e.dataTransfer.files); }
+
+function addPendingThumb(file, idx) {
   const grid = document.getElementById('preview-grid');
   const div = document.createElement('div');
-  div.className = 'preview-item'; div.id = `pf-${idx}`;
+  div.className='preview-item'; div.id=`pf-${idx}`;
+  div.onclick = () => setPendingCover(idx);
   const url = URL.createObjectURL(file);
-  div.innerHTML = file.type.startsWith('video')
-    ? `<video src="${url}" muted></video>`
-    : `<img src="${url}" alt="">`;
-  div.innerHTML += `<button class="preview-remove" onclick="removePending(${idx})">✕</button>
-    <button class="preview-cover-btn" onclick="setPendingCover(${idx},this)">⭐</button>`;
+  div.innerHTML = (file.type.startsWith('video')?`<video src="${url}" muted>`:`<img src="${url}" alt="">`)
+    + `<button class="preview-remove" onclick="event.stopPropagation();removePending(${idx})">✕</button><div class="cover-badge">Capa</div>`;
   grid.appendChild(div);
 }
-function removePending(idx) {
-  pendingFiles[idx] = null;
-  document.getElementById(`pf-${idx}`)?.remove();
-}
-function setPendingCover(idx, btn) {
-  document.querySelectorAll('.preview-cover-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  coverMediaId = `pending_${idx}`;
+function removePending(idx) { pendingFiles[idx]=null; document.getElementById(`pf-${idx}`)?.remove(); }
+function setPendingCover(idx) {
+  pendingCoverId = `pending_${idx}`;
+  document.querySelectorAll('#preview-grid .preview-item').forEach((el,i)=>el.classList.toggle('is-cover',i===idx));
 }
 
-// ─── SALVAR ÁLBUM ─────────────────────────────────────────────────
 async function saveAlbum() {
   const name = document.getElementById('f-name').value.trim();
-  if (!name) { toast('Nome do álbum é obrigatório', 'error'); return; }
-  const btn = document.getElementById('save-album-btn');
-  btn.disabled = true; btn.textContent = 'Salvando...';
+  if (!name) { toast('Nome obrigatório','error'); return; }
+  const btn = document.getElementById('btn-save-album');
+  btn.disabled=true; btn.textContent='Salvando...';
 
-  const files = pendingFiles.filter(Boolean);
-  let albumId = editingAlbumId || (Date.now().toString());
-  let alb = localData.albums.find(a => a.id === albumId);
+  const albumId = editingAlbumId || String(Date.now());
+  let alb = localData.albums.find(a=>a.id===albumId);
   if (!alb) {
-    alb = { id: albumId, name, tag: '', description: '', pay_link: '', cover_media_id: null, created_at: new Date().toISOString(), media: [] };
+    alb = {id:albumId,name,tag:'',description:'',pay_link:'',cover_media_id:null,created_at:new Date().toISOString(),media:[]};
     localData.albums.unshift(alb);
   }
-  alb.name = name;
-  alb.tag = document.getElementById('f-tag').value.trim();
-  alb.description = document.getElementById('f-desc').value.trim();
-  alb.pay_link = document.getElementById('f-pay').value.trim();
+  alb.name=name; alb.tag=document.getElementById('f-tag').value.trim();
+  alb.description=document.getElementById('f-desc').value.trim();
+  alb.pay_link=document.getElementById('f-pay').value.trim();
 
-  // Upload dos arquivos
+  const files = pendingFiles.filter(Boolean);
   if (files.length) {
-    document.getElementById('upload-progress').style.display = 'block';
-    for (let i = 0; i < files.length; i++) {
-      document.getElementById('progress-fill').style.width = `${Math.round((i/files.length)*100)}%`;
-      document.getElementById('progress-text').textContent = `Enviando ${i+1} de ${files.length}...`;
-      const result = await uploadFileToGitHub(files[i], albumId);
+    document.getElementById('prog-wrap').style.display='block';
+    for (let i=0;i<files.length;i++) {
+      document.getElementById('prog-fill').style.width=`${Math.round(i/files.length*100)}%`;
+      document.getElementById('prog-text').textContent=`Enviando ${i+1} de ${files.length}...`;
+      const result = await uploadFile(files[i], albumId);
       if (result) {
-        alb.media = alb.media || [];
         alb.media.push(result);
-        // Define capa se selecionada ou se é a primeira
-        if (coverMediaId === `pending_${pendingFiles.indexOf(files[i])}` || (!alb.cover_media_id && result.type === 'image')) {
-          alb.cover_media_id = result.id;
-        }
+        if (pendingCoverId===`pending_${pendingFiles.indexOf(files[i])}` || (!alb.cover_media_id&&result.type==='image'))
+          alb.cover_media_id=result.id;
       }
     }
-    document.getElementById('progress-fill').style.width = '100%';
-    document.getElementById('progress-text').textContent = 'Upload completo!';
+    document.getElementById('prog-fill').style.width='100%';
+    document.getElementById('prog-text').textContent='Upload concluído!';
   }
 
-  await saveData(editingAlbumId ? 'Editar álbum' : 'Novo álbum');
-  renderAdminAlbums();
-  closeModal('album-modal');
-  btn.disabled = false; btn.textContent = 'Salvar Álbum';
-  toast(editingAlbumId ? 'Álbum atualizado!' : 'Álbum criado!', 'success');
+  await saveData(editingAlbumId?'Editar álbum':'Novo álbum');
+  renderAlbums();
+  closeModal('modal-album');
+  btn.disabled=false; btn.textContent='Salvar';
+  toast(editingAlbumId?'Álbum atualizado!':'Álbum criado!','success');
 }
 
-// ─── MODAL FOTOS ──────────────────────────────────────────────────
-function openPhotosModal(albumId) {
-  currentPhotosAlbumId = albumId;
-  const alb = localData.albums.find(a => a.id === albumId);
-  document.getElementById('photos-modal-title').textContent = alb ? alb.name.toUpperCase() : 'Fotos';
-  const grid = document.getElementById('existing-photos-grid');
-  grid.innerHTML = (alb?.media || []).map(m => existingMediaHTML(m, 'photos', albumId)).join('');
-  pendingFiles2 = [];
-  document.getElementById('upload-progress2').style.display = 'none';
-  openModal('photos-modal');
-}
-function handleFiles2(files) {
-  const albumId = currentPhotosAlbumId;
-  for (const f of files) {
-    if (f.size > 10 * 1024 * 1024) { toast(`${f.name} excede 10MB`, 'error'); continue; }
-    pendingFiles2.push({ file: f, albumId });
-    uploadSingle(f, albumId);
-  }
-}
-function handleDrop2(e) {
-  e.preventDefault();
-  handleFiles2(e.dataTransfer.files);
-}
-async function uploadSingle(file, albumId) {
-  const prog = document.getElementById('upload-progress2');
-  prog.style.display = 'block';
-  document.getElementById('progress-text2').textContent = `Enviando ${file.name}...`;
-  const result = await uploadFileToGitHub(file, albumId);
-  if (result) {
-    const alb = localData.albums.find(a => a.id === albumId);
-    if (alb) {
-      alb.media = alb.media || [];
-      alb.media.push(result);
-      if (!alb.cover_media_id && result.type === 'image') alb.cover_media_id = result.id;
-      await saveData('Adicionar mídia');
-      const grid = document.getElementById('existing-photos-grid');
-      const div = document.createElement('div');
-      div.innerHTML = existingMediaHTML(result, 'photos', albumId);
-      grid.appendChild(div.firstChild);
-      renderAdminAlbums();
-      toast('Foto enviada!', 'success');
-    }
-  } else {
-    toast('Erro ao enviar ' + file.name, 'error');
-  }
-  prog.style.display = 'none';
-}
-
-// ─── DELETAR ÁLBUM ────────────────────────────────────────────────
 async function deleteAlbum(id) {
-  if (!confirm('Deletar este álbum e todas as fotos? Esta ação não pode ser desfeita.')) return;
-  const alb = localData.albums.find(a => a.id === id);
+  if (!confirm('Deletar álbum e todas as fotos? Esta ação não pode ser desfeita.')) return;
+  const alb = localData.albums.find(a=>a.id===id);
   if (!alb) return;
-  // Deletar arquivos do GitHub
-  for (const m of (alb.media || [])) {
-    if (m.path) {
-      const file = await ghGet(m.path);
-      if (file) await ghDelete(m.path, `Remover mídia: ${m.id}`, file.sha);
-    }
+  for (const m of (alb.media||[])) {
+    if (m.path) { const f=await ghGet(m.path); if(f) await ghDelete(m.path,'Remover mídia',f.sha); }
   }
-  localData.albums = localData.albums.filter(a => a.id !== id);
+  localData.albums=localData.albums.filter(a=>a.id!==id);
   await saveData('Deletar álbum');
-  renderAdminAlbums();
-  toast('Álbum deletado', 'success');
+  renderAlbums(); toast('Álbum deletado','success');
 }
 
-// ─── MODAL HELPERS ────────────────────────────────────────────────
+// ── PHOTOS MODAL ──
+function openPhotos(albumId) {
+  currentPhotosAlbumId=albumId;
+  const alb=localData.albums.find(a=>a.id===albumId);
+  document.getElementById('modal-photos-title').textContent=alb?.name?.toUpperCase()||'Fotos';
+  document.getElementById('existing-grid').innerHTML=(alb?.media||[]).map(m=>existingThumbHTML(m,albumId)).join('');
+  document.getElementById('prog-wrap2').style.display='none';
+  openModal('modal-photos');
+}
+function handleFiles2(files) { for(const f of files) uploadSingle(f,currentPhotosAlbumId); }
+function handleDrop2(e) { e.preventDefault(); handleFiles2(e.dataTransfer.files); }
+
+async function uploadSingle(file, albumId) {
+  if (file.size>10*1024*1024) { toast(file.name+' excede 10MB','error'); return; }
+  document.getElementById('prog-wrap2').style.display='block';
+  document.getElementById('prog-text2').textContent=`Enviando ${file.name}...`;
+  const result = await uploadFile(file, albumId);
+  if (result) {
+    const alb=localData.albums.find(a=>a.id===albumId);
+    if (alb) {
+      alb.media.push(result);
+      if (!alb.cover_media_id&&result.type==='image') alb.cover_media_id=result.id;
+      await saveData('Adicionar mídia');
+      const grid=document.getElementById('existing-grid');
+      const div=document.createElement('div');
+      div.innerHTML=existingThumbHTML(result,albumId);
+      grid.appendChild(div.firstChild);
+      renderAlbums(); toast('Foto enviada!','success');
+    }
+  } else { toast('Erro ao enviar '+file.name,'error'); }
+  document.getElementById('prog-wrap2').style.display='none';
+}
+
+// ── GITHUB UPLOAD ──
+async function uploadFile(file, albumId) {
+  const ext = file.name.split('.').pop().toLowerCase()||'jpg';
+  const id = Date.now()+'_'+Math.random().toString(36).slice(2,8);
+  const path = `media/${albumId}/${id}.${ext}`;
+  const b64 = await fileToB64(file);
+  const result = await ghPut(path, b64, `Upload: ${file.name}`);
+  if (!result?.content) return null;
+  return {
+    id, path,
+    url:`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${path}`,
+    type: file.type.startsWith('video')?'video':'image'
+  };
+}
+function fileToB64(file) {
+  return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+}
+
+// ══════════════════════════════════════════════
+// ANALYTICS TRACKING (chamado pelo index.html)
+// ══════════════════════════════════════════════
+// Esta função é exportada para ser usada no index.html
+window.trackPageView = async function(country, city) {
+  await loadData();
+  if (!localData.analytics) localData.analytics={visits:[],buy_clicks:[]};
+  localData.analytics.visits.push({date:new Date().toISOString().slice(0,10),country:country||'Unknown',city:city||''});
+  await saveData('Track visit');
+};
+
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-// ─── TOAST ────────────────────────────────────────────────────────
-function toast(msg, type = '') {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.className = `toast ${type} show`;
-  setTimeout(() => el.classList.remove('show'), 3000);
+function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function toast(msg,type='') {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className=`toast ${type} show`;
+  setTimeout(()=>el.classList.remove('show'),3000);
 }
 
-// ─── HELPERS ──────────────────────────────────────────────────────
-function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+async function enterAdmin() {
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('admin-screen').style.display='block';
+  await loadData();
+  renderDashboard();
+}
 
-// ─── INIT ─────────────────────────────────────────────────────────
-// Verificar sessão salva
-if (sessionStorage.getItem('yla_admin') === '1') { enterAdmin(); }
+if (sessionStorage.getItem('yla_admin')==='1') { enterAdmin(); }
 </script>
 </body>
 </html>
