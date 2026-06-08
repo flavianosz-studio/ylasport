@@ -340,7 +340,7 @@ async function fetchAlbums() {
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-function slugify(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+function slugify(s) { return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
 
 // ─── VIEWS ─────────────────────────────────────────────────────────────────
 function showView(id) {
