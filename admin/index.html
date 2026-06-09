@@ -448,7 +448,10 @@ function showPage(id) {
   document.getElementById('page-'+id).classList.add('active');
   event.target.classList.add('active');
   if (id==='dashboard') renderDashboard();
-  if (id==='albums') renderAlbums();
+  if (id==='albums') { 
+    document.getElementById('albums-loading').style.display='none';
+    renderAlbums(); 
+  }
 }
 
 // ══════════════════════════════════════════════
@@ -786,6 +789,7 @@ async function enterAdmin() {
   document.getElementById('admin-screen').style.display='block';
   await loadData();
   renderDashboard();
+  renderAlbums(); // Pre-render albums so they show immediately when tab is clicked
 }
 
 if (sessionStorage.getItem('yla_admin')==='1') { enterAdmin(); }
