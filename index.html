@@ -274,46 +274,81 @@
 </nav>
 
 <script>
-// ─── CONFIG ────────────────────────────────────────────────────────────────
-// URL raw do data.json no seu repositório GitHub
-// Exemplo: https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPO/main/data.json
-const DATA_URL = 'https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/data.json';
+// ─── DADOS ESTÁTICOS (sem depender de servidor) ───────────────────────────
+const STATIC_ALBUMS = [
+  {
+    id: "album-superman-1",
+    name: "YoungLA x Superman",
+    tag: "YoungLA x Superman compression",
+    description: "Price: 147y\nWe only have XL left, restocking in a few days.",
+    pay_link: "https://item.taobao.com/item.htm?id=950493805166&mi_id=0000gskIwQ-tJO9aa6v7C4W04e2zOsC6XxeTWHxsJoGTD2k&spm=a21xtw.29178619.0.0&xxc=shop&skuId=5951926960401",
+    cover_media_id: "sm-4",
+    media: [
+      { id: "sm-1", url: "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/1.webp", type: "image" },
+      { id: "sm-2", url: "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/2.webp", type: "image" },
+      { id: "sm-3", url: "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/3.webp", type: "image" },
+      { id: "sm-4", url: "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/4.webp", type: "image" }
+    ]
+  },
+  {
+    id: "album-warrior-4041",
+    name: "YoungLA Warrior compression 4041",
+    tag: "YoungLA Warrior compression",
+    description: "Price: 139y\nBlack: S,M,L,XL | Purple: XL | Gray: S,L,XL | Blue Nave: S,M,XL",
+    pay_link: "https://item.taobao.com/item.htm?id=992837902118",
+    cover_media_id: null,
+    media: []
+  },
+  {
+    id: "album-superman-newcolors",
+    name: "YoungLA x Superman (New Colors)",
+    tag: "YoungLA x Superman",
+    description: "Price: 168y with original package\n147y without original package.",
+    pay_link: "https://item.taobao.com/item.htm?id=1051335028577",
+    cover_media_id: null,
+    media: []
+  },
+  {
+    id: "album-how-to-buy",
+    name: "How to Buy (Custom Order) or (Big orders)",
+    tag: "How to Buy - Step by Step",
+    description: "Learn how to place custom or bulk orders.",
+    pay_link: "",
+    cover_media_id: null,
+    media: []
+  },
+  {
+    id: "album-customer-reviews",
+    name: "Customer Reviews",
+    tag: "Reviews",
+    description: "Real customer reviews and photos.",
+    pay_link: "",
+    cover_media_id: null,
+    media: []
+  },
+  {
+    id: "album-in-production",
+    name: "In production",
+    tag: "In Production",
+    description: "Products currently in production.",
+    pay_link: "",
+    cover_media_id: null,
+    media: []
+  },
+  {
+    id: "album-batman",
+    name: "YoungLA x Batman",
+    tag: "YoungLA x Batman compression",
+    description: "YoungLA x Batman collection.",
+    pay_link: "",
+    cover_media_id: null,
+    media: []
+  }
+];
 
-// ─── ANALYTICS (via Vercel Function — token seguro no servidor) ──────────────
-const TRACK_URL = '/api/track';
-
-let _tracked = false;
-function trackVisit() {
-  if (_tracked) return; _tracked = true;
-  // Get country via ipapi then send to our secure Vercel Function
-  fetch('https://ipapi.co/json/')
-    .then(r => r.json())
-    .catch(() => ({}))
-    .then(geo => {
-      return fetch(TRACK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'visit',
-          country: geo.country_name || 'Unknown',
-          city: geo.city || ''
-        })
-      });
-    })
-    .catch(e => console.warn('Track visit failed:', e));
-}
-
-function trackBuyClick(albumId, albumName) {
-  fetch(TRACK_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      type: 'buy_click',
-      album_id: albumId,
-      album_name: albumName
-    })
-  }).catch(e => console.warn('Track click failed:', e));
-}
+// ─── ANALYTICS (desativado temporariamente) ──────────────────────────────
+function trackVisit() {}
+function trackBuyClick(albumId, albumName) {}
 
 // ─── STATE ─────────────────────────────────────────────────────────────────
 let albums = [];
@@ -321,15 +356,7 @@ let lbItems = [], lbIndex = 0, lastView = 'home';
 
 // ─── FETCH DATA ────────────────────────────────────────────────────────────
 async function fetchAlbums() {
-  try {
-    const r = await fetch(DATA_URL + '?t=' + Date.now());
-    if (!r.ok) return [];
-    const data = await r.json();
-    return data.albums || [];
-  } catch(e) {
-    console.error('Erro ao carregar data.json:', e);
-    return [];
-  }
+  return STATIC_ALBUMS;
 }
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────
