@@ -279,44 +279,40 @@
 // Exemplo: https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPO/main/data.json
 const DATA_URL = 'https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/data.json';
 
-// ─── ANALYTICS ────────────────────────────────────────────────────────────────
-const GH_ANALYTICS_TOKEN = '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';
-const GH_OWNER = 'flavianosz-studio';
-const GH_REPO = 'ylasport';
-const GH_BRANCH = 'main';
-const GH_API = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents`;
-const ghH = () => ({'Authorization':`Bearer ${GH_ANALYTICS_TOKEN}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'});
+// ─── ANALYTICS (via Vercel Function — token seguro no servidor) ──────────────
+const TRACK_URL = '/api/track';
 
 let _tracked = false;
-async function trackVisit() {
+function trackVisit() {
   if (_tracked) return; _tracked = true;
-  try {
-    const geo = await fetch('https://ipapi.co/json/').then(r=>r.json()).catch(()=>({}));
-    const country = geo.country_name || 'Unknown';
-    const city = geo.city || '';
-    // Fetch current data.json
-    const f = await fetch(`${GH_API}/data.json?ref=${GH_BRANCH}&t=${Date.now()}`, {headers:ghH()}).then(r=>r.json()).catch(()=>null);
-    if (!f) return;
-    const data = JSON.parse(decodeURIComponent(escape(atob(f.content.split('\n').join('')))));
-    if (!data.analytics) data.analytics = {visits:[], buy_clicks:[]};
-    data.analytics.visits.push({date:new Date().toISOString().slice(0,10), country, city});
-    // Keep last 5000 visits max
-    if (data.analytics.visits.length > 5000) data.analytics.visits = data.analytics.visits.slice(-5000);
-    const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    await fetch(`${GH_API}/data.json`, {method:'PUT', headers:ghH(), body:JSON.stringify({message:'Track visit', content:b64, sha:f.sha, branch:GH_BRANCH})});
-  } catch(e) { /* silently ignore */ }
+  // Get country via ipapi then send to our secure Vercel Function
+  fetch('https://ipapi.co/json/')
+    .then(r => r.json())
+    .catch(() => ({}))
+    .then(geo => {
+      return fetch(TRACK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'visit',
+          country: geo.country_name || 'Unknown',
+          city: geo.city || ''
+        })
+      });
+    })
+    .catch(e => console.warn('Track visit failed:', e));
 }
 
-async function trackBuyClick(albumId, albumName) {
-  try {
-    const f = await fetch(`${GH_API}/data.json?ref=${GH_BRANCH}&t=${Date.now()}`, {headers:ghH()}).then(r=>r.json()).catch(()=>null);
-    if (!f) return;
-    const data = JSON.parse(decodeURIComponent(escape(atob(f.content.split('\n').join('')))));
-    if (!data.analytics) data.analytics = {visits:[], buy_clicks:[]};
-    data.analytics.buy_clicks.push({album_id:albumId, album_name:albumName, date:new Date().toISOString().slice(0,10)});
-    const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    await fetch(`${GH_API}/data.json`, {method:'PUT', headers:ghH(), body:JSON.stringify({message:'Track buy click', content:b64, sha:f.sha, branch:GH_BRANCH})});
-  } catch(e) { /* silently ignore */ }
+function trackBuyClick(albumId, albumName) {
+  fetch(TRACK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      type: 'buy_click',
+      album_id: albumId,
+      album_name: albumName
+    })
+  }).catch(e => console.warn('Track click failed:', e));
 }
 
 // ─── STATE ─────────────────────────────────────────────────────────────────
