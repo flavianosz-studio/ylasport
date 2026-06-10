@@ -264,6 +264,72 @@ body { font-family: var(--font-b); background: var(--white); color: var(--black)
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50% { transform: translateX(-50%) translateY(6px); }
 }
+
+/* ── HERO SLIDESHOW ── */
+.hero-slides {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .8s ease;
+}
+.hero-slide.active { opacity: 1; }
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Dots */
+.hero-dots {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+.hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.7);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background .3s;
+}
+.hero-dot.active { background: var(--white); }
+
+/* Arrows */
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background .2s;
+  z-index: 10;
+}
+.hero-arrow:hover { background: rgba(0,0,0,.5); }
+.hero-arrow-prev { left: 20px; }
+.hero-arrow-next { right: 20px; }
 .hero-stat-bar {
   background: var(--black);
   color: var(--white);
@@ -927,10 +993,30 @@ body { font-family: var(--font-b); background: var(--white); color: var(--black)
 
 <!-- HOME -->
 <div id="view-home" class="view active">
-    <!-- HERO BANNER -->
-    <div class="hero-banner">
-      <img src="https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/assets/banner.png" alt="YLASPORT New Drop" loading="eager">
+    <!-- HERO BANNER SLIDESHOW -->
+    <div class="hero-banner" id="hero-banner">
+      <!-- Slides -->
+      <div class="hero-slides">
+        <div class="hero-slide active">
+          <img src="https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/assets/banner.png" alt="YLASPORT New Drop" loading="eager">
+        </div>
+        <div class="hero-slide">
+          <img src="taobao-banner.png" alt="YLASPORT Official Taobao Store" loading="lazy">
+        </div>
+      </div>
       <div class="hero-banner-overlay"></div>
+      <!-- Dots -->
+      <div class="hero-dots">
+        <button class="hero-dot active" onclick="goToSlide(0)"></button>
+        <button class="hero-dot" onclick="goToSlide(1)"></button>
+      </div>
+      <!-- Arrows -->
+      <button class="hero-arrow hero-arrow-prev" onclick="slideStep(-1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="hero-arrow hero-arrow-next" onclick="slideStep(1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
       <button class="hero-shop-btn" onclick="document.getElementById('collections-section').scrollIntoView({behavior:'smooth'})">SHOP NOW</button>
       <button class="hero-scroll-btn" onclick="document.getElementById('collections-section').scrollIntoView({behavior:'smooth'})">
         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><polyline points="6 9 12 15 18 9"/></svg>
@@ -1362,6 +1448,30 @@ if ('serviceWorker' in navigator) {
 trackVisit();
 // Initialize Lucide icons
 if(typeof lucide !== "undefined") lucide.createIcons();
+
+// ─── HERO SLIDESHOW ────────────────────────────────────────────────────────
+let _slideIdx = 0;
+let _slideTimer = null;
+const _SLIDE_INTERVAL = 5000;
+
+function goToSlide(n) {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots   = document.querySelectorAll('.hero-dot');
+  if (!slides.length) return;
+  slides[_slideIdx].classList.remove('active');
+  dots[_slideIdx]?.classList.remove('active');
+  _slideIdx = (n + slides.length) % slides.length;
+  slides[_slideIdx].classList.add('active');
+  dots[_slideIdx]?.classList.add('active');
+  // restart auto-timer on manual nav
+  clearInterval(_slideTimer);
+  _slideTimer = setInterval(() => goToSlide(_slideIdx + 1), _SLIDE_INTERVAL);
+}
+
+function slideStep(dir) { goToSlide(_slideIdx + dir); }
+
+// Start auto-play
+_slideTimer = setInterval(() => goToSlide(_slideIdx + 1), _SLIDE_INTERVAL);
 </script>
 </body>
 </html>
