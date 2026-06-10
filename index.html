@@ -442,8 +442,11 @@ function renderAlbumDetail(alb) {
   document.getElementById('album-detail-count').textContent = `${media.length} item${media.length !== 1 ? 's' : ''}`;
   document.getElementById('album-desc-display').textContent = alb.description || '';
   const buyBtn = document.getElementById('album-buy-btn');
-  if (alb.pay_link) { buyBtn.href = alb.pay_link; buyBtn.classList.remove('hidden'); }
-  else { buyBtn.classList.add('hidden'); }
+  if (alb.pay_link) {
+    buyBtn.href = alb.pay_link;
+    buyBtn.classList.remove('hidden');
+    buyBtn.onclick = () => trackBuyClick(alb.id, alb.name);
+  } else { buyBtn.classList.add('hidden'); }
   const cover = document.getElementById('album-cover-thumb');
   const img = media.find(m => m.id === alb.cover_media_id) || media.find(m => m.type === 'image');
   cover.innerHTML = img ? `<img src="${img.url}" alt="">` : '📁';
