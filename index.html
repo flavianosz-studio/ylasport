@@ -277,36 +277,18 @@ body { font-family: var(--font-b); background: var(--white); color: var(--black)
 ═══════════════════════════════════════════════════════ */
 .album-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2px;
-}
-
-/* First card spans 2 columns on large screens */
-@media (min-width: 900px) {
-  .album-grid .album-card:first-child {
-    grid-column: span 2;
-  }
-  .album-grid .album-card:first-child .album-thumb {
-    aspect-ratio: 16/9;
-  }
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  padding: 4px;
 }
 
 .album-card {
   position: relative;
-  background: var(--gray-100);
+  background: var(--white);
   cursor: pointer;
-  overflow: hidden;
   display: block;
+  border-radius: 2px;
 }
-.album-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,0) 50%);
-  opacity: 0;
-  transition: opacity .35s var(--ease);
-}
-.album-card:hover::after { opacity: 1; }
 
 .album-thumb {
   width: 100%;
@@ -316,98 +298,120 @@ body { font-family: var(--font-b); background: var(--white); color: var(--black)
   align-items: center;
   justify-content: center;
   background: var(--gray-100);
-  font-size: 48px;
+  position: relative;
+  border-radius: 2px;
 }
 .album-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform .6s var(--ease);
+  transition: transform .5s var(--ease);
   display: block;
 }
-.album-card:hover .album-thumb img { transform: scale(1.06); }
+.album-card:hover .album-thumb img { transform: scale(1.04); }
 
-.album-info {
+/* Hover arrow overlay */
+.album-thumb-overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px 20px 16px;
-  z-index: 2;
-  transform: translateY(8px);
-  transition: transform .35s var(--ease);
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,.85);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .25s;
+  pointer-events: none;
 }
-.album-card:hover .album-info { transform: translateY(0); }
+.album-card:hover .album-thumb-overlay { opacity: 1; }
+.album-thumb-overlay svg { width: 16px; height: 16px; stroke: var(--black); stroke-width: 2; }
 
-.album-tag {
-  display: inline-block;
-  background: var(--green);
+/* SOLD OUT badge */
+.album-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--white);
   color: var(--black);
   font-family: var(--font-d);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 2px;
   text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: 2px;
-  margin-bottom: 6px;
+  padding: 4px 10px;
+  z-index: 2;
 }
-.album-card .album-name {
-  font-family: var(--font-d);
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--white);
-  line-height: 1.1;
-  text-shadow: 0 1px 8px rgba(0,0,0,.5);
-  opacity: 0;
-  transition: opacity .35s var(--ease) .05s;
-}
-.album-card:hover .album-name { opacity: 1; }
-.album-card .album-count {
-  font-size: 11px;
-  color: rgba(255,255,255,.7);
-  margin-top: 3px;
-  letter-spacing: .5px;
-  opacity: 0;
-  transition: opacity .35s var(--ease) .1s;
-}
-.album-card:hover .album-count { opacity: 1; }
+.album-badge.new { background: var(--green); color: var(--black); }
 
-/* Non-hover fallback info bar */
+/* Card footer — YoungLA style */
 .album-card-footer {
-  padding: 14px 16px 16px;
+  padding: 12px 4px 6px;
   background: var(--white);
-  border-top: 1px solid var(--gray-100);
 }
 .album-card-footer h3 {
   font-family: var(--font-d);
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--black);
-  line-height: 1.2;
+  line-height: 1.3;
+  margin-bottom: 4px;
 }
-.album-card-footer p {
-  font-size: 12px;
-  color: var(--gray-400);
-  margin-top: 2px;
+.album-price {
+  font-family: var(--font-b);
+  font-size: 13px;
+  color: var(--black);
+  font-weight: 500;
+  margin-bottom: 10px;
 }
-.album-card-footer .footer-tag {
-  display: inline-block;
-  background: var(--gray-100);
-  color: var(--gray-600);
-  font-family: var(--font-d);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 2px;
+
+/* COLOR SWATCHES */
+.color-swatches {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
   margin-top: 6px;
 }
+.swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all .15s;
+  flex-shrink: 0;
+  position: relative;
+}
+.swatch:hover { transform: scale(1.15); }
+.swatch.active {
+  border-color: var(--black);
+  box-shadow: 0 0 0 1px var(--white) inset;
+}
+.swatch[data-color="black"] { background: #1a1a1a; }
+.swatch[data-color="white"] { background: #ffffff; border-color: var(--gray-200); }
+.swatch[data-color="gray"],
+.swatch[data-color="grey"] { background: #888; }
+.swatch[data-color="light-gray"],
+.swatch[data-color="light-grey"] { background: #ccc; }
+.swatch[data-color="dark-gray"],
+.swatch[data-color="dark-grey"] { background: #444; }
+.swatch[data-color="navy"],
+.swatch[data-color="blue-navy"] { background: #1e3a5f; }
+.swatch[data-color="blue"] { background: #2563eb; }
+.swatch[data-color="purple"] { background: #7c3aed; }
+.swatch[data-color="red"] { background: #dc2626; }
+.swatch[data-color="green"] { background: #16a34a; }
+.swatch[data-color="maroon"],
+.swatch[data-color="dark-red"] { background: #7f1d1d; }
+
+/* hide old overlay elements */
+.album-info { display: none; }
+.album-tag { display: none; }
 
 /* ═══════════════════════════════════════════════════════
    ALBUM DETAIL
@@ -1012,20 +1016,33 @@ function goBack() { if (lastView === 'home') showHome(); else showAlbumsPage(); 
 function albumCardHTML(a) {
   const media = a.media || [];
   const cover = media.find(m => m.id === a.cover_media_id) || media.find(m => m.type === 'image');
-  const thumb = cover ? `<img src="${cover.url}" alt="${esc(a.name)}" loading="lazy">` : '<i data-lucide="folder" style="width:40px;height:40px;stroke:var(--gray-400)"></i>';
+  const thumbUrl = cover ? cover.url : null;
+  const variants = a.variants || [];
+  const priceMatch = (a.description || '').match(/Price:\s*([^\n]+)/i);
+  const price = priceMatch ? priceMatch[1].trim() : '';
+  const badge = a.tag ? `<div class="album-badge${a.tag.toLowerCase().includes('new') ? ' new' : ''}">${esc(a.tag)}</div>` : '';
+  const swatches = variants.length ? `<div class="color-swatches" onclick="event.stopPropagation()">${variants.map((v,i)=>`<div class="swatch${i===0?' active':''}" data-color="${v.color}" title="${v.color}" ${v.hex?`style="background:${v.hex}"`:'data-color="'+v.color.toLowerCase().replace(/ /g,'-')+'"'} onclick="switchVariant(this,'${a.id}','${v.media_id}')"></div>`).join('')}</div>` : '';
+  const thumbContent = thumbUrl ? `<img src="${thumbUrl}" alt="${esc(a.name)}" loading="lazy" id="card-img-${esc(String(a.id))}">` : `<i data-lucide="folder" style="width:40px;height:40px;stroke:var(--gray-400)"></i>`;
   return `<div class="album-card" onclick="openAlbum('${esc(String(a.id))}')">
-    <div class="album-thumb">${thumb}</div>
-    <div class="album-info">
-      ${a.tag ? `<span class="album-tag">${esc(a.tag)}</span>` : ''}
-      <div class="album-name">${esc(a.name)}</div>
-      <div class="album-count">${media.length} item${media.length !== 1 ? 's' : ''}</div>
-    </div>
+    <div class="album-thumb">${thumbContent}${badge}<div class="album-thumb-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
     <div class="album-card-footer">
       <h3>${esc(a.name)}</h3>
-      <p>${media.length} item${media.length !== 1 ? 's' : ''}</p>
-      ${a.tag ? `<span class="footer-tag">${esc(a.tag)}</span>` : ''}
+      ${price ? `<div class="album-price">${esc(price)}</div>` : ''}
+      ${swatches}
     </div>
   </div>`;
+}
+
+function switchVariant(el, albumId, mediaId) {
+  const card = el.closest('.album-card');
+  card.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  const alb = albums.find(a => String(a.id) === String(albumId));
+  if (!alb) return;
+  const m = (alb.media || []).find(x => x.id === mediaId);
+  if (!m) return;
+  const img = card.querySelector('img');
+  if (img) { img.style.opacity='0.5'; img.src = m.url; img.onload = () => { img.style.transition='opacity .3s'; img.style.opacity='1'; }; }
 }
 
 function renderHomeAlbums(q = '') {
