@@ -69,14 +69,14 @@
           "type": "image"
         },
         {
-          "id": "sm-4",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/4.webp",
-          "type": "image"
-        },
-        {
           "id": "1781117052035_s0uefq",
           "path": "media/album-superman-1/1781117052035_s0uefq.webp",
           "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/1781117052035_s0uefq.webp",
+          "type": "image"
+        },
+        {
+          "id": "sm-4",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/4.webp",
           "type": "image"
         }
       ]
@@ -138,56 +138,7 @@
       "description": "Price: 168y with original package\n147y without original package.",
       "pay_link": "https://item.taobao.com/item.htm?id=1051335028577",
       "cover_media_id": "1781116077180_blsqlo",
-      "media": [
-        {
-          "id": "1781116077180_blsqlo",
-          "path": "media/album-superman-newcolors/1781116077180_blsqlo.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116077180_blsqlo.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1781116062176_pqh739",
-          "path": "media/album-superman-newcolors/1781116062176_pqh739.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116062176_pqh739.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1781116940200_1u7yl8",
-          "path": "media/album-superman-newcolors/1781116940200_1u7yl8.mp4",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116940200_1u7yl8.mp4",
-          "type": "video"
-        },
-        {
-          "id": "1781116466298_ydtnxj",
-          "path": "media/album-superman-newcolors/1781116466298_ydtnxj.heic",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116466298_ydtnxj.heic",
-          "type": "image"
-        },
-        {
-          "id": "1781116480612_xdjobn",
-          "path": "media/album-superman-newcolors/1781116480612_xdjobn.heic",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116480612_xdjobn.heic",
-          "type": "image"
-        },
-        {
-          "id": "1781116515107_copzoc",
-          "path": "media/album-superman-newcolors/1781116515107_copzoc.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116515107_copzoc.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1781116534285_if0ape",
-          "path": "media/album-superman-newcolors/1781116534285_if0ape.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116534285_if0ape.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1781116371069_8rvfvt",
-          "path": "media/album-superman-newcolors/1781116371069_8rvfvt.webp",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116371069_8rvfvt.webp",
-          "type": "image"
-        }
-      ]
+      "media": []
     },
     {
       "id": "album-how-to-buy",
