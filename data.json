@@ -134,21 +134,15 @@
       "cover_media_id": "1781116077180_blsqlo",
       "media": [
         {
-          "id": "1781116062176_pqh739",
-          "path": "media/album-superman-newcolors/1781116062176_pqh739.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116062176_pqh739.jpg",
-          "type": "image"
-        },
-        {
           "id": "1781116077180_blsqlo",
           "path": "media/album-superman-newcolors/1781116077180_blsqlo.jpg",
           "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116077180_blsqlo.jpg",
           "type": "image"
         },
         {
-          "id": "1781116371069_8rvfvt",
-          "path": "media/album-superman-newcolors/1781116371069_8rvfvt.webp",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116371069_8rvfvt.webp",
+          "id": "1781116062176_pqh739",
+          "path": "media/album-superman-newcolors/1781116062176_pqh739.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116062176_pqh739.jpg",
           "type": "image"
         },
         {
@@ -174,6 +168,18 @@
           "path": "media/album-superman-newcolors/1781116534285_if0ape.jpg",
           "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116534285_if0ape.jpg",
           "type": "image"
+        },
+        {
+          "id": "1781116371069_8rvfvt",
+          "path": "media/album-superman-newcolors/1781116371069_8rvfvt.webp",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116371069_8rvfvt.webp",
+          "type": "image"
+        },
+        {
+          "id": "1781116940200_1u7yl8",
+          "path": "media/album-superman-newcolors/1781116940200_1u7yl8.mp4",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116940200_1u7yl8.mp4",
+          "type": "video"
         }
       ]
     },
