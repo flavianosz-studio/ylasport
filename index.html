@@ -368,9 +368,38 @@ const STATIC_ALBUMS = [
   
 ];
 
-// ─── ANALYTICS (desativado temporariamente) ──────────────────────────────
-function trackVisit() {}
-function trackBuyClick(albumId, albumName) {}
+// ─── ANALYTICS (via Supabase REST direto — sem SDK) ─────────────────────────
+const _SB_URL = 'https://pbdkpvlpbxykmtizazha.supabase.co';
+const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiZGtwdmxwYnh5a210aXphemhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExMDQ1NzIsImV4cCI6MjA5NjY4MDU3Mn0.A3K-M8OxDQN8MV5RT2mqEUNmNcjQEL1PCq1Am4S4d3c';
+
+function _sbInsert(table, data) {
+  return fetch(`${_SB_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: {
+      'apikey': _SB_KEY,
+      'Authorization': `Bearer ${_SB_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify(data)
+  }).catch(e => console.warn('Analytics error:', e.message));
+}
+
+let _tracked = false;
+function trackVisit() {
+  if (_tracked) return; _tracked = true;
+  fetch('https://ipapi.co/json/').then(r=>r.json()).catch(()=>({})).then(geo => {
+    _sbInsert('page_views', {
+      country: geo.country_name || 'Unknown',
+      country_code: geo.country_code || '',
+      city: geo.city || ''
+    });
+  });
+}
+
+function trackBuyClick(albumId, albumName) {
+  _sbInsert('buy_clicks', { album_id: albumId, album_name: albumName });
+}
 
 // ─── STATE ─────────────────────────────────────────────────────────────────
 let albums = [];
