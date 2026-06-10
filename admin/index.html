@@ -270,7 +270,7 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
           ondrop="handleDrop(event)">
           <div class="up-icon">📸</div>
           <p>Clique ou arraste fotos/vídeos</p>
-          <span>JPG, PNG, WEBP, MP4 · máx 10MB</span>
+          <span>JPG, PNG, WEBP · máx 10MB | MP4 · máx 100MB</span>
         </div>
         <input type="file" id="f-files" multiple accept="image/*,video/*" style="display:none" onchange="handleFiles(this.files)">
         <div class="preview-grid" id="preview-grid"></div>
@@ -637,7 +637,8 @@ async function removeMedia(mediaId, albumId) {
 // UPLOAD
 function handleFiles(files) {
   for(const f of files){
-    if(f.size>10*1024*1024){toast(f.name+' excede 10MB','error');continue;}
+    const maxSize = f.type.startsWith('video') ? 100*1024*1024 : 10*1024*1024;
+if(f.size>maxSize){toast(f.name+` excede ${f.type.startsWith('video')?'100':'10'}MB`,'error');continue;}
     const idx=pendingFiles.length;pendingFiles.push(f);addPendingThumb(f,idx);
   }
 }
@@ -722,7 +723,8 @@ function handleFiles2(files){for(const f of files) uploadSingle(f,currentPhotosA
 function handleDrop2(e){e.preventDefault();handleFiles2(e.dataTransfer.files);}
 
 async function uploadSingle(file,albumId){
-  if(file.size>10*1024*1024){toast(file.name+' excede 10MB','error');return;}
+  const maxSize2 = file.type.startsWith('video') ? 100*1024*1024 : 10*1024*1024;
+if(file.size>maxSize2){toast(file.name+` excede ${file.type.startsWith('video')?'100':'10'}MB`,'error');return;}
   document.getElementById('prog-wrap2').style.display='block';
   document.getElementById('prog-text2').textContent=`Enviando ${file.name}...`;
   const result=await uploadFile(file,albumId);
