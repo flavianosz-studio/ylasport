@@ -317,13 +317,25 @@ let lbItems = [], lbIndex = 0, lastView = 'home';
 // ─── FETCH DATA ────────────────────────────────────────────────────────────
 async function fetchAlbums() {
   try {
-    const r = await fetch(DATA_URL + '?t=' + Date.now());
-    if (!r.ok) return [];
-    const data = await r.json();
+    // Usar GitHub API para evitar cache do raw.githubusercontent.com
+    const apiUrl = 'https://api.github.com/repos/flavianosz-studio/ylasport/contents/data.json?ref=main&t=' + Date.now();
+    const r = await fetch(apiUrl, {headers:{'Accept':'application/vnd.github.v3+json'}});
+    if (!r.ok) throw new Error('GitHub API failed');
+    const file = await r.json();
+    const text = decodeURIComponent(escape(atob(file.content.replace(/\n/g, ''))));
+    const data = JSON.parse(text);
     return data.albums || [];
   } catch(e) {
-    console.error('Erro ao carregar data.json:', e);
-    return [];
+    // Fallback para raw com cache bust
+    try {
+      const r = await fetch(DATA_URL + '?t=' + Date.now());
+      if (!r.ok) return [];
+      const data = await r.json();
+      return data.albums || [];
+    } catch(e2) {
+      console.error('Erro ao carregar álbuns:', e2);
+      return [];
+    }
   }
 }
 
