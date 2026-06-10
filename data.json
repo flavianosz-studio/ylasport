@@ -1,24 +1,129 @@
 {
   "albums": [
     {
+      "id": "album-batman",
+      "name": "YoungLA x Batman",
+      "tag": "YoungLA x Batman compression",
+      "description": "Price: 168y with original package.\nAll colors available: Black, Dark Gray, Light Gray, White.\nAll sizes available: S, M, L, XL.\nContact us on WeChat for orders: ylasport",
+      "pay_link": "https://item.taobao.com/item.htm?id=1040367193885&mi_id=0000Z8HYrEzq5GDf0k6xCTIE_MurLqCeI4jwV0DlfzxWBRc&skuId=6058647152066&spm=a21xtw.29178619.0.0&xxc=shop",
+      "cover_media_id": "bt-cover",
+      "media": [
+        {
+          "id": "bt-cover",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/IMG_9514.JPG",
+          "type": "image"
+        },
+        {
+          "id": "bt-1",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/1.webp",
+          "type": "image"
+        },
+        {
+          "id": "bt-2",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/2.webp",
+          "type": "image"
+        },
+        {
+          "id": "bt-3",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/3.webp",
+          "type": "image"
+        },
+        {
+          "id": "bt-4",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/4.webp",
+          "type": "image"
+        },
+        {
+          "id": "bt-5",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/5.webp",
+          "type": "image"
+        },
+        {
+          "id": "bt-6",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/6.webp",
+          "type": "image"
+        }
+      ]
+    },
+    {
       "id": "album-superman-1",
       "name": "YoungLA x Superman",
       "tag": "YoungLA x Superman compression",
       "description": "Price: 147y\nWe only have XL left, restocking in a few days.",
-      "pay_link": "https://item.taobao.com/item.htm?id=950493805166",
-      "cover_media_id": null,
-      "created_at": "2026-04-27T19:00:41.000000+00:00",
-      "media": []
+      "pay_link": "https://item.taobao.com/item.htm?id=950493805166&mi_id=0000gskIwQ-tJO9aa6v7C4W04e2zOsC6XxeTWHxsJoGTD2k&spm=a21xtw.29178619.0.0&xxc=shop&skuId=5951926960401",
+      "cover_media_id": "sm-3",
+      "media": [
+        {
+          "id": "sm-1",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/1.webp",
+          "type": "image"
+        },
+        {
+          "id": "sm-2",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/2.webp",
+          "type": "image"
+        },
+        {
+          "id": "sm-3",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/3.webp",
+          "type": "image"
+        },
+        {
+          "id": "sm-4",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-1/4.webp",
+          "type": "image"
+        }
+      ]
     },
     {
       "id": "album-warrior-4041",
       "name": "YoungLA Warrior compression 4041",
       "tag": "YoungLA Warrior compression",
-      "description": "Price: 139y\nBlack: S,M,L,XL\nPurple: XL\nGray: S,L,XL\nBlue Nave: S,M,XL",
-      "pay_link": "https://item.taobao.com/item.htm?id=992837902118",
-      "cover_media_id": null,
-      "created_at": "2026-04-27T19:00:39.000000+00:00",
-      "media": []
+      "description": "Price: 139y\n\nAvailable Colors:\n• Black — S, M, L, XL\n• Gray — S, M, L, XL\n• Blue Navy — S, M, L, XL\n• Purple — S, M, L, XL\n\nSize Guide (cm):\nS: Length 61 | Chest 35\nM: Length 63 | Chest 37.5\nL: Length 65.5 | Chest 40\nXL: Length 68 | Chest 42.5\n\nEngineered for performance. The YoungLA Warrior 4041 compression shirt features a seamless athletic design with a bold graphic front, moisture-wicking fabric and a muscle-enhancing fit that moves with you — in the gym or on the streets. Available for men and women.",
+      "pay_link": "https://item.taobao.com/item.htm?id=992837902118&mi_id=0000dh8cC8rchggYp1JuNl236npxUBsWlTKRFiVTb2LOGII&sku_properties=1627207%3A757928959&spm=a21xtw.29178619.0.0&xxc=shop",
+      "cover_media_id": "wr-7",
+      "media": [
+        {
+          "id": "wr-1",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-warrior-4041/1.jpg",
+          "type": "image"
+        },
+        {
+          "id": "wr-2",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-warrior-4041/2.jpg",
+          "type": "image"
+        },
+        {
+          "id": "wr-3",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-warrior-4041/3.jpg",
+          "type": "image"
+        },
+        {
+          "id": "wr-4",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-warrior-4041/4.jpg",
+          "type": "image"
+        },
+        {
+          "id": "wr-5",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-warrior-4041/5.jpg",
+          "type": "image"
+        },
+        {
+          "id": "wr-6",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-warrior-4041/6.jpg",
+          "type": "image"
+        },
+        {
+          "id": "wr-6w",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-warrior-4041/6.webp",
+          "type": "image"
+        },
+        {
+          "id": "wr-7",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-warrior-4041/7.jpg",
+          "type": "image"
+        }
+      ]
     },
     {
       "id": "album-superman-newcolors",
@@ -27,7 +132,6 @@
       "description": "Price: 168y with original package\n147y without original package.",
       "pay_link": "https://item.taobao.com/item.htm?id=1051335028577",
       "cover_media_id": null,
-      "created_at": "2026-05-29T03:51:33.000000+00:00",
       "media": []
     },
     {
@@ -37,7 +141,6 @@
       "description": "Learn how to place custom or bulk orders.",
       "pay_link": "",
       "cover_media_id": null,
-      "created_at": "2026-04-27T19:00:41.000000+00:00",
       "media": []
     },
     {
@@ -47,43 +150,36 @@
       "description": "Real customer reviews and photos.",
       "pay_link": "",
       "cover_media_id": null,
-      "created_at": "2026-04-27T19:00:42.000000+00:00",
       "media": []
     },
     {
       "id": "album-in-production",
       "name": "In production",
       "tag": "In Production",
-      "description": "Products currently in production.",
+      "description": "🔥 Something big is coming...\n\nGet an exclusive first look at what's currently being produced. New drops, new colors, new collabs — stay tuned and be the first to know.\n\nFollow us on WeChat: ylasport",
       "pay_link": "",
-      "cover_media_id": null,
-      "created_at": "2026-04-27T19:00:43.000000+00:00",
-      "media": []
-    },
-    {
-      "id": "album-batman",
-      "name": "YoungLA x Batman",
-      "tag": "YoungLA x Batman compression",
-      "description": "YoungLA x Batman collection.",
-      "pay_link": "",
-      "cover_media_id": null,
-      "created_at": "2026-04-27T19:00:44.000000+00:00",
-      "media": []
+      "cover_media_id": "ip-1",
+      "media": [
+        {
+          "id": "ip-1",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-in-production/WhatsApp Image 2026-06-10 at 13.58.31.jpeg",
+          "type": "image"
+        },
+        {
+          "id": "ip-2",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-in-production/WhatsApp Image 2026-06-10 at 13.58.37.jpeg",
+          "type": "image"
+        },
+        {
+          "id": "ip-3",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-in-production/in production.webp",
+          "type": "image"
+        }
+      ]
     }
   ],
   "analytics": {
-    "visits": [
-      {
-        "date": "2026-06-09",
-        "country": "Brazil",
-        "city": "Recife"
-      },
-      {
-        "date": "2026-06-09",
-        "country": "Brazil",
-        "city": "Recife"
-      }
-    ],
+    "visits": [],
     "buy_clicks": []
   }
 }
