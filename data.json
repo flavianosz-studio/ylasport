@@ -131,8 +131,15 @@
       "tag": "YoungLA x Superman",
       "description": "Price: 168y with original package\n147y without original package.",
       "pay_link": "https://item.taobao.com/item.htm?id=1051335028577",
-      "cover_media_id": null,
-      "media": []
+      "cover_media_id": "1781116062176_pqh739",
+      "media": [
+        {
+          "id": "1781116062176_pqh739",
+          "path": "media/album-superman-newcolors/1781116062176_pqh739.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781116062176_pqh739.jpg",
+          "type": "image"
+        }
+      ]
     },
     {
       "id": "album-how-to-buy",
