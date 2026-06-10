@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YLASPORT Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
@@ -31,6 +32,7 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
 .field textarea{resize:vertical;min-height:70px;}
 .btn-primary{width:100%;background:var(--green);color:var(--white);border:none;border-radius:var(--r);padding:12px;font-size:14px;font-weight:700;font-family:var(--font-b);cursor:pointer;transition:background .15s;text-transform:uppercase;letter-spacing:1px;margin-top:8px;}
 .btn-primary:hover{background:var(--green-dark);}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;}
 .error-msg{background:var(--red-light);border:1px solid #feb2b2;color:var(--red);border-radius:var(--r);padding:10px 14px;font-size:13px;margin-bottom:16px;display:none;}
 
 /* LAYOUT */
@@ -39,6 +41,7 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
 .admin-logo{font-family:var(--font-d);font-size:22px;letter-spacing:3px;font-weight:800;}
 .admin-logo span{color:var(--green);}
 .header-right{display:flex;align-items:center;gap:12px;}
+.admin-email{font-size:12px;color:var(--gray-400);}
 .btn-logout{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--white);border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-family:var(--font-b);}
 .btn-logout:hover{background:rgba(255,255,255,.2);}
 
@@ -54,9 +57,9 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
 /* STAT CARDS */
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px;}
 .stat-card{background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--rl);padding:20px 24px;box-shadow:var(--sh);}
-.stat-card .stat-label{font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
-.stat-card .stat-value{font-family:var(--font-d);font-size:36px;font-weight:800;line-height:1;}
-.stat-card .stat-sub{font-size:12px;color:var(--gray-400);margin-top:4px;}
+.stat-label{font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.stat-value{font-family:var(--font-d);font-size:36px;font-weight:800;line-height:1;}
+.stat-sub{font-size:12px;color:var(--gray-400);margin-top:4px;}
 .stat-card.green .stat-value{color:var(--green-dark);}
 .stat-card.blue .stat-value{color:var(--blue);}
 .stat-card.purple .stat-value{color:var(--purple);}
@@ -65,7 +68,7 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
 /* CHARTS */
 .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
 .chart-card{background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--rl);padding:20px 24px;box-shadow:var(--sh);}
-.chart-title{font-family:var(--font-d);font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;color:var(--gray-900);}
+.chart-title{font-family:var(--font-d);font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
 .chart-filters{display:flex;gap:8px;margin-bottom:12px;}
 .filter-btn{background:var(--gray-100);border:none;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font-b);text-transform:uppercase;color:var(--gray-600);transition:all .15s;}
 .filter-btn.active{background:var(--green);color:var(--white);}
@@ -76,7 +79,6 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
 .data-table td{padding:10px 14px;border-bottom:1px solid var(--gray-100);vertical-align:middle;}
 .data-table tr:last-child td{border-bottom:none;}
 .data-table tr:hover td{background:var(--gray-50);}
-.flag{font-size:18px;margin-right:6px;}
 
 /* ALBUMS */
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
@@ -141,9 +143,7 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
 .spinner{width:36px;height:36px;border:3px solid var(--gray-200);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
-.badge-green{background:var(--green-light);color:var(--green-dark);}
-.badge-saving{background:#fef3c7;color:#92400e;}
+.save-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;background:#fef3c7;color:#92400e;}
 
 .empty-state{text-align:center;padding:60px 20px;color:var(--gray-400);}
 .empty-state .icon{font-size:48px;margin-bottom:12px;}
@@ -152,7 +152,6 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
 @media(max-width:640px){
   .charts-row{grid-template-columns:1fr;}
   .stat-grid{grid-template-columns:repeat(2,1fr);}
-  .album-row-actions{gap:6px;}
   .admin-body{padding:16px;}
 }
 </style>
@@ -166,10 +165,14 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
     <div class="login-sub">Painel Administrativo</div>
     <div class="error-msg" id="login-error"></div>
     <div class="field">
-      <label>Senha</label>
-      <input type="password" id="login-password" placeholder="••••••••">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="seu@email.com" autocomplete="email">
     </div>
-    <button class="btn-primary" onclick="doLogin()">Entrar</button>
+    <div class="field">
+      <label>Senha</label>
+      <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-primary" id="btn-login" onclick="doLogin()">Entrar</button>
   </div>
 </div>
 
@@ -178,59 +181,42 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
   <header class="admin-header">
     <div class="admin-logo">YLA<span>SPORT</span> <span style="font-size:12px;color:var(--gray-400);letter-spacing:1px">ADMIN</span></div>
     <div class="header-right">
-      <span id="save-badge" class="badge badge-saving" style="display:none">⏳ Salvando...</span>
+      <span class="save-badge" id="save-badge" style="display:none">⏳ Salvando...</span>
+      <span class="admin-email" id="admin-email"></span>
       <a href="/" target="_blank" style="color:var(--gray-400);font-size:12px;text-decoration:none">Ver site ↗</a>
       <button class="btn-logout" onclick="doLogout()">Sair</button>
     </div>
   </header>
 
   <nav class="admin-nav">
-    <button class="nav-tab active" onclick="showPage('dashboard')">📊 Dashboard</button>
-    <button class="nav-tab" onclick="showPage('albums')">📁 Álbuns</button>
+    <button class="nav-tab active" onclick="showPage('dashboard',this)">📊 Dashboard</button>
+    <button class="nav-tab" onclick="showPage('albums',this)">📁 Álbuns</button>
   </nav>
 
   <!-- DASHBOARD -->
   <div id="page-dashboard" class="page active">
     <div class="admin-body">
       <div class="stat-grid">
-        <div class="stat-card green">
-          <div class="stat-label">Total de Visitas</div>
-          <div class="stat-value" id="s-visits">—</div>
-          <div class="stat-sub">todas as visitas</div>
-        </div>
-        <div class="stat-card blue">
-          <div class="stat-label">Visitas Hoje</div>
-          <div class="stat-value" id="s-today">—</div>
-          <div class="stat-sub" id="s-yesterday">ontem: —</div>
-        </div>
-        <div class="stat-card purple">
-          <div class="stat-label">Buy Clicks</div>
-          <div class="stat-value" id="s-clicks">—</div>
-          <div class="stat-sub">total de cliques</div>
-        </div>
-        <div class="stat-card orange">
-          <div class="stat-label">Países</div>
-          <div class="stat-value" id="s-countries">—</div>
-          <div class="stat-sub">países únicos</div>
-        </div>
+        <div class="stat-card green"><div class="stat-label">Total Visitas</div><div class="stat-value" id="s-visits">—</div><div class="stat-sub">todas as visitas</div></div>
+        <div class="stat-card blue"><div class="stat-label">Visitas Hoje</div><div class="stat-value" id="s-today">—</div><div class="stat-sub" id="s-yesterday">ontem: —</div></div>
+        <div class="stat-card purple"><div class="stat-label">Buy Clicks</div><div class="stat-value" id="s-clicks">—</div><div class="stat-sub">total de cliques</div></div>
+        <div class="stat-card orange"><div class="stat-label">Países</div><div class="stat-value" id="s-countries">—</div><div class="stat-sub">países únicos</div></div>
       </div>
-
       <div class="charts-row">
         <div class="chart-card">
           <div class="chart-title">Visitas por período</div>
           <div class="chart-filters">
-            <button class="filter-btn active" onclick="setChartFilter('week',this)">7 dias</button>
-            <button class="filter-btn" onclick="setChartFilter('month',this)">30 dias</button>
-            <button class="filter-btn" onclick="setChartFilter('all',this)">Total</button>
+            <button class="filter-btn active" onclick="setFilter('week',this)">7 dias</button>
+            <button class="filter-btn" onclick="setFilter('month',this)">30 dias</button>
+            <button class="filter-btn" onclick="setFilter('all',this)">Total</button>
           </div>
           <div style="position:relative;height:180px"><canvas id="chart-visits"></canvas></div>
         </div>
         <div class="chart-card">
           <div class="chart-title">Buy Clicks por álbum</div>
-          <div style="position:relative;height:180px"><canvas id="chart-clicks"></canvas></div>
+          <div style="position:relative;height:200px"><canvas id="chart-clicks"></canvas></div>
         </div>
       </div>
-
       <div class="charts-row">
         <div class="chart-card">
           <div class="chart-title">🌍 Top Países</div>
@@ -241,7 +227,7 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
         </div>
         <div class="chart-card">
           <div class="chart-title">🛒 Top Álbuns (Clicks)</div>
-          <table class="data-table" id="table-albums-clicks">
+          <table class="data-table" id="table-clicks">
             <thead><tr><th>Álbum</th><th>Clicks</th></tr></thead>
             <tbody></tbody>
           </table>
@@ -259,9 +245,7 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
       </div>
       <div class="spinner-wrap" id="albums-loading"><div class="spinner"></div></div>
       <div class="album-list" id="album-list" style="display:none"></div>
-      <div class="empty-state" id="albums-empty" style="display:none">
-        <div class="icon">📁</div><h3>Nenhum álbum ainda</h3>
-      </div>
+      <div class="empty-state" id="albums-empty" style="display:none"><div class="icon">📁</div><h3>Nenhum álbum ainda</h3></div>
     </div>
   </div>
 </div>
@@ -279,7 +263,7 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
       <div class="field"><label>Descrição</label><textarea id="f-desc" placeholder="Descrição do álbum"></textarea></div>
       <div class="field"><label>Link de compra</label><input type="url" id="f-pay" placeholder="https://..."></div>
       <div class="field" style="margin-top:20px">
-        <label>Fotos / Vídeos <span style="font-weight:400;color:var(--gray-400)">(clique numa foto para definir a capa)</span></label>
+        <label>Fotos / Vídeos <span style="font-weight:400;color:var(--gray-400)">(clique para definir capa)</span></label>
         <div class="upload-area" onclick="document.getElementById('f-files').click()"
           ondragover="event.preventDefault();this.classList.add('drag')"
           ondragleave="this.classList.remove('drag')"
@@ -322,7 +306,7 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
         <div class="progress-bar"><div class="progress-fill" id="prog-fill2"></div></div>
         <div class="progress-text" id="prog-text2"></div>
       </div>
-      <p style="font-size:12px;color:var(--gray-400);margin-bottom:10px">Clique numa foto para definir como capa</p>
+      <p style="font-size:12px;color:var(--gray-400);margin:10px 0">Clique numa foto para definir como capa</p>
       <div class="preview-grid" id="existing-grid"></div>
     </div>
     <div class="modal-footer">
@@ -335,19 +319,23 @@ body{font-family:var(--font-b);background:var(--gray-50);color:var(--gray-900);}
 
 <script>
 // ══════════════════════════════════════════════
-// CONFIG
+// SUPABASE CONFIG
 // ══════════════════════════════════════════════
-const ADMIN_HASH = '36f8d3cfbf212f1beff9b3f6d992a96f6a2b2ea1257c0a2ba71e56146fc6bc00';
-const GITHUB_TOKEN  = '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';
-const GITHUB_OWNER  = 'flavianosz-studio';
-const GITHUB_REPO   = 'ylasport';
+const SUPABASE_URL = 'https://pbdkpvlpbxykmtizazha.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiZGtwdmxwYnh5a210aXphemhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExMDQ1NzIsImV4cCI6MjA5NjY4MDU3Mn0.A3K-M8OxDQN8MV5RT2mqEUNmNcjQEL1PCq1Am4S4d3c';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const GITHUB_OWNER = 'flavianosz-studio';
+const GITHUB_REPO  = 'ylasport';
 const GITHUB_BRANCH = 'main';
 const GH_API = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents`;
 
 // ══════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════
-let localData = { albums: [], analytics: { visits: [], buy_clicks: [] } };
+let GH_TOKEN = null;
+let localData = { albums: [] };
+let _dataSha = null;
 let editingAlbumId = null;
 let pendingFiles = [];
 let pendingCoverId = null;
@@ -358,144 +346,170 @@ let chartFilter = 'week';
 // ══════════════════════════════════════════════
 // AUTH
 // ══════════════════════════════════════════════
-async function hashStr(s) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
 async function doLogin() {
-  const pass = document.getElementById('login-password').value;
-  const err = document.getElementById('login-error');
-  err.style.display='none';
-  if (!pass) { err.textContent='Digite a senha.'; err.style.display='block'; return; }
-  const h = await hashStr(pass);
-  if (h !== ADMIN_HASH) { err.textContent='Senha incorreta.'; err.style.display='block'; return; }
-  sessionStorage.setItem('yla_admin','1');
-  enterAdmin();
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-password').value;
+  const btn   = document.getElementById('btn-login');
+  const err   = document.getElementById('login-error');
+  err.style.display = 'none';
+  if (!email || !pass) { showLoginError('Preencha email e senha.'); return; }
+  btn.disabled = true; btn.textContent = 'Entrando...';
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+  btn.disabled = false; btn.textContent = 'Entrar';
+  if (error) { showLoginError('Email ou senha incorretos.'); return; }
+  await enterAdmin();
 }
-function doLogout() {
-  sessionStorage.removeItem('yla_admin');
-  document.getElementById('admin-screen').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
+
+async function doLogout() {
+  await sb.auth.signOut();
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  GH_TOKEN = null;
 }
+
+function showLoginError(msg) {
+  const e = document.getElementById('login-error');
+  e.textContent = msg; e.style.display = 'block';
+}
+
 document.getElementById('login-password').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+// ══════════════════════════════════════════════
+// ENTER ADMIN
+// ══════════════════════════════════════════════
+async function enterAdmin() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-screen').style.display = 'block';
+  document.getElementById('admin-email').textContent = user.email;
+
+  // Load GitHub token from Supabase config
+  const { data: cfg } = await sb.from('config').select('key,value');
+  if (cfg) {
+    const tokenRow = cfg.find(r => r.key === 'github_token');
+    if (tokenRow) GH_TOKEN = tokenRow.value;
+  }
+
+  await loadData();
+  renderDashboard();
+  renderAlbums();
+}
 
 // ══════════════════════════════════════════════
 // GITHUB API
 // ══════════════════════════════════════════════
 const ghHeaders = () => ({
-  'Authorization': `Bearer ${GITHUB_TOKEN}`,
+  'Authorization': `Bearer ${GH_TOKEN}`,
   'Accept': 'application/vnd.github.v3+json',
   'Content-Type': 'application/json'
 });
+
 async function ghGet(path) {
   const r = await fetch(`${GH_API}/${path}?ref=${GITHUB_BRANCH}&t=${Date.now()}`, {headers:ghHeaders()});
   return r.ok ? r.json() : null;
 }
+
 async function ghPut(path, b64, msg, sha) {
   const body = {message:msg, content:b64, branch:GITHUB_BRANCH};
   if (sha) body.sha = sha;
   try {
     const r = await fetch(`${GH_API}/${path}`, {method:'PUT', headers:ghHeaders(), body:JSON.stringify(body)});
-    const data = await r.json();
-    if (!r.ok) console.error('ghPut error:', data);
-    return data;
-  } catch(e) {
-    console.error('ghPut failed:', e);
-    return null;
-  }
+    return r.json();
+  } catch(e) { console.error('ghPut error:', e); return null; }
 }
+
 async function ghDelete(path, msg, sha) {
-  const body = {message:msg, sha, branch:GITHUB_BRANCH};
-  const r = await fetch(`${GH_API}/${path}`, {method:'DELETE', headers:ghHeaders(), body:JSON.stringify(body)});
+  const r = await fetch(`${GH_API}/${path}`, {method:'DELETE', headers:ghHeaders(), body:JSON.stringify({message:msg,sha,branch:GITHUB_BRANCH})});
   return r.ok;
 }
 
 // ══════════════════════════════════════════════
-// DATA
+// DATA.JSON
 // ══════════════════════════════════════════════
-let _dataSha = null; // Cache SHA to avoid re-fetching
-
 async function loadData() {
   try {
     const file = await ghGet('data.json');
     if (file) {
-      _dataSha = file.sha; // Cache SHA
-      const content = decodeURIComponent(escape(atob(file.content.replace(/\n/g,''))));
-      localData = JSON.parse(content);
+      _dataSha = file.sha;
+      const text = decodeURIComponent(escape(atob(file.content.split('\n').join(''))));
+      localData = JSON.parse(text);
       if (!localData.analytics) localData.analytics = {visits:[],buy_clicks:[]};
     }
   } catch(e) { localData = {albums:[],analytics:{visits:[],buy_clicks:[]}}; }
 }
 
 async function saveData(msg='Atualizar dados') {
-  document.getElementById('save-badge').style.display='inline-block';
-  // Use cached SHA — avoids extra API call and race conditions
-  const sha = _dataSha;
+  const badge = document.getElementById('save-badge');
+  badge.style.display = 'inline-block';
   const json = JSON.stringify(localData, null, 2);
   const b64 = btoa(unescape(encodeURIComponent(json)));
-  const result = await ghPut('data.json', b64, msg, sha);
-  // Update cached SHA from response
+  const result = await ghPut('data.json', b64, msg, _dataSha);
   if (result?.content?.sha) _dataSha = result.content.sha;
-  document.getElementById('save-badge').style.display='none';
+  badge.style.display = 'none';
 }
 
 // ══════════════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════════════
-function showPage(id) {
+function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  event.target.classList.add('active');
+  if (btn) btn.classList.add('active');
   if (id==='dashboard') renderDashboard();
-  if (id==='albums') { 
-    document.getElementById('albums-loading').style.display='none';
-    renderAlbums(); 
-  }
+  if (id==='albums') { document.getElementById('albums-loading').style.display='none'; renderAlbums(); }
 }
 
 // ══════════════════════════════════════════════
 // DASHBOARD
 // ══════════════════════════════════════════════
-function renderDashboard() {
-  const visits = localData.analytics?.visits || [];
-  const clicks = localData.analytics?.buy_clicks || [];
+async function renderDashboard() {
+  // Load from Supabase
   const today = new Date().toISOString().slice(0,10);
   const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-  const todayCount = visits.filter(v=>v.date===today).length;
-  const yesterdayCount = visits.filter(v=>v.date===yesterday).length;
-  const countries = {};
-  visits.forEach(v=>{ if(v.country) countries[v.country]=(countries[v.country]||0)+1; });
 
-  document.getElementById('s-visits').textContent = visits.length;
+  const [{ data: visits }, { data: clicks }] = await Promise.all([
+    sb.from('page_views').select('visited_at,country,city'),
+    sb.from('buy_clicks').select('album_name,clicked_at,country')
+  ]);
+
+  const v = visits || [];
+  const c = clicks || [];
+
+  const todayCount = v.filter(x=>x.visited_at?.slice(0,10)===today).length;
+  const yesterdayCount = v.filter(x=>x.visited_at?.slice(0,10)===yesterday).length;
+  const countries = {};
+  v.forEach(x=>{ if(x.country) countries[x.country]=(countries[x.country]||0)+1; });
+
+  document.getElementById('s-visits').textContent = v.length;
   document.getElementById('s-today').textContent = todayCount;
   document.getElementById('s-yesterday').textContent = `ontem: ${yesterdayCount}`;
-  document.getElementById('s-clicks').textContent = clicks.length;
+  document.getElementById('s-clicks').textContent = c.length;
   document.getElementById('s-countries').textContent = Object.keys(countries).length;
 
-  renderVisitChart();
-  renderClickChart();
-  renderCountriesTable(countries, visits.length);
-  renderAlbumClicksTable(clicks);
+  renderVisitChart(v);
+  renderClickChart(c);
+  renderCountriesTable(countries, v.length);
+  renderClicksTable(c);
 }
 
-function setChartFilter(f, btn) {
+function setFilter(f, btn) {
   chartFilter = f;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  renderVisitChart();
+  sb.from('page_views').select('visited_at,country,city').then(({data}) => renderVisitChart(data||[]));
 }
 
-function renderVisitChart() {
-  const visits = localData.analytics?.visits || [];
-  const days = chartFilter==='week' ? 7 : chartFilter==='month' ? 30 : 90;
-  const labels = [], counts = [];
-  for (let i=days-1; i>=0; i--) {
+function renderVisitChart(visits) {
+  const days = chartFilter==='week'?7:chartFilter==='month'?30:90;
+  const labels=[], counts=[];
+  for(let i=days-1;i>=0;i--) {
     const d = new Date(Date.now()-i*86400000).toISOString().slice(0,10);
     labels.push(d.slice(5));
-    counts.push(visits.filter(v=>v.date===d).length);
+    counts.push(visits.filter(v=>v.visited_at?.slice(0,10)===d).length);
   }
-  if (visitChart) visitChart.destroy();
+  if(visitChart) visitChart.destroy();
   visitChart = new Chart(document.getElementById('chart-visits'), {
     type:'line',
     data:{labels,datasets:[{label:'Visitas',data:counts,borderColor:'#3dba7e',backgroundColor:'rgba(61,186,126,.1)',fill:true,tension:.4,pointRadius:3}]},
@@ -503,37 +517,33 @@ function renderVisitChart() {
   });
 }
 
-function renderClickChart() {
-  const clicks = localData.analytics?.buy_clicks || [];
-  const albums = localData.albums || [];
-  const counts = {};
-  clicks.forEach(c=>{ counts[c.album_name]=(counts[c.album_name]||0)+1; });
-  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6);
-  if (clickChart) clickChart.destroy();
+function renderClickChart(clicks) {
+  const counts={};
+  clicks.forEach(c=>{counts[c.album_name]=(counts[c.album_name]||0)+1;});
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  if(clickChart) clickChart.destroy();
+  if(!sorted.length) return;
   clickChart = new Chart(document.getElementById('chart-clicks'), {
     type:'bar',
-    data:{
-      labels:sorted.map(([n])=>n.length>20?n.slice(0,20)+'…':n),
-      datasets:[{label:'Clicks',data:sorted.map(([,v])=>v),backgroundColor:'#8b5cf6',borderRadius:6}]
-    },
+    data:{labels:sorted.map(([n])=>n.length>20?n.slice(0,20)+'…':n),datasets:[{label:'Clicks',data:sorted.map(([,v])=>v),backgroundColor:'#8b5cf6',borderRadius:6}]},
     options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}},responsive:true,maintainAspectRatio:false}
   });
 }
 
 function renderCountriesTable(countries, total) {
-  const sorted = Object.entries(countries).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const tbody = document.querySelector('#table-countries tbody');
-  if (!sorted.length) { tbody.innerHTML='<tr><td colspan="3" style="color:var(--gray-400);text-align:center;padding:20px">Sem dados ainda</td></tr>'; return; }
-  tbody.innerHTML = sorted.map(([c,n])=>`<tr><td>${c}</td><td>${n}</td><td>${Math.round(n/total*100)}%</td></tr>`).join('');
+  const sorted=Object.entries(countries).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const tbody=document.querySelector('#table-countries tbody');
+  if(!sorted.length){tbody.innerHTML='<tr><td colspan="3" style="color:var(--gray-400);text-align:center;padding:20px">Sem dados ainda</td></tr>';return;}
+  tbody.innerHTML=sorted.map(([c,n])=>`<tr><td>${c}</td><td>${n}</td><td>${Math.round(n/total*100)}%</td></tr>`).join('');
 }
 
-function renderAlbumClicksTable(clicks) {
-  const counts = {};
-  clicks.forEach(c=>{ counts[c.album_name]=(counts[c.album_name]||0)+1; });
-  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  const tbody = document.querySelector('#table-albums-clicks tbody');
-  if (!sorted.length) { tbody.innerHTML='<tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:20px">Sem dados ainda</td></tr>'; return; }
-  tbody.innerHTML = sorted.map(([n,v])=>`<tr><td>${n}</td><td><strong>${v}</strong></td></tr>`).join('');
+function renderClicksTable(clicks) {
+  const counts={};
+  clicks.forEach(c=>{counts[c.album_name]=(counts[c.album_name]||0)+1;});
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const tbody=document.querySelector('#table-clicks tbody');
+  if(!sorted.length){tbody.innerHTML='<tr><td colspan="2" style="color:var(--gray-400);text-align:center;padding:20px">Sem dados ainda</td></tr>';return;}
+  tbody.innerHTML=sorted.map(([n,v])=>`<tr><td>${n}</td><td><strong>${v}</strong></td></tr>`).join('');
 }
 
 // ══════════════════════════════════════════════
@@ -541,15 +551,15 @@ function renderAlbumClicksTable(clicks) {
 // ══════════════════════════════════════════════
 function renderAlbums() {
   document.getElementById('albums-loading').style.display='none';
-  const list = document.getElementById('album-list');
-  const empty = document.getElementById('albums-empty');
-  const albums = localData.albums || [];
-  if (!albums.length) { list.style.display='none'; empty.style.display='block'; return; }
-  empty.style.display='none'; list.style.display='grid';
-  list.innerHTML = albums.map(a => {
-    const media = a.media||[];
-    const cover = media.find(m=>m.id===a.cover_media_id)||media.find(m=>m.type==='image');
-    const thumb = cover ? `<img src="${cover.url}" alt="" loading="lazy">` : '📁';
+  const list=document.getElementById('album-list');
+  const empty=document.getElementById('albums-empty');
+  const albums=localData.albums||[];
+  if(!albums.length){list.style.display='none';empty.style.display='block';return;}
+  empty.style.display='none';list.style.display='grid';
+  list.innerHTML=albums.map(a=>{
+    const media=a.media||[];
+    const cover=media.find(m=>m.id===a.cover_media_id)||media.find(m=>m.type==='image');
+    const thumb=cover?`<img src="${cover.url}" alt="" loading="lazy">`:'📁';
     return `<div class="album-row">
       <div class="album-row-thumb">${thumb}</div>
       <div class="album-row-info">
@@ -565,10 +575,9 @@ function renderAlbums() {
   }).join('');
 }
 
-// ── NOVO ÁLBUM ──
 function openNewAlbum() {
-  editingAlbumId = null; pendingFiles = []; pendingCoverId = null;
-  document.getElementById('modal-album-title').textContent = 'Novo Álbum';
+  editingAlbumId=null;pendingFiles=[];pendingCoverId=null;
+  document.getElementById('modal-album-title').textContent='Novo Álbum';
   ['f-name','f-tag','f-desc','f-pay'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('preview-grid').innerHTML='';
   document.getElementById('prog-wrap').style.display='none';
@@ -576,23 +585,24 @@ function openNewAlbum() {
 }
 
 function editAlbum(id) {
-  const alb = localData.albums.find(a=>a.id===id);
-  if (!alb) return;
-  editingAlbumId=id; pendingFiles=[]; pendingCoverId=alb.cover_media_id;
+  const alb=localData.albums.find(a=>a.id===id);
+  if(!alb) return;
+  editingAlbumId=id;pendingFiles=[];pendingCoverId=alb.cover_media_id;
   document.getElementById('modal-album-title').textContent='Editar Álbum';
   document.getElementById('f-name').value=alb.name||'';
   document.getElementById('f-tag').value=alb.tag||'';
   document.getElementById('f-desc').value=alb.description||'';
   document.getElementById('f-pay').value=alb.pay_link||'';
-  const grid = document.getElementById('preview-grid');
+  const grid=document.getElementById('preview-grid');
   grid.innerHTML=(alb.media||[]).map(m=>existingThumbHTML(m,id)).join('');
   document.getElementById('prog-wrap').style.display='none';
   openModal('modal-album');
 }
 
 function existingThumbHTML(m, albumId) {
-  const isCover = m.id===(editingAlbumId ? (localData.albums.find(a=>a.id===editingAlbumId)||{}).cover_media_id : pendingCoverId);
-  const preview = m.type==='video' ? `<video src="${m.url}" muted></video>` : `<img src="${m.url}" alt="">`;
+  const alb=localData.albums.find(a=>a.id===albumId);
+  const isCover=alb&&m.id===alb.cover_media_id;
+  const preview=m.type==='video'?`<video src="${m.url}" muted>`:`<img src="${m.url}" alt="">`;
   return `<div class="preview-item${isCover?' is-cover':''}" id="pi-${m.id}" onclick="setExistingCover('${m.id}','${albumId}')">
     ${preview}
     <button class="preview-remove" onclick="event.stopPropagation();removeMedia('${m.id}','${albumId}')">✕</button>
@@ -601,86 +611,80 @@ function existingThumbHTML(m, albumId) {
 }
 
 async function setExistingCover(mediaId, albumId) {
-  const alb = localData.albums.find(a=>a.id===albumId);
-  if (!alb) return;
-  alb.cover_media_id = mediaId;
-  document.querySelectorAll('.preview-item').forEach(el=>{
-    el.classList.toggle('is-cover', el.id==='pi-'+mediaId);
-  });
+  const alb=localData.albums.find(a=>a.id===albumId);
+  if(!alb) return;
+  alb.cover_media_id=mediaId;
+  document.querySelectorAll('.preview-item').forEach(el=>el.classList.toggle('is-cover',el.id==='pi-'+mediaId));
   await saveData('Atualizar capa');
   renderAlbums();
   toast('Capa atualizada!','success');
 }
 
 async function removeMedia(mediaId, albumId) {
-  if (!confirm('Remover esta mídia?')) return;
-  const alb = localData.albums.find(a=>a.id===albumId);
-  if (!alb) return;
-  const m = (alb.media||[]).find(x=>x.id===mediaId);
-  if (m?.path) {
-    const file = await ghGet(m.path);
-    if (file) await ghDelete(m.path, `Remover mídia`, file.sha);
-  }
-  alb.media = (alb.media||[]).filter(x=>x.id!==mediaId);
-  if (alb.cover_media_id===mediaId) alb.cover_media_id=null;
+  if(!confirm('Remover esta mídia?')) return;
+  const alb=localData.albums.find(a=>a.id===albumId);
+  if(!alb) return;
+  const m=(alb.media||[]).find(x=>x.id===mediaId);
+  if(m?.path){const f=await ghGet(m.path);if(f) await ghDelete(m.path,'Remover mídia',f.sha);}
+  alb.media=(alb.media||[]).filter(x=>x.id!==mediaId);
+  if(alb.cover_media_id===mediaId) alb.cover_media_id=null;
   document.getElementById('pi-'+mediaId)?.remove();
   await saveData('Remover mídia');
-  renderAlbums(); toast('Mídia removida','success');
+  renderAlbums();
+  toast('Mídia removida','success');
 }
 
-// ── UPLOAD ──
+// UPLOAD
 function handleFiles(files) {
-  for (const f of files) {
-    if (f.size>10*1024*1024) { toast(f.name+' excede 10MB','error'); continue; }
-    const idx = pendingFiles.length;
-    pendingFiles.push(f);
-    addPendingThumb(f, idx);
+  for(const f of files){
+    if(f.size>10*1024*1024){toast(f.name+' excede 10MB','error');continue;}
+    const idx=pendingFiles.length;pendingFiles.push(f);addPendingThumb(f,idx);
   }
 }
-function handleDrop(e) { e.preventDefault(); document.querySelector('.upload-area').classList.remove('drag'); handleFiles(e.dataTransfer.files); }
+function handleDrop(e){e.preventDefault();document.querySelector('#modal-album .upload-area').classList.remove('drag');handleFiles(e.dataTransfer.files);}
 
-function addPendingThumb(file, idx) {
-  const grid = document.getElementById('preview-grid');
-  const div = document.createElement('div');
-  div.className='preview-item'; div.id=`pf-${idx}`;
-  div.onclick = () => setPendingCover(idx);
-  const url = URL.createObjectURL(file);
-  div.innerHTML = (file.type.startsWith('video')?`<video src="${url}" muted>`:`<img src="${url}" alt="">`)
-    + `<button class="preview-remove" onclick="event.stopPropagation();removePending(${idx})">✕</button><div class="cover-badge">Capa</div>`;
+function addPendingThumb(file,idx){
+  const grid=document.getElementById('preview-grid');
+  const div=document.createElement('div');
+  div.className='preview-item';div.id=`pf-${idx}`;
+  div.onclick=()=>setPendingCover(idx);
+  const url=URL.createObjectURL(file);
+  div.innerHTML=(file.type.startsWith('video')?`<video src="${url}" muted>`:`<img src="${url}" alt="">`)
+    +`<button class="preview-remove" onclick="event.stopPropagation();removePending(${idx})">✕</button><div class="cover-badge">Capa</div>`;
   grid.appendChild(div);
 }
-function removePending(idx) { pendingFiles[idx]=null; document.getElementById(`pf-${idx}`)?.remove(); }
-function setPendingCover(idx) {
-  pendingCoverId = `pending_${idx}`;
+function removePending(idx){pendingFiles[idx]=null;document.getElementById(`pf-${idx}`)?.remove();}
+function setPendingCover(idx){
+  pendingCoverId=`pending_${idx}`;
   document.querySelectorAll('#preview-grid .preview-item').forEach((el,i)=>el.classList.toggle('is-cover',i===idx));
 }
 
 async function saveAlbum() {
-  const name = document.getElementById('f-name').value.trim();
-  if (!name) { toast('Nome obrigatório','error'); return; }
-  const btn = document.getElementById('btn-save-album');
-  btn.disabled=true; btn.textContent='Salvando...';
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){toast('Nome obrigatório','error');return;}
+  const btn=document.getElementById('btn-save-album');
+  btn.disabled=true;btn.textContent='Salvando...';
 
-  const albumId = editingAlbumId || String(Date.now());
-  let alb = localData.albums.find(a=>a.id===albumId);
-  if (!alb) {
-    alb = {id:albumId,name,tag:'',description:'',pay_link:'',cover_media_id:null,created_at:new Date().toISOString(),media:[]};
+  const albumId=editingAlbumId||String(Date.now());
+  let alb=localData.albums.find(a=>a.id===albumId);
+  if(!alb){
+    alb={id:albumId,name,tag:'',description:'',pay_link:'',cover_media_id:null,created_at:new Date().toISOString(),media:[]};
     localData.albums.unshift(alb);
   }
-  alb.name=name; alb.tag=document.getElementById('f-tag').value.trim();
+  alb.name=name;alb.tag=document.getElementById('f-tag').value.trim();
   alb.description=document.getElementById('f-desc').value.trim();
   alb.pay_link=document.getElementById('f-pay').value.trim();
 
-  const files = pendingFiles.filter(Boolean);
-  if (files.length) {
+  const files=pendingFiles.filter(Boolean);
+  if(files.length){
     document.getElementById('prog-wrap').style.display='block';
-    for (let i=0;i<files.length;i++) {
+    for(let i=0;i<files.length;i++){
       document.getElementById('prog-fill').style.width=`${Math.round(i/files.length*100)}%`;
       document.getElementById('prog-text').textContent=`Enviando ${i+1} de ${files.length}...`;
-      const result = await uploadFile(files[i], albumId);
-      if (result) {
+      const result=await uploadFile(files[i],albumId);
+      if(result){
         alb.media.push(result);
-        if (pendingCoverId===`pending_${pendingFiles.indexOf(files[i])}` || (!alb.cover_media_id&&result.type==='image'))
+        if(pendingCoverId===`pending_${pendingFiles.indexOf(files[i])}`||(!alb.cover_media_id&&result.type==='image'))
           alb.cover_media_id=result.id;
       }
     }
@@ -691,23 +695,21 @@ async function saveAlbum() {
   await saveData(editingAlbumId?'Editar álbum':'Novo álbum');
   renderAlbums();
   closeModal('modal-album');
-  btn.disabled=false; btn.textContent='Salvar';
+  btn.disabled=false;btn.textContent='Salvar';
   toast(editingAlbumId?'Álbum atualizado!':'Álbum criado!','success');
 }
 
 async function deleteAlbum(id) {
-  if (!confirm('Deletar álbum e todas as fotos? Esta ação não pode ser desfeita.')) return;
-  const alb = localData.albums.find(a=>a.id===id);
-  if (!alb) return;
-  for (const m of (alb.media||[])) {
-    if (m.path) { const f=await ghGet(m.path); if(f) await ghDelete(m.path,'Remover mídia',f.sha); }
-  }
+  if(!confirm('Deletar álbum e todas as fotos?')) return;
+  const alb=localData.albums.find(a=>a.id===id);
+  if(!alb) return;
+  for(const m of (alb.media||[])){if(m.path){const f=await ghGet(m.path);if(f) await ghDelete(m.path,'Remover mídia',f.sha);}}
   localData.albums=localData.albums.filter(a=>a.id!==id);
   await saveData('Deletar álbum');
-  renderAlbums(); toast('Álbum deletado','success');
+  renderAlbums();toast('Álbum deletado','success');
 }
 
-// ── PHOTOS MODAL ──
+// PHOTOS MODAL
 function openPhotos(albumId) {
   currentPhotosAlbumId=albumId;
   const alb=localData.albums.find(a=>a.id===albumId);
@@ -716,83 +718,58 @@ function openPhotos(albumId) {
   document.getElementById('prog-wrap2').style.display='none';
   openModal('modal-photos');
 }
-function handleFiles2(files) { for(const f of files) uploadSingle(f,currentPhotosAlbumId); }
-function handleDrop2(e) { e.preventDefault(); handleFiles2(e.dataTransfer.files); }
+function handleFiles2(files){for(const f of files) uploadSingle(f,currentPhotosAlbumId);}
+function handleDrop2(e){e.preventDefault();handleFiles2(e.dataTransfer.files);}
 
-async function uploadSingle(file, albumId) {
-  if (file.size>10*1024*1024) { toast(file.name+' excede 10MB','error'); return; }
+async function uploadSingle(file,albumId){
+  if(file.size>10*1024*1024){toast(file.name+' excede 10MB','error');return;}
   document.getElementById('prog-wrap2').style.display='block';
   document.getElementById('prog-text2').textContent=`Enviando ${file.name}...`;
-  const result = await uploadFile(file, albumId);
-  if (result) {
+  const result=await uploadFile(file,albumId);
+  if(result){
     const alb=localData.albums.find(a=>a.id===albumId);
-    if (alb) {
+    if(alb){
       alb.media.push(result);
-      if (!alb.cover_media_id&&result.type==='image') alb.cover_media_id=result.id;
+      if(!alb.cover_media_id&&result.type==='image') alb.cover_media_id=result.id;
       await saveData('Adicionar mídia');
       const grid=document.getElementById('existing-grid');
       const div=document.createElement('div');
       div.innerHTML=existingThumbHTML(result,albumId);
       grid.appendChild(div.firstChild);
-      renderAlbums(); toast('Foto enviada!','success');
+      renderAlbums();toast('Foto enviada!','success');
     }
-  } else { toast('Erro ao enviar '+file.name,'error'); }
+  } else {toast('Erro ao enviar '+file.name,'error');}
   document.getElementById('prog-wrap2').style.display='none';
 }
 
-// ── GITHUB UPLOAD ──
-async function uploadFile(file, albumId) {
-  const ext = file.name.split('.').pop().toLowerCase()||'jpg';
-  const id = Date.now()+'_'+Math.random().toString(36).slice(2,8);
-  const path = `media/${albumId}/${id}.${ext}`;
-  const b64 = await fileToB64(file);
-  const result = await ghPut(path, b64, `Upload: ${file.name}`);
-  if (!result?.content) return null;
-  return {
-    id, path,
-    url:`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${path}`,
-    type: file.type.startsWith('video')?'video':'image'
-  };
+async function uploadFile(file,albumId){
+  const ext=file.name.split('.').pop().toLowerCase()||'jpg';
+  const id=Date.now()+'_'+Math.random().toString(36).slice(2,8);
+  const path=`media/${albumId}/${id}.${ext}`;
+  const b64=await fileToB64(file);
+  const result=await ghPut(path,b64,`Upload: ${file.name}`);
+  if(!result?.content) return null;
+  return {id,path,url:`https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${path}`,type:file.type.startsWith('video')?'video':'image'};
 }
-function fileToB64(file) {
-  return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+function fileToB64(file){
+  return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
 }
 
-// ══════════════════════════════════════════════
-// ANALYTICS TRACKING (chamado pelo index.html)
-// ══════════════════════════════════════════════
-// Esta função é exportada para ser usada no index.html
-window.trackPageView = async function(country, city) {
-  await loadData();
-  if (!localData.analytics) localData.analytics={visits:[],buy_clicks:[]};
-  localData.analytics.visits.push({date:new Date().toISOString().slice(0,10),country:country||'Unknown',city:city||''});
-  await saveData('Track visit');
-};
-
-// ══════════════════════════════════════════════
 // HELPERS
-// ══════════════════════════════════════════════
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-function toast(msg,type='') {
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function toast(msg,type=''){
   const el=document.getElementById('toast');
-  el.textContent=msg; el.className=`toast ${type} show`;
+  el.textContent=msg;el.className=`toast ${type} show`;
   setTimeout(()=>el.classList.remove('show'),3000);
 }
 
-// ══════════════════════════════════════════════
 // INIT
-// ══════════════════════════════════════════════
-async function enterAdmin() {
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('admin-screen').style.display='block';
-  await loadData();
-  renderDashboard();
-  renderAlbums(); // Pre-render albums so they show immediately when tab is clicked
-}
-
-if (sessionStorage.getItem('yla_admin')==='1') { enterAdmin(); }
+(async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(session) await enterAdmin();
+})();
 </script>
 </body>
 </html>
