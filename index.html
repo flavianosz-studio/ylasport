@@ -4,984 +4,271 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YLASPORT — Premium Athletic Wear</title>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://api.github.com">
+<link rel="dns-prefetch" href="https://raw.githubusercontent.com">
 <style>
-/* ═══════════════════════════════════════════════════════
-   DESIGN TOKENS
-═══════════════════════════════════════════════════════ */
 :root {
-  --black: #0a0a0a;
-  --white: #ffffff;
-  --green: #2ecc71;
-  --green-dark: #27ae60;
-  --green-dim: rgba(46,204,113,.12);
-  --gray-50: #fafafa;
-  --gray-100: #f4f4f4;
-  --gray-200: #e8e8e8;
-  --gray-400: #aaaaaa;
-  --gray-600: #666666;
-  --gray-800: #222222;
-  /* YoungLA usa Helvetica Neue / Helvetica (system font stack) */
-  --font-d: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-b: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --ease: cubic-bezier(.4,0,.2,1);
-  --radius: 4px;
+  --black:#0a0a0a;--white:#fff;--green:#2ecc71;--green-dark:#27ae60;
+  --gray-50:#fafafa;--gray-100:#f4f4f4;--gray-200:#e8e8e8;--gray-400:#aaa;--gray-600:#666;
+  --font:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.4,0,.2,1);
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { font-family: var(--font-b); background: var(--white); color: var(--black); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--white);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 
-/* ═══════════════════════════════════════════════════════
-   ANNOUNCEMENT BAR
-═══════════════════════════════════════════════════════ */
-.announce-bar {
-  background: var(--black);
-  color: var(--white);
-  text-align: center;
-  padding: 11px 20px;
-  font-family: var(--font-b);
-  font-size: 12px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  font-weight: 400;
-}
-.announce-bar span { color: var(--green); font-weight: 600; }
+/* ── ANNOUNCE BAR ── */
+.announce-bar{background:var(--black);color:var(--white);text-align:center;padding:11px 20px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;}
+.announce-bar span{color:var(--green);font-weight:600;}
 
-/* ═══════════════════════════════════════════════════════
-   HEADER — YoungLA style
-═══════════════════════════════════════════════════════ */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-200);
-  transition: box-shadow .3s var(--ease);
-}
-.site-header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.06); }
+/* ── HEADER ── */
+.site-header{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--gray-200);}
+.site-header.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.06);}
+.header-top{max-width:1600px;margin:0 auto;padding:0 40px;height:64px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;}
+.header-phone{font-size:11px;letter-spacing:1.5px;color:var(--gray-600);text-decoration:none;text-transform:uppercase;}
+.header-phone:hover{color:var(--black);}
+.logo{font-size:28px;font-weight:800;letter-spacing:10px;text-transform:uppercase;color:var(--black);cursor:pointer;text-align:center;padding-left:10px;}
+.logo em{color:var(--green);font-style:normal;}
+.header-icons{display:flex;align-items:center;justify-content:flex-end;gap:4px;}
+.header-icon-btn{background:none;border:none;cursor:pointer;padding:10px;color:var(--black);display:flex;align-items:center;transition:opacity .2s;}
+.header-icon-btn:hover{opacity:.45;}
+.header-nav-bar{border-top:1px solid var(--gray-200);}
+.header-nav{max-width:1600px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:center;}
+.header-nav button{background:none;border:none;cursor:pointer;font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--black);padding:13px 22px;border-bottom:2px solid transparent;opacity:.7;transition:opacity .2s;}
+.header-nav button:hover{opacity:1;}
+.header-nav button.active{opacity:1;border-bottom-color:var(--black);}
+.search-wrap{position:relative;display:flex;align-items:center;}
+.search-wrap input{border:1.5px solid var(--gray-200);border-radius:2px;padding:7px 14px 7px 34px;font-size:12px;font-family:var(--font);width:180px;outline:none;transition:all .2s;background:var(--gray-50);}
+.search-wrap input:focus{border-color:var(--black);background:var(--white);width:220px;}
+.search-icon{position:absolute;left:10px;color:var(--gray-400);pointer-events:none;display:flex;}
 
-/* Top row: left text | logo centered | icons right */
-.header-top {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 40px;
-  height: 64px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-}
-.header-phone {
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  color: var(--gray-600);
-  text-decoration: none;
-  text-transform: uppercase;
-  font-weight: 400;
-}
-.header-phone:hover { color: var(--black); }
+/* ── VIEWS ── */
+.view{display:none;}
+.view.active{display:block;}
 
-.logo {
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: 10px;
-  text-transform: uppercase;
-  color: var(--black);
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-  line-height: 1;
-  padding-left: 10px; /* optical center for letter-spacing */
-}
-.logo em { color: var(--green); font-style: normal; }
+/* ── HERO ── */
+.hero-banner{position:relative;width:100%;height:calc(70vh - 97px);min-height:360px;max-height:630px;overflow:hidden;background:var(--black);}
+.hero-banner img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
+.hero-banner-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.05) 40%,rgba(0,0,0,.45) 100%);}
+.hero-shop-btn{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);background:var(--white);color:var(--black);border:none;padding:18px 52px;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap;min-width:220px;z-index:10;transition:all .2s;}
+.hero-shop-btn:hover{background:var(--green);}
+.hero-scroll-btn{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:44px;height:44px;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);z-index:10;animation:heroBounce 2s ease-in-out infinite;}
+@keyframes heroBounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
+.hero-slides{position:absolute;inset:0;}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;}
+.hero-slide.active{opacity:1;}
+.hero-slide img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
+.hero-dots{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5;}
+.hero-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);background:transparent;cursor:pointer;padding:0;transition:background .3s;}
+.hero-dot.active{background:var(--white);}
+.hero-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(4px);transition:background .2s;z-index:10;}
+.hero-arrow:hover{background:rgba(0,0,0,.5);}
+.hero-arrow-prev{left:20px;}
+.hero-arrow-next{right:20px;}
 
-.header-icons {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-}
-.header-icon-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-  color: var(--black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity .2s;
-}
-.header-icon-btn:hover { opacity: .45; }
+/* ── SECTION ── */
+.section-wrap{max-width:1440px;margin:0 auto;padding:60px 40px;}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--gray-200);}
+.section-label{font-size:11px;letter-spacing:3px;color:var(--green);text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+.section-title{font-size:40px;font-weight:900;letter-spacing:2px;text-transform:uppercase;line-height:1;}
 
-/* Bottom nav row */
-.header-nav-bar {
-  border-top: 1px solid var(--gray-200);
-  background: var(--white);
-}
-.header-nav {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-}
-.header-nav button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--black);
-  padding: 13px 22px;
-  border-bottom: 2px solid transparent;
-  transition: opacity .2s;
-  white-space: nowrap;
-  opacity: .75;
-}
-.header-nav button:hover { opacity: 1; }
-.header-nav button.active { opacity: 1; border-bottom-color: var(--black); }
+/* ── ALBUM GRID ── */
+.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;padding:4px;}
+.album-card{position:relative;background:var(--white);cursor:pointer;}
+.album-thumb{width:100%;aspect-ratio:3/4;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--gray-100);position:relative;border-radius:2px;}
+.album-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);display:block;}
+.album-card:hover .album-thumb img{transform:scale(1.04);}
+.album-thumb-overlay{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;pointer-events:none;}
+.album-card:hover .album-thumb-overlay{opacity:1;}
+.album-thumb-overlay svg{width:16px;height:16px;stroke:var(--black);stroke-width:2;}
+.album-badge{position:absolute;top:12px;left:12px;background:var(--white);color:var(--black);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;z-index:2;}
+.album-badge.new{background:var(--green);color:var(--black);}
+.album-card-footer{padding:12px 4px 6px;background:var(--white);}
+.album-card-footer h3{font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;line-height:1.3;margin-bottom:4px;}
+.album-price{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.price-cny{font-size:16px;font-weight:800;letter-spacing:.5px;}
+.price-usd{font-size:12px;color:var(--gray-600);background:var(--gray-100);padding:2px 7px;border-radius:20px;}
+.color-swatches{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.swatch{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .15s;flex-shrink:0;}
+.swatch:hover{transform:scale(1.15);}
+.swatch.active{border-color:var(--black);box-shadow:0 0 0 1px var(--white) inset;}
+.swatch[data-color="black"]{background:#1a1a1a;}
+.swatch[data-color="white"]{background:#fff;border-color:var(--gray-200);}
+.swatch[data-color="gray"],.swatch[data-color="grey"]{background:#888;}
+.swatch[data-color="light-gray"],.swatch[data-color="light-grey"]{background:#ccc;}
+.swatch[data-color="dark-gray"],.swatch[data-color="dark-grey"]{background:#444;}
+.swatch[data-color="navy"],.swatch[data-color="blue-navy"]{background:#1e3a5f;}
+.swatch[data-color="blue"]{background:#2563eb;}
+.swatch[data-color="purple"]{background:#7c3aed;}
+.swatch[data-color="red"]{background:#dc2626;}
+.swatch[data-color="green"]{background:#16a34a;}
+.swatch[data-color="maroon"]{background:#7f1d1d;}
+.album-info{display:none;}
+.album-tag{display:none;}
 
-/* Search wrap used in collections page only */
-.search-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-.search-wrap input {
-  border: 1.5px solid var(--gray-200);
-  border-radius: 2px;
-  padding: 7px 14px 7px 34px;
-  font-size: 12px;
-  font-family: var(--font-b);
-  width: 180px;
-  outline: none;
-  transition: all .2s;
-  background: var(--gray-50);
-  color: var(--black);
-  letter-spacing: .5px;
-}
-.search-wrap input::placeholder { color: var(--gray-400); }
-.search-wrap input:focus { border-color: var(--black); background: var(--white); width: 220px; }
-.search-icon {
-  position: absolute;
-  left: 10px;
-  color: var(--gray-400);
-  pointer-events: none;
-  display: flex;
-}
+/* ══════════════════════════════════════════════════════
+   ALBUM DETAIL — YoungLA product page style
+══════════════════════════════════════════════════════ */
+.product-page{max-width:1280px;margin:0 auto;padding:32px 40px 80px;}
+.product-breadcrumb{font-size:11px;color:var(--gray-400);letter-spacing:1px;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:8px;}
+.product-breadcrumb a{cursor:pointer;transition:color .2s;}
+.product-breadcrumb a:hover{color:var(--black);}
+.product-breadcrumb span{color:var(--gray-400);}
+.product-layout{display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:start;}
 
-.btn-wechat {
-  background: var(--black);
-  color: var(--white);
-  border: none;
-  padding: 8px 18px;
-  font-family: var(--font-b);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background .2s;
-  white-space: nowrap;
-}
-.btn-wechat:hover { background: var(--green); color: var(--black); }
+/* LEFT — image gallery */
+.product-gallery{}
+.product-main-img{width:100%;aspect-ratio:3/4;overflow:hidden;background:var(--gray-100);border-radius:2px;position:relative;cursor:zoom-in;}
+.product-main-img img,.product-main-img video{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .25s;}
+.video-play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);}
+.play-circle{width:64px;height:64px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.3);}
 
-/* ═══════════════════════════════════════════════════════
-   VIEWS
-═══════════════════════════════════════════════════════ */
-.view { display: none; }
-.view.active { display: block; }
+/* thumbnails strip */
+.product-thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;scrollbar-color:var(--gray-200) transparent;}
+.product-thumbs::-webkit-scrollbar{height:4px;}
+.product-thumbs::-webkit-scrollbar-track{background:transparent;}
+.product-thumbs::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:2px;}
+.thumb-item{width:72px;height:72px;flex-shrink:0;overflow:hidden;border-radius:2px;border:2px solid transparent;cursor:pointer;transition:border-color .15s;}
+.thumb-item img,.thumb-item video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.thumb-item.active{border-color:var(--black);}
+.thumb-item:hover{border-color:var(--gray-400);}
 
-/* ═══════════════════════════════════════════════════════
-   HERO BANNER — FULLSCREEN YoungLA style
-═══════════════════════════════════════════════════════ */
-.hero-banner {
-  position: relative;
-  width: 100%;
-  height: calc(70vh - 97px);
-  min-height: 360px;
-  max-height: 630px;
-  overflow: hidden;
-  background: var(--black);
-}
-.hero-banner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-}
-.hero-banner-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.05) 40%, rgba(0,0,0,.45) 100%);
-}
-.hero-shop-btn {
-  position: absolute;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--white);
-  color: var(--black);
-  border: none;
-  padding: 18px 52px;
-  font-family: var(--font-b);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all .2s;
-  border-radius: 0;
-  white-space: nowrap;
-  min-width: 220px;
-}
-.hero-shop-btn:hover { background: var(--green); color: var(--black); }
-.hero-scroll-btn {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 44px;
-  height: 44px;
-  background: rgba(255,255,255,.12);
-  border: 1.5px solid rgba(255,255,255,.35);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  backdrop-filter: blur(6px);
-  transition: background .2s;
-  animation: heroBounce 2s ease-in-out infinite;
-}
-.hero-scroll-btn:hover { background: rgba(255,255,255,.25); }
-@keyframes heroBounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(6px); }
-}
+/* RIGHT — product info */
+.product-info{}
+.product-info h1{font-size:22px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;line-height:1.3;margin-bottom:12px;}
+.product-price-row{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--gray-200);}
+.product-price-cny{font-size:22px;font-weight:800;color:var(--black);}
+.product-price-usd{font-size:14px;color:var(--gray-600);background:var(--gray-100);padding:4px 10px;border-radius:20px;}
 
-/* ── HERO SLIDESHOW ── */
-.hero-slides {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-.hero-slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity .8s ease;
-}
-.hero-slide.active { opacity: 1; }
-.hero-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-}
+/* Description */
+.product-desc{font-size:14px;color:var(--gray-600);line-height:1.8;margin-bottom:24px;white-space:pre-line;}
 
-/* Dots */
-.hero-dots {
-  position: absolute;
-  bottom: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  z-index: 10;
-}
-.hero-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,.7);
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-  transition: background .3s;
-}
-.hero-dot.active { background: var(--white); }
+/* Size section */
+.product-section-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--black);margin-bottom:10px;}
+.size-grid{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.size-btn{border:1px solid var(--gray-200);background:var(--white);color:var(--black);padding:10px 18px;font-size:13px;font-weight:500;cursor:pointer;border-radius:2px;transition:all .15s;min-width:68px;text-align:center;}
+.size-btn:hover{border-color:var(--black);}
+.size-btn.active{border-color:var(--black);background:var(--black);color:var(--white);}
 
-/* Arrows */
-.hero-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,.25);
-  border: 1px solid rgba(255,255,255,.2);
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-  transition: background .2s;
-  z-index: 10;
-}
-.hero-arrow:hover { background: rgba(0,0,0,.5); }
-.hero-arrow-prev { left: 20px; }
-.hero-arrow-next { right: 20px; }
-.hero-stat-bar {
-  background: var(--black);
-  color: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 48px;
-  padding: 20px 40px;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-}
-.hero-stat-item { text-align: center; }
-.hero-stat-num {
-  font-family: var(--font-d);
-  font-size: 32px;
-  font-weight: 900;
-  color: var(--white);
-  line-height: 1;
-}
-.hero-stat-label {
-  font-family: var(--font-d);
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: var(--green);
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-top: 4px;
-}
-.hero-stat-divider { width: 1px; height: 40px; background: rgba(255,255,255,.1); }
+/* Size chart table */
+.size-chart{margin-bottom:28px;overflow-x:auto;}
+.size-chart table{width:100%;border-collapse:collapse;font-size:12px;}
+.size-chart th{text-align:left;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:10px;color:var(--gray-600);padding:8px 12px;border-bottom:2px solid var(--gray-200);background:var(--gray-50);}
+.size-chart td{padding:8px 12px;border-bottom:1px solid var(--gray-100);color:var(--black);}
+.size-chart tr:last-child td{border-bottom:none;}
+.size-chart tr:hover td{background:var(--gray-50);}
+.size-chart-toggle{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray-600);cursor:pointer;display:flex;align-items:center;gap:6px;margin-bottom:12px;background:none;border:none;padding:0;}
+.size-chart-toggle:hover{color:var(--black);}
 
-/* ═══════════════════════════════════════════════════════
-   SECTION HEADERS
-═══════════════════════════════════════════════════════ */
-.section-wrap { max-width: 1440px; margin: 0 auto; padding: 60px 40px; }
-.section-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 36px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--gray-200);
-}
-.section-label {
-  font-family: var(--font-d);
-  font-size: 11px;
-  letter-spacing: 3px;
-  color: var(--green);
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-.section-title {
-  font-family: var(--font-d);
-  font-size: 40px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--black);
-  line-height: 1;
-}
+/* Buy button */
+.product-buy-btn{display:block;width:100%;background:var(--black);color:var(--white);border:none;padding:18px;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:background .2s;border-radius:2px;text-align:center;text-decoration:none;margin-bottom:12px;}
+.product-buy-btn:hover{background:var(--green);color:var(--black);}
+.product-buy-btn.hidden{display:none;}
+.product-wechat-note{font-size:12px;color:var(--gray-500);text-align:center;letter-spacing:.5px;}
+.product-wechat-note span{font-weight:700;color:var(--black);}
 
-/* ═══════════════════════════════════════════════════════
-   ALBUM GRID — PREMIUM CARDS
-═══════════════════════════════════════════════════════ */
-.album-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
-  padding: 4px;
-}
+/* Specs */
+.product-specs{margin-top:28px;border-top:1px solid var(--gray-200);padding-top:24px;}
+.spec-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-100);font-size:13px;}
+.spec-row:last-child{border-bottom:none;}
+.spec-label{font-weight:700;letter-spacing:.5px;min-width:140px;color:var(--black);}
+.spec-value{color:var(--gray-600);}
 
-.album-card {
-  position: relative;
-  background: var(--white);
-  cursor: pointer;
-  display: block;
-  border-radius: 2px;
-}
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:100px 20px;color:var(--gray-400);}
+.empty-state .icon{margin-bottom:16px;opacity:.4;}
+.empty-state h3{font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-600);}
 
-.album-thumb {
-  width: 100%;
-  aspect-ratio: 3/4;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--gray-100);
-  position: relative;
-  border-radius: 2px;
-}
-.album-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform .5s var(--ease);
-  display: block;
-}
-.album-card:hover .album-thumb img { transform: scale(1.04); }
+/* ── CONTACT ── */
+.contact-hero{background:var(--black);padding:72px 40px 60px;text-align:center;}
+.contact-hero-inner{max-width:640px;margin:0 auto;}
+.contact-title{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--white);line-height:1;margin-bottom:16px;}
+.contact-subtitle{font-size:14px;color:rgba(255,255,255,.5);line-height:1.8;}
+.contact-body{max-width:900px;margin:0 auto;padding:64px 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+.contact-card{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:4px;padding:40px 36px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.contact-card-icon{width:64px;height:64px;background:var(--black);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.wc-label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gray-400);}
+.wc-id{font-size:28px;font-weight:800;letter-spacing:2px;color:var(--black);text-transform:uppercase;}
+.contact-card-note{font-size:13px;color:var(--gray-600);line-height:1.7;margin-top:4px;}
+.contact-cta{margin-top:12px;background:var(--black);color:var(--white);border:none;padding:13px 28px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .2s;font-family:var(--font);}
+.contact-cta:hover{background:var(--green);color:var(--black);}
+.contact-info-grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--gray-200);border:1px solid var(--gray-200);border-radius:4px;overflow:hidden;}
+.contact-info-item{display:flex;align-items:center;gap:16px;padding:22px 28px;background:var(--white);transition:background .2s;}
+.contact-info-item:hover{background:var(--gray-50);}
+.contact-info-icon{width:40px;height:40px;background:var(--gray-100);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.contact-info-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-400);margin-bottom:3px;}
+.contact-info-value{font-size:14px;font-weight:600;color:var(--black);}
 
-/* Hover arrow overlay */
-.album-thumb-overlay {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
-  background: rgba(255,255,255,.85);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity .25s;
-  pointer-events: none;
-}
-.album-card:hover .album-thumb-overlay { opacity: 1; }
-.album-thumb-overlay svg { width: 16px; height: 16px; stroke: var(--black); stroke-width: 2; }
+/* ── LIGHTBOX ── */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:1000;align-items:center;justify-content:center;}
+.lightbox.open{display:flex;}
+.lightbox img,.lightbox video{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:2px;}
+.lb-close{position:absolute;top:20px;right:24px;background:rgba(255,255,255,.1);border:none;color:var(--white);width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.lb-close:hover{background:rgba(255,255,255,.2);}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:none;color:var(--white);width:52px;height:52px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.lb-nav:hover{background:rgba(255,255,255,.2);}
+#lb-prev{left:20px;}
+#lb-next{right:20px;}
+.lb-caption{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:12px;letter-spacing:2px;text-transform:uppercase;}
 
-/* SOLD OUT badge */
-.album-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: var(--white);
-  color: var(--black);
-  font-family: var(--font-d);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  z-index: 2;
-}
-.album-badge.new { background: var(--green); color: var(--black); }
+/* ── FOOTER ── */
+.site-footer{background:var(--black);padding:48px 40px;margin-top:80px;}
+.footer-inner{max-width:1440px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;}
+.footer-logo{font-size:24px;font-weight:900;letter-spacing:4px;color:var(--white);}
+.footer-logo em{color:var(--green);font-style:normal;}
+.footer-links{display:flex;gap:32px;}
+.footer-links a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);cursor:pointer;text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--white);}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.25);letter-spacing:.5px;width:100%;text-align:center;margin-top:32px;padding-top:32px;border-top:1px solid rgba(255,255,255,.06);}
 
-/* Card footer — YoungLA style */
-.album-card-footer {
-  padding: 12px 4px 6px;
-  background: var(--white);
-}
-.album-card-footer h3 {
-  font-family: var(--font-d);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--black);
-  line-height: 1.3;
-  margin-bottom: 4px;
-}
-.album-price {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-}
-.price-cny {
-  font-family: var(--font-d);
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--black);
-  letter-spacing: .5px;
-}
-.price-usd {
-  font-size: 12px;
-  color: var(--gray-600);
-  font-weight: 400;
-  background: var(--gray-100);
-  padding: 2px 7px;
-  border-radius: 20px;
-}
+/* ── LOADING ── */
+.loading-wrap{display:flex;align-items:center;justify-content:center;padding:80px;}
+.spinner{width:32px;height:32px;border:2.5px solid var(--gray-200);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-/* COLOR SWATCHES */
-.color-swatches {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 6px;
-}
-.swatch {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: all .15s;
-  flex-shrink: 0;
-  position: relative;
-}
-.swatch:hover { transform: scale(1.15); }
-.swatch.active {
-  border-color: var(--black);
-  box-shadow: 0 0 0 1px var(--white) inset;
-}
-.swatch[data-color="black"] { background: #1a1a1a; }
-.swatch[data-color="white"] { background: #ffffff; border-color: var(--gray-200); }
-.swatch[data-color="gray"],
-.swatch[data-color="grey"] { background: #888; }
-.swatch[data-color="light-gray"],
-.swatch[data-color="light-grey"] { background: #ccc; }
-.swatch[data-color="dark-gray"],
-.swatch[data-color="dark-grey"] { background: #444; }
-.swatch[data-color="navy"],
-.swatch[data-color="blue-navy"] { background: #1e3a5f; }
-.swatch[data-color="blue"] { background: #2563eb; }
-.swatch[data-color="purple"] { background: #7c3aed; }
-.swatch[data-color="red"] { background: #dc2626; }
-.swatch[data-color="green"] { background: #16a34a; }
-.swatch[data-color="maroon"],
-.swatch[data-color="dark-red"] { background: #7f1d1d; }
-
-/* hide old overlay elements */
-.album-info { display: none; }
-.album-tag { display: none; }
-
-/* ═══════════════════════════════════════════════════════
-   ALBUM DETAIL
-═══════════════════════════════════════════════════════ */
-.album-detail-hero {
-  background: var(--black);
-  padding: 48px 40px;
-}
-.album-detail-inner {
-  max-width: 1440px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-.back-btn {
-  background: none;
-  border: 1px solid rgba(255,255,255,.2);
-  color: rgba(255,255,255,.6);
-  border-radius: 2px;
-  padding: 8px 16px;
-  font-family: var(--font-d);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all .2s;
-  flex-shrink: 0;
-  align-self: flex-start;
-}
-.back-btn:hover { border-color: var(--white); color: var(--white); }
-.album-cover-big {
-  width: 100px;
-  height: 100px;
-  border-radius: 4px;
-  overflow: hidden;
-  background: rgba(255,255,255,.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  flex-shrink: 0;
-  border: 1px solid rgba(255,255,255,.12);
-}
-.album-cover-big img { width: 100%; height: 100%; object-fit: cover; }
-.album-detail-meta { flex: 1; }
-.album-detail-meta h2 {
-  font-family: var(--font-d);
-  font-size: clamp(32px, 4vw, 56px);
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--white);
-  line-height: 1;
-}
-.album-detail-meta .item-count {
-  font-size: 13px;
-  color: rgba(255,255,255,.4);
-  margin-top: 8px;
-  letter-spacing: .5px;
-}
-.album-desc-text {
-  font-size: 14px;
-  color: rgba(255,255,255,.6);
-  margin-top: 12px;
-  line-height: 1.7;
-  white-space: pre-line;
-  max-width: 500px;
-}
-.buy-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--green);
-  color: var(--black);
-  border: none;
-  border-radius: 2px;
-  padding: 14px 32px;
-  font-family: var(--font-d);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all .2s;
-  margin-top: 20px;
-  align-self: flex-start;
-}
-.buy-btn:hover { background: var(--black); color: var(--white); }
-.buy-btn.hidden { display: none; }
-
-/* PHOTO GRID */
-.photo-section { max-width: 1440px; margin: 0 auto; padding: 40px 40px; }
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 3px;
-}
-.photo-item {
-  cursor: pointer;
-  overflow: hidden;
-  position: relative;
-  background: var(--gray-100);
-}
-.photo-item::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  background: rgba(0,0,0,.35);
-  opacity: 0;
-  transition: opacity .25s;
-}
-.photo-item:hover::after { opacity: 1; }
-.photo-item img {
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  display: block;
-  transition: transform .5s var(--ease);
-}
-.photo-item:hover img { transform: scale(1.04); }
-.photo-wrapper { position: relative; }
-.photo-item video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
-.video-play-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,.3);
-}
-.play-circle {
-  width: 56px;
-  height: 56px;
-  background: rgba(255,255,255,.92);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  padding-left: 4px;
-  box-shadow: 0 4px 20px rgba(0,0,0,.3);
-}
-
-/* ═══════════════════════════════════════════════════════
-   EMPTY STATE
-═══════════════════════════════════════════════════════ */
-.empty-state {
-  text-align: center;
-  padding: 100px 20px;
-  color: var(--gray-400);
-}
-.empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: .4; }
-.empty-state h3 { font-family: var(--font-d); font-size: 20px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-600); }
-.empty-state p { font-size: 13px; margin-top: 8px; }
-
-/* ═══════════════════════════════════════════════════════
-   CONTACT
-═══════════════════════════════════════════════════════ */
-.contact-hero {
-  background: var(--black);
-  padding: 72px 40px 60px;
-  text-align: center;
-}
-.contact-hero-inner { max-width: 640px; margin: 0 auto; }
-.contact-title {
-  font-size: clamp(40px, 6vw, 72px);
-  font-weight: 800;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--white);
-  line-height: 1;
-  margin-bottom: 16px;
-}
-.contact-subtitle {
-  font-size: 14px;
-  color: rgba(255,255,255,.5);
-  line-height: 1.8;
-  letter-spacing: .3px;
-}
-.contact-body {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 64px 40px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: start;
-}
-.contact-card {
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  border-radius: 4px;
-  padding: 40px 36px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.contact-card-icon {
-  width: 64px;
-  height: 64px;
-  background: var(--black);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px;
-}
-.wc-label { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gray-400); }
-.wc-id { font-size: 28px; font-weight: 800; letter-spacing: 2px; color: var(--black); text-transform: uppercase; }
-.contact-card-note { font-size: 13px; color: var(--gray-600); line-height: 1.7; margin-top: 4px; }
-.contact-cta {
-  margin-top: 12px;
-  background: var(--black);
-  color: var(--white);
-  border: none;
-  padding: 13px 28px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 2px;
-  transition: background .2s;
-  font-family: var(--font-b);
-}
-.contact-cta:hover { background: var(--green); color: var(--black); }
-.contact-info-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1px;
-  background: var(--gray-200);
-  border: 1px solid var(--gray-200);
-  border-radius: 4px;
-  overflow: hidden;
-}
-.contact-info-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 22px 28px;
-  background: var(--white);
-  transition: background .2s;
-}
-.contact-info-item:hover { background: var(--gray-50); }
-.contact-info-icon {
-  width: 40px;
-  height: 40px;
-  background: var(--gray-100);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: var(--black);
-}
-.contact-info-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 3px; }
-.contact-info-value { font-size: 14px; font-weight: 600; color: var(--black); }
-
-/* ═══════════════════════════════════════════════════════
-   LIGHTBOX
-═══════════════════════════════════════════════════════ */
-.lightbox {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.96);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
-}
-.lightbox.open { display: flex; }
-.lightbox img, .lightbox video { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: 2px; }
-.lb-close {
-  position: absolute;
-  top: 20px;
-  right: 24px;
-  background: rgba(255,255,255,.1);
-  border: none;
-  color: var(--white);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .2s;
-}
-.lb-close:hover { background: rgba(255,255,255,.2); }
-.lb-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255,255,255,.1);
-  border: none;
-  color: var(--white);
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  font-size: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .2s;
-}
-.lb-nav:hover { background: rgba(255,255,255,.2); }
-#lb-prev { left: 20px; }
-#lb-next { right: 20px; }
-.lb-caption {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: rgba(255,255,255,.5);
-  font-size: 12px;
-  letter-spacing: 2px;
-  font-family: var(--font-d);
-  text-transform: uppercase;
-}
-
-/* ═══════════════════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════════════════ */
-.site-footer {
-  background: var(--black);
-  padding: 48px 40px;
-  margin-top: 80px;
-}
-.footer-inner {
-  max-width: 1440px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-.footer-logo { font-family: var(--font-d); font-size: 24px; font-weight: 900; letter-spacing: 4px; color: var(--white); }
-.footer-logo em { color: var(--green); font-style: normal; }
-.footer-links { display: flex; gap: 32px; }
-.footer-links a { font-family: var(--font-d); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.4); cursor: pointer; text-decoration: none; transition: color .2s; }
-.footer-links a:hover { color: var(--white); }
-.footer-copy { font-size: 11px; color: rgba(255,255,255,.25); letter-spacing: .5px; width: 100%; text-align: center; margin-top: 32px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,.06); }
-
-/* ═══════════════════════════════════════════════════════
-   LOADING
-═══════════════════════════════════════════════════════ */
-.loading-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 80px;
-}
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 2.5px solid var(--gray-200);
-  border-top-color: var(--green);
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ═══════════════════════════════════════════════════════
-   MOBILE
-═══════════════════════════════════════════════════════ */
-
-
-
-
-
-@media (max-width: 768px) {
-  .announce-bar { font-size: 10px; letter-spacing: 1px; }
-  .header-top { padding: 0 20px; height: 52px; }
-  .header-phone { display: none; }
-  .logo { font-size: 20px; letter-spacing: 6px; }
-  .header-nav-bar { display: none; }
-  
-  .view { padding-bottom: 0; }
-  .hero-banner { height: 80vw; min-height: 300px; max-height: 560px; }
-  .hero-shop-btn { padding: 14px 32px; font-size: 11px; bottom: 40px; min-width: 160px; }
-  .hero-scroll-btn { bottom: 12px; }
-  .section-wrap { padding: 40px 20px; }
-  .section-title { font-size: 28px; }
-  .album-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
-  .album-grid .album-card:first-child { grid-column: span 2; }
-  .album-detail-hero { padding: 28px 20px; }
-  .album-detail-inner { flex-wrap: wrap; gap: 16px; }
-  .photo-section { padding: 28px 20px; }
-  .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
-  .contact-hero { padding: 48px 20px 40px; }
-  .contact-title { font-size: 36px; letter-spacing: 2px; }
-  .contact-body { grid-template-columns: 1fr; padding: 40px 20px; gap: 24px; }
-  .contact-card { padding: 32px 24px; }
-  .site-footer { padding: 40px 20px; }
-  .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .announce-bar{font-size:10px;letter-spacing:1px;}
+  .header-top{padding:0 20px;height:52px;}
+  .header-phone{display:none;}
+  .logo{font-size:20px;letter-spacing:6px;}
+  .header-nav-bar{display:none;}
+  .hero-banner{height:80vw;min-height:300px;max-height:560px;}
+  .hero-shop-btn{padding:14px 32px;font-size:11px;bottom:40px;min-width:160px;}
+  .hero-scroll-btn{bottom:12px;}
+  .section-wrap{padding:40px 20px;}
+  .section-title{font-size:28px;}
+  .album-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+  .product-page{padding:20px 20px 60px;}
+  .product-layout{grid-template-columns:1fr;gap:28px;}
+  .product-info h1{font-size:18px;}
+  .contact-hero{padding:48px 20px 40px;}
+  .contact-title{font-size:36px;letter-spacing:2px;}
+  .contact-body{grid-template-columns:1fr;padding:40px 20px;gap:24px;}
+  .contact-card{padding:32px 24px;}
+  .site-footer{padding:40px 20px;}
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:20px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ANNOUNCEMENT BAR -->
-<div class="announce-bar">
-  WeChat: <span>YLASPORT</span>
-</div>
+<div class="announce-bar">WeChat: <span>YLASPORT</span></div>
 
-<!-- HEADER -->
 <header class="site-header" id="site-header">
   <div class="header-top">
-    <!-- Left: WeChat -->
     <a class="header-phone" href="#" onclick="showContactPage();return false;">WeChat: ylasport</a>
-    <!-- Center: Logo -->
-    <a class="logo" onclick="showHome()">YLASPORT</a>
-    <!-- Right: Icons -->
+    <a class="logo" onclick="showHome()">YLA<em>SPORT</em></a>
     <div class="header-icons">
-      <!-- Search icon -->
       <button class="header-icon-btn" onclick="showAlbumsPage()" title="Search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" width="20" height="20"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
-      <!-- WeChat / Order icon -->
-      <button class="header-icon-btn" onclick="showContactPage()" title="Order via WeChat">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <button class="header-icon-btn" onclick="showContactPage()" title="WeChat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" width="20" height="20"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </button>
     </div>
   </div>
-  <!-- Bottom nav -->
   <div class="header-nav-bar">
     <nav class="header-nav">
       <button id="nav-home" class="active" onclick="showHome()">Home</button>
@@ -993,58 +280,40 @@ body { font-family: var(--font-b); background: var(--white); color: var(--black)
 
 <!-- HOME -->
 <div id="view-home" class="view active">
-    <!-- HERO BANNER SLIDESHOW -->
-    <div class="hero-banner" id="hero-banner">
-      <!-- Slides -->
-      <div class="hero-slides">
-        <div class="hero-slide active">
-          <img src="https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/assets/banner.png" alt="YLASPORT New Drop" loading="eager">
-        </div>
-        <div class="hero-slide">
-          <img src="taobao-banner.png" alt="YLASPORT Official Taobao Store" loading="lazy">
-        </div>
+  <div class="hero-banner" id="hero-banner">
+    <div class="hero-slides">
+      <div class="hero-slide active">
+        <img src="https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/assets/banner.png" alt="YLASPORT New Drop" loading="eager" fetchpriority="high">
       </div>
-      <div class="hero-banner-overlay"></div>
-      <!-- Dots -->
-      <div class="hero-dots">
-        <button class="hero-dot active" onclick="goToSlide(0)"></button>
-        <button class="hero-dot" onclick="goToSlide(1)"></button>
-      </div>
-      <!-- Arrows -->
-      <button class="hero-arrow hero-arrow-prev" onclick="slideStep(-1)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <button class="hero-arrow hero-arrow-next" onclick="slideStep(1)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="9 6 15 12 9 18"/></svg>
-      </button>
-      <button class="hero-shop-btn" onclick="document.getElementById('collections-section').scrollIntoView({behavior:'smooth'})">SHOP NOW</button>
-      <button class="hero-scroll-btn" onclick="document.getElementById('collections-section').scrollIntoView({behavior:'smooth'})">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
     </div>
+    <div class="hero-banner-overlay"></div>
+    <div class="hero-dots"><button class="hero-dot active" onclick="goToSlide(0)"></button></div>
+    <button class="hero-arrow hero-arrow-prev" onclick="slideStep(-1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="hero-arrow hero-arrow-next" onclick="slideStep(1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" width="20" height="20"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
+    <button class="hero-shop-btn" onclick="document.getElementById('collections-section').scrollIntoView({behavior:'smooth'})">SHOP NOW</button>
+    <button class="hero-scroll-btn" onclick="document.getElementById('collections-section').scrollIntoView({behavior:'smooth'})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" width="20" height="20"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </div>
   <div class="section-wrap" id="collections-section">
     <div class="section-header">
-      <div>
-        <div class="section-label">Featured</div>
-        <div class="section-title">All Collections</div>
-      </div>
+      <div><div class="section-label">Featured</div><div class="section-title">All Collections</div></div>
     </div>
     <div class="loading-wrap" id="home-loading"><div class="spinner"></div></div>
     <div class="album-grid" id="home-album-grid" style="display:none"></div>
     <div class="empty-state" id="home-empty" style="display:none">
-      <div class="icon"><i data-lucide="shirt" style="width:48px;height:48px;opacity:.3;stroke:var(--gray-400)"></i></div>
-      <h3>No collections yet</h3>
-      <p>Check back soon for new drops.</p>
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="opacity:.3"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+      <h3>No collections yet</h3><p>Check back soon for new drops.</p>
     </div>
   </div>
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-logo">YLA<em>SPORT</em></div>
-      <div class="footer-links">
-        <a onclick="showHome()">Home</a>
-        <a onclick="showAlbumsPage()">Collections</a>
-        <a onclick="showContactPage()">Contact</a>
-      </div>
+      <div class="footer-links"><a onclick="showHome()">Home</a><a onclick="showAlbumsPage()">Collections</a><a onclick="showContactPage()">Contact</a></div>
     </div>
     <div class="footer-copy">© 2026 YLASPORT · All rights reserved</div>
   </footer>
@@ -1054,54 +323,80 @@ body { font-family: var(--font-b); background: var(--white); color: var(--black)
 <div id="view-albums" class="view">
   <div class="section-wrap">
     <div class="section-header">
-      <div>
-        <div class="section-label">Browse</div>
-        <div class="section-title">All Collections</div>
-      </div>
-      <div class="search-wrap" style="display:flex">
-        <span class="search-icon"><i data-lucide="search" style="width:15px;height:15px;stroke:currentColor"></i></span>
-        <input type="text" id="search-input2" placeholder="Search collections..." oninput="liveSearch2(this.value)" style="width:220px">
+      <div><div class="section-label">Browse</div><div class="section-title">All Collections</div></div>
+      <div class="search-wrap">
+        <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="15" height="15"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="search-input2" placeholder="Search collections..." oninput="liveSearch2(this.value)">
       </div>
     </div>
     <div class="loading-wrap" id="all-loading"><div class="spinner"></div></div>
     <div class="album-grid" id="all-album-grid" style="display:none"></div>
-    <div class="empty-state" id="all-empty" style="display:none">
-      <div class="icon"><i data-lucide="folder" style="width:48px;height:48px;opacity:.3;stroke:var(--gray-400)"></i></div>
-      <h3>No collections found</h3>
-      <p>Try a different search or check back soon.</p>
-    </div>
+    <div class="empty-state" id="all-empty" style="display:none"><h3>No collections found</h3></div>
   </div>
   <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-logo">YLA<em>SPORT</em></div>
-      <div class="footer-links">
-        <a onclick="showHome()">Home</a>
-        <a onclick="showContactPage()">Contact</a>
-      </div>
-    </div>
+    <div class="footer-inner"><div class="footer-logo">YLA<em>SPORT</em></div><div class="footer-links"><a onclick="showHome()">Home</a><a onclick="showContactPage()">Contact</a></div></div>
     <div class="footer-copy">© 2026 YLASPORT · All rights reserved</div>
   </footer>
 </div>
 
-<!-- ALBUM DETAIL -->
+<!-- ALBUM DETAIL — YoungLA product page -->
 <div id="view-album" class="view">
-  <div class="album-detail-hero">
-    <div class="album-detail-inner">
-      <button class="back-btn" onclick="goBack()"><i data-lucide="arrow-left" style="width:14px;height:14px"></i> Back</button>
-      <div class="album-cover-big" id="album-cover-thumb">📁</div>
-      <div class="album-detail-meta">
-        <h2 id="album-detail-title"></h2>
-        <p class="item-count" id="album-detail-count"></p>
-        <p class="album-desc-text" id="album-desc-display"></p>
-        <a class="buy-btn hidden" id="album-buy-btn" target="_blank" rel="noopener">
-          <i data-lucide="shopping-cart" style="width:16px;height:16px"></i> Buy Now
+  <div class="product-page">
+    <div class="product-breadcrumb">
+      <a onclick="showHome()">Home</a><span>›</span>
+      <a onclick="goBack()">Collections</a><span>›</span>
+      <span id="breadcrumb-name"></span>
+    </div>
+    <div class="product-layout">
+      <!-- LEFT: Gallery -->
+      <div class="product-gallery">
+        <div class="product-main-img" id="product-main-img" onclick="openLightboxFromMain()">
+          <img id="product-main-img-el" src="" alt="" loading="eager">
+        </div>
+        <div class="product-thumbs" id="product-thumbs"></div>
+      </div>
+      <!-- RIGHT: Info -->
+      <div class="product-info">
+        <h1 id="product-title"></h1>
+        <div class="product-price-row">
+          <span class="product-price-cny" id="product-price-cny"></span>
+          <span class="product-price-usd" id="product-price-usd"></span>
+        </div>
+        <p class="product-desc" id="product-desc"></p>
+
+        <!-- Size chart toggle -->
+        <button class="size-chart-toggle" onclick="toggleSizeChart()" id="size-chart-toggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><path d="M3 3h7l2 9 2-9h7"/><path d="M3 9h18"/></svg>
+          Size Chart
+          <svg id="size-chart-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="size-chart" id="size-chart" style="display:none">
+          <table>
+            <thead><tr><th>Size</th><th>Length (cm)</th><th>Chest (cm)</th><th>Suggested Weight</th></tr></thead>
+            <tbody>
+              <tr><td>S</td><td>61</td><td>35</td><td>~60kg</td></tr>
+              <tr><td>M</td><td>63</td><td>37.5</td><td>~70kg</td></tr>
+              <tr><td>L</td><td>65.5</td><td>40</td><td>~80kg</td></tr>
+              <tr><td>XL</td><td>68</td><td>42.5</td><td>~90kg</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Buy button -->
+        <a class="product-buy-btn hidden" id="product-buy-btn" target="_blank" rel="noopener">
+          Buy on Taobao →
         </a>
+        <p class="product-wechat-note">Or order via WeChat: <span>ylasport</span></p>
+
+        <!-- Specs -->
+        <div class="product-specs" id="product-specs" style="display:none">
+          <div class="spec-row"><span class="spec-label">MATERIAL</span><span class="spec-value">88% Polyamide, 12% Elastane</span></div>
+          <div class="spec-row"><span class="spec-label">FABRIC WEIGHT</span><span class="spec-value">175 GSM</span></div>
+          <div class="spec-row"><span class="spec-label">FIT</span><span class="spec-value">Compression / Athletic Fit</span></div>
+          <div class="spec-row"><span class="spec-label">CARE</span><span class="spec-value">Machine wash cold, do not bleach</span></div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="photo-section">
-    <div class="photo-grid" id="album-photo-grid"></div>
-    <div class="empty-state" id="album-empty" style="display:none"><div class="icon"><i data-lucide="image" style="width:48px;height:48px;opacity:.3;stroke:var(--gray-400)"></i></div><h3>No media yet</h3></div>
   </div>
 </div>
 
@@ -1117,7 +412,7 @@ body { font-family: var(--font-b); background: var(--white); color: var(--black)
   <div class="contact-body">
     <div class="contact-card">
       <div class="contact-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--green)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px;height:32px;color:var(--green)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </div>
       <div class="wc-label">WeChat ID</div>
       <div class="wc-id">ylasport</div>
@@ -1126,352 +421,305 @@ body { font-family: var(--font-b); background: var(--white); color: var(--black)
     </div>
     <div class="contact-info-grid">
       <div class="contact-info-item">
-        <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <div>
-          <div class="contact-info-label">Response Time</div>
-          <div class="contact-info-value">Within 24 hours</div>
-        </div>
+        <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:20px;height:20px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><div class="contact-info-label">Response Time</div><div class="contact-info-value">Within 24 hours</div></div>
       </div>
       <div class="contact-info-item">
-        <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg></div>
-        <div>
-          <div class="contact-info-label">Ships From</div>
-          <div class="contact-info-value">China · Worldwide</div>
-        </div>
+        <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:20px;height:20px"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><div class="contact-info-label">Ships From</div><div class="contact-info-value">China · Worldwide</div></div>
       </div>
       <div class="contact-info-item">
-        <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
-        <div>
-          <div class="contact-info-label">Delivery</div>
-          <div class="contact-info-value">7–15 business days</div>
-        </div>
+        <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:20px;height:20px"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <div><div class="contact-info-label">Delivery</div><div class="contact-info-value">7–15 business days</div></div>
       </div>
       <div class="contact-info-item">
-        <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><polyline points="9 11 12 14 22 4"/></svg></div>
-        <div>
-          <div class="contact-info-label">Payment</div>
-          <div class="contact-info-value">Taobao</div>
-        </div>
+        <div class="contact-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:20px;height:20px"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+        <div><div class="contact-info-label">Payment</div><div class="contact-info-value">Taobao</div></div>
       </div>
     </div>
   </div>
   <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-logo">YLA<em>SPORT</em></div>
-      <div class="footer-links">
-        <a onclick="showHome()">Home</a>
-        <a onclick="showAlbumsPage()">Collections</a>
-      </div>
-    </div>
+    <div class="footer-inner"><div class="footer-logo">YLA<em>SPORT</em></div><div class="footer-links"><a onclick="showHome()">Home</a><a onclick="showAlbumsPage()">Collections</a></div></div>
     <div class="footer-copy">© 2026 YLASPORT · All rights reserved</div>
   </footer>
 </div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-  <button class="lb-close" onclick="closeLightbox()"><i data-lucide="x" style="width:18px;height:18px"></i></button>
-  <button class="lb-nav" id="lb-prev" onclick="lbNav(-1);event.stopPropagation()"><i data-lucide="chevron-left" style="width:24px;height:24px"></i></button>
-  <button class="lb-nav" id="lb-next" onclick="lbNav(1);event.stopPropagation()"><i data-lucide="chevron-right" style="width:24px;height:24px"></i></button>
+  <button class="lb-close" onclick="closeLightbox()"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  <button class="lb-nav" id="lb-prev" onclick="lbNav(-1);event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="24" height="24"><polyline points="15 18 9 12 15 6"/></svg></button>
+  <button class="lb-nav" id="lb-next" onclick="lbNav(1);event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="24" height="24"><polyline points="9 6 15 12 9 18"/></svg></button>
   <img id="lb-img" src="" alt="" style="display:none">
   <video id="lb-video" src="" controls style="display:none"></video>
   <div class="lb-caption" id="lb-caption"></div>
 </div>
 
-
-
 <script>
 // ─── CONFIG ────────────────────────────────────────────────────────────────
 const DATA_URL = 'https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/data.json';
+const CNY_TO_USD = 0.1476;
 
-// ─── ANALYTICS (Supabase REST — sem SDK, sem lotar storage) ───────────────
+// ─── ANALYTICS ─────────────────────────────────────────────────────────────
 const _SB_URL = 'https://pbdkpvlpbxykmtizazha.supabase.co';
 const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiZGtwdmxwYnh5a210aXphemhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExMDQ1NzIsImV4cCI6MjA5NjY4MDU3Mn0.A3K-M8OxDQN8MV5RT2mqEUNmNcjQEL1PCq1Am4S4d3c';
+function _sbInsert(t,d){return fetch(`${_SB_URL}/rest/v1/${t}`,{method:'POST',headers:{'apikey':_SB_KEY,'Authorization':'Bearer '+_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(d)}).catch(()=>{});}
+let _tracked=false;
+function trackVisit(){if(_tracked)return;_tracked=true;fetch('https://ipapi.co/json/').then(r=>r.json()).catch(()=>({})).then(g=>_sbInsert('page_views',{country:g.country_name||'Unknown',country_code:g.country_code||'',city:g.city||''}));}
+function trackBuyClick(id,name){_sbInsert('buy_clicks',{album_id:String(id),album_name:String(name)});}
 
-function _sbInsert(table, data) {
-  return fetch(`${_SB_URL}/rest/v1/${table}`, {
-    method: 'POST',
-    headers: {
-      'apikey': _SB_KEY,
-      'Authorization': `Bearer ${_SB_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=minimal'
-    },
-    body: JSON.stringify(data)
-  }).catch(e => console.warn('Analytics error:', e.message));
-}
-
-let _tracked = false;
-function trackVisit() {
-  if (_tracked) return; _tracked = true;
-  fetch('https://ipapi.co/json/').then(r=>r.json()).catch(()=>({})).then(geo => {
-    _sbInsert('page_views', {
-      country: geo.country_name || 'Unknown',
-      country_code: geo.country_code || '',
-      city: geo.city || ''
-    });
-  });
-}
-
-function trackBuyClick(albumId, albumName) {
-  // Registra no Supabase — NUNCA salva foto/video lá, só dados de texto leves
-  _sbInsert('buy_clicks', {
-    album_id: String(albumId),
-    album_name: String(albumName)
-  }).then(r => {
-    if (r) console.log('Buy click tracked:', albumName, r.status);
-  });
-}
-
-// ─── HEADER SCROLL ─────────────────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-  document.getElementById('site-header').classList.toggle('scrolled', window.scrollY > 10);
-}, {passive: true});
+// ─── SCROLL ────────────────────────────────────────────────────────────────
+window.addEventListener('scroll',()=>document.getElementById('site-header').classList.toggle('scrolled',window.scrollY>10),{passive:true});
 
 // ─── STATE ─────────────────────────────────────────────────────────────────
-let albums = [];
-let lbItems = [], lbIndex = 0, lastView = 'home';
+let albums=[], lbItems=[], lbIndex=0, lastView='home', currentAlbum=null;
 
-// ─── FETCH DATA ────────────────────────────────────────────────────────────
-async function fetchAlbums() {
-  try {
-    const apiUrl = 'https://api.github.com/repos/flavianosz-studio/ylasport/contents/data.json?ref=main&t=' + Date.now();
-    const r = await fetch(apiUrl, {headers:{'Accept':'application/vnd.github.v3+json'}});
-    if (!r.ok) throw new Error('GitHub API failed');
-    const file = await r.json();
-    const text = decodeURIComponent(escape(atob(file.content.split('\n').join(''))));
-    return JSON.parse(text).albums || [];
-  } catch(e) {
-    try {
-      const r = await fetch(DATA_URL + '?t=' + Date.now());
-      if (!r.ok) return [];
-      return (await r.json()).albums || [];
-    } catch(e2) { return []; }
+// ─── FETCH ─────────────────────────────────────────────────────────────────
+async function fetchAlbums(){
+  try{
+    const r=await fetch('https://api.github.com/repos/flavianosz-studio/ylasport/contents/data.json?ref=main&t='+Date.now(),{headers:{'Accept':'application/vnd.github.v3+json'}});
+    if(!r.ok)throw new Error();
+    const f=await r.json();
+    return JSON.parse(decodeURIComponent(escape(atob(f.content.split('\n').join(''))))).albums||[];
+  }catch(e){
+    try{const r=await fetch(DATA_URL+'?t='+Date.now());return r.ok?(await r.json()).albums||[]:[]}catch{return[];}
   }
 }
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────
-function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-function slugify(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,''); }
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function slugify(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'');}
+function formatPrice(str){const m=String(str).match(/(\d+(?:\.\d+)?)/);if(!m)return{cny:str,usd:''};const c=parseFloat(m[1]);return{cny:'¥'+c.toLocaleString(),usd:'≈ $'+(c*CNY_TO_USD).toFixed(2)+' USD'};}
 
 // ─── VIEWS ─────────────────────────────────────────────────────────────────
-function showView(id) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
-  window.scrollTo(0,0);
-}
-function setNav(w) {
-  ['home','albums','contact'].forEach(n => {
-    document.getElementById('nav-' + n)?.classList.toggle('active', n === w);
-  });
-}
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('view-'+id).classList.add('active');window.scrollTo(0,0);}
+function setNav(w){['home','albums','contact'].forEach(n=>document.getElementById('nav-'+n)?.classList.toggle('active',n===w));}
 
-async function showHome() {
-  history.pushState(null, '', '#');
-  showView('home'); lastView = 'home'; setNav('home');
-  document.getElementById('home-loading').style.display = 'flex';
-  document.getElementById('home-album-grid').style.display = 'none';
-  albums = await fetchAlbums();
-  renderHomeAlbums();
+async function showHome(){
+  history.pushState(null,'','#');showView('home');lastView='home';setNav('home');
+  document.getElementById('home-loading').style.display='flex';
+  document.getElementById('home-album-grid').style.display='none';
+  albums=await fetchAlbums();renderHomeAlbums();
 }
-async function showAlbumsPage() {
-  history.pushState(null, '', '#albums');
-  showView('albums'); lastView = 'albums'; setNav('albums');
-  document.getElementById('all-loading').style.display = 'flex';
-  document.getElementById('all-album-grid').style.display = 'none';
-  if (!albums.length) albums = await fetchAlbums();
-  renderAllAlbums();
+async function showAlbumsPage(){
+  history.pushState(null,'','#albums');showView('albums');lastView='albums';setNav('albums');
+  document.getElementById('all-loading').style.display='flex';
+  document.getElementById('all-album-grid').style.display='none';
+  if(!albums.length)albums=await fetchAlbums();renderAllAlbums();
 }
-function showContactPage() {
-  history.pushState(null, '', '#contact');
-  showView('contact'); setNav('contact');
-}
-function goBack() { if (lastView === 'home') showHome(); else showAlbumsPage(); }
+function showContactPage(){history.pushState(null,'','#contact');showView('contact');setNav('contact');}
+function goBack(){if(lastView==='home')showHome();else showAlbumsPage();}
 
-// ─── RENDER CARDS ──────────────────────────────────────────────────────────
-// ─── PRICE FORMATTER ──────────────────────────────────────────────────────
-const CNY_TO_USD = 0.1476; // Taxa: 1 CNY = $0.1476 USD (atualizado 10/06/2026)
-
-function formatPrice(priceStr) {
-  // Extract number from string like "147y" or "139y" or "168y"
-  const match = String(priceStr).match(/(\d+(?:\.\d+)?)/);
-  if (!match) return `<span class="price-cny">${priceStr}</span>`;
-  const cny = parseFloat(match[1]);
-  const usd = (cny * CNY_TO_USD).toFixed(2);
-  return `<span class="price-cny">¥${cny.toLocaleString()}</span><span class="price-usd">≈ $${usd} USD</span>`;
-}
-
-function albumCardHTML(a) {
-  const media = a.media || [];
-  const cover = media.find(m => m.id === a.cover_media_id) || media.find(m => m.type === 'image');
-  const thumbUrl = cover ? cover.url : null;
-  const variants = a.variants || [];
-  const priceMatch = (a.description || '').match(/Price:\s*([^\n]+)/i);
-  const price = priceMatch ? priceMatch[1].trim() : '';
-  const badge = a.tag ? `<div class="album-badge${a.tag.toLowerCase().includes('new') ? ' new' : ''}">${esc(a.tag)}</div>` : '';
-  const swatches = variants.length ? `<div class="color-swatches" onclick="event.stopPropagation()">${variants.map((v,i)=>`<div class="swatch${i===0?' active':''}" data-color="${v.color}" title="${v.color}" ${v.hex?`style="background:${v.hex}"`:'data-color="'+v.color.toLowerCase().replace(/ /g,'-')+'"'} onclick="switchVariant(this,'${a.id}','${v.media_id}')"></div>`).join('')}</div>` : '';
-  const thumbContent = thumbUrl ? `<img src="${thumbUrl}" alt="${esc(a.name)}" loading="lazy" id="card-img-${esc(String(a.id))}">` : `<i data-lucide="folder" style="width:40px;height:40px;stroke:var(--gray-400)"></i>`;
+// ─── ALBUM CARDS ───────────────────────────────────────────────────────────
+function albumCardHTML(a){
+  const media=a.media||[];
+  const cover=media.find(m=>m.id===a.cover_media_id)||media.find(m=>m.type==='image');
+  const thumbUrl=cover?cover.url:null;
+  const variants=a.variants||[];
+  const priceMatch=(a.description||'').match(/Price:\s*([^\n]+)/i);
+  const price=priceMatch?priceMatch[1].trim():'';
+  const badge=a.tag?`<div class="album-badge${a.tag.toLowerCase().includes('new')?' new':''}">${esc(a.tag)}</div>`:'';
+  const swatches=variants.length?`<div class="color-swatches" onclick="event.stopPropagation()">${variants.map((v,i)=>`<div class="swatch${i===0?' active':''}" data-color="${v.color.toLowerCase().replace(/ /g,'-')}" title="${v.color}" ${v.hex?`style="background:${v.hex}"`:''}  onclick="switchVariant(this,'${a.id}','${v.media_id}')"></div>`).join('')}</div>`:'';
+  const thumb=thumbUrl?`<img src="${thumbUrl}" alt="${esc(a.name)}" loading="lazy" id="card-img-${esc(String(a.id))}">`:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40" style="stroke:var(--gray-400)"><path d="M3 3h18v18H3z"/></svg>';
+  const p=price?formatPrice(price):null;
   return `<div class="album-card" onclick="openAlbum('${esc(String(a.id))}')">
-    <div class="album-thumb">${thumbContent}${badge}<div class="album-thumb-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
+    <div class="album-thumb">${thumb}${badge}<div class="album-thumb-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" width="16" height="16"><path d="M9 18l6-6-6-6"/></svg></div></div>
     <div class="album-card-footer">
       <h3>${esc(a.name)}</h3>
-      ${price ? `<div class="album-price">${formatPrice(price)}</div>` : ''}
+      ${p?`<div class="album-price"><span class="price-cny">${p.cny}</span><span class="price-usd">${p.usd}</span></div>`:''}
       ${swatches}
     </div>
   </div>`;
 }
 
-function switchVariant(el, albumId, mediaId) {
-  const card = el.closest('.album-card');
-  card.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+function switchVariant(el,albumId,mediaId){
+  const card=el.closest('.album-card');
+  card.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
   el.classList.add('active');
-  const alb = albums.find(a => String(a.id) === String(albumId));
-  if (!alb) return;
-  const m = (alb.media || []).find(x => x.id === mediaId);
-  if (!m) return;
-  const img = card.querySelector('img');
-  if (img) { img.style.opacity='0.5'; img.src = m.url; img.onload = () => { img.style.transition='opacity .3s'; img.style.opacity='1'; }; }
+  const alb=albums.find(a=>String(a.id)===String(albumId));
+  if(!alb)return;
+  const m=(alb.media||[]).find(x=>x.id===mediaId);
+  if(!m)return;
+  const img=card.querySelector('img');
+  if(img){img.style.opacity='.5';img.src=m.url;img.onload=()=>{img.style.transition='opacity .3s';img.style.opacity='1';};}
 }
 
-function renderHomeAlbums(q = '') {
-  document.getElementById('home-loading').style.display = 'none';
-  const grid = document.getElementById('home-album-grid');
-  const list = q ? albums.filter(a => a.name.toLowerCase().includes(q.toLowerCase())) : albums;
-  const heroCount = document.getElementById('hero-count');
-  if (heroCount) heroCount.textContent = albums.length;
-  if (!list.length) {
-    grid.style.display = 'none';
-    document.getElementById('home-empty').style.display = 'block';
-  } else {
-    grid.style.display = 'grid';
-    grid.innerHTML = list.map(albumCardHTML).join('');
-    document.getElementById('home-empty').style.display = 'none';
-    if(typeof lucide !== 'undefined') lucide.createIcons();
-  }
+function renderHomeAlbums(q=''){
+  document.getElementById('home-loading').style.display='none';
+  const grid=document.getElementById('home-album-grid');
+  const list=q?albums.filter(a=>a.name.toLowerCase().includes(q.toLowerCase())):albums;
+  if(!list.length){grid.style.display='none';document.getElementById('home-empty').style.display='block';}
+  else{grid.style.display='grid';grid.innerHTML=list.map(albumCardHTML).join('');document.getElementById('home-empty').style.display='none';}
 }
-function renderAllAlbums(q = '') {
-  document.getElementById('all-loading').style.display = 'none';
-  const grid = document.getElementById('all-album-grid');
-  const list = q ? albums.filter(a => a.name.toLowerCase().includes(q.toLowerCase())) : albums;
-  if (!list.length) { grid.style.display = 'none'; document.getElementById('all-empty').style.display = 'block'; }
-  else { grid.style.display = 'grid'; grid.innerHTML = list.map(albumCardHTML).join(''); document.getElementById('all-empty').style.display = 'none'; if(typeof lucide !== 'undefined') lucide.createIcons(); }
+function renderAllAlbums(q=''){
+  document.getElementById('all-loading').style.display='none';
+  const grid=document.getElementById('all-album-grid');
+  const list=q?albums.filter(a=>a.name.toLowerCase().includes(q.toLowerCase())):albums;
+  if(!list.length){grid.style.display='none';document.getElementById('all-empty').style.display='block';}
+  else{grid.style.display='grid';grid.innerHTML=list.map(albumCardHTML).join('');document.getElementById('all-empty').style.display='none';}
 }
-function liveSearch(q) { renderHomeAlbums(q); }
-function liveSearch2(q) { renderAllAlbums(q); }
+function liveSearch(q){renderHomeAlbums(q);}
+function liveSearch2(q){renderAllAlbums(q);}
 
-// ─── ALBUM DETAIL ──────────────────────────────────────────────────────────
-async function openAlbum(id) {
-  if (!albums.length) albums = await fetchAlbums();
-  const alb = albums.find(a => String(a.id) === String(id));
-  if (!alb) return;
-  history.pushState(null, '', `#album/${slugify(alb.name)}`);
-  renderAlbumDetail(alb);
+// ─── ALBUM DETAIL (product page) ───────────────────────────────────────────
+async function openAlbum(id){
+  if(!albums.length)albums=await fetchAlbums();
+  const alb=albums.find(a=>String(a.id)===String(id));
+  if(!alb)return;
+  history.pushState(null,'',`#album/${slugify(alb.name)}`);
+  currentAlbum=alb;
+  renderProductPage(alb);
   showView('album');
 }
 
-function renderAlbumDetail(alb) {
-  document.getElementById('album-detail-title').textContent = alb.name;
-  const media = alb.media || [];
-  document.getElementById('album-detail-count').textContent = `${media.length} item${media.length !== 1 ? 's' : ''}`;
-  document.getElementById('album-desc-display').textContent = alb.description || '';
-  const buyBtn = document.getElementById('album-buy-btn');
-  if (alb.pay_link) {
-    buyBtn.href = alb.pay_link;
+let _currentMainIdx=0;
+
+function renderProductPage(alb){
+  document.getElementById('breadcrumb-name').textContent=alb.name;
+  document.getElementById('product-title').textContent=alb.name;
+
+  // Price
+  const priceMatch=(alb.description||'').match(/Price:\s*([^\n]+)/i);
+  if(priceMatch){
+    const p=formatPrice(priceMatch[1].trim());
+    document.getElementById('product-price-cny').textContent=p.cny;
+    document.getElementById('product-price-usd').textContent=p.usd;
+  } else {
+    document.getElementById('product-price-cny').textContent='';
+    document.getElementById('product-price-usd').textContent='';
+  }
+
+  // Description — remove price line
+  const desc=(alb.description||'').replace(/Price:[^\n]+\n?/i,'').trim();
+  document.getElementById('product-desc').textContent=desc;
+
+  // Buy button
+  const buyBtn=document.getElementById('product-buy-btn');
+  if(alb.pay_link){
+    buyBtn.href=alb.pay_link;
     buyBtn.classList.remove('hidden');
-    // Track buy click on every click
-    buyBtn.onclick = (e) => {
-      trackBuyClick(alb.id, alb.name);
-    };
+    buyBtn.onclick=()=>trackBuyClick(alb.id,alb.name);
   } else {
     buyBtn.classList.add('hidden');
   }
-  const cover = document.getElementById('album-cover-thumb');
-  const img = media.find(m => m.id === alb.cover_media_id) || media.find(m => m.type === 'image');
-  cover.innerHTML = img ? `<img src="${img.url}" alt="">` : '<i data-lucide="folder" style="width:36px;height:36px;stroke:rgba(255,255,255,.3)"></i>';
-  lbItems = media;
-  const grid = document.getElementById('album-photo-grid');
-  const empty = document.getElementById('album-empty');
-  if (!media.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
-  // render grid
-  grid.innerHTML = media.map((m, i) => {
-    if (m.type === 'video') return `<div class="photo-item" onclick="openLightbox(${i})"><div class="photo-wrapper"><video src="${m.url}" muted loading="lazy" playsinline></video><div class="video-play-overlay"><div class="play-circle"><i data-lucide="play" style="width:20px;height:20px;margin-left:3px"></i></div></div></div></div>`;
-    return `<div class="photo-item" onclick="openLightbox(${i})"><div class="photo-wrapper"><img src="${m.url}" alt="" loading="lazy"></div></div>`;
+
+  // Show specs for compression items
+  const isCompression=/compression|warrior|batman|superman/i.test(alb.name);
+  document.getElementById('product-specs').style.display=isCompression?'block':'none';
+
+  // Gallery
+  const media=alb.media||[];
+  lbItems=media;
+  _currentMainIdx=0;
+
+  const mainImgEl=document.getElementById('product-main-img-el');
+  const mainImgWrap=document.getElementById('product-main-img');
+
+  if(media.length>0){
+    const first=media[0];
+    if(first.type==='video'){
+      mainImgWrap.innerHTML=`<video src="${first.url}" controls playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>`;
+    } else {
+      mainImgEl.src=first.url;
+      mainImgEl.alt=alb.name;
+      // restore img if was replaced
+      if(!mainImgWrap.querySelector('img')){
+        mainImgWrap.innerHTML='';
+        mainImgWrap.appendChild(mainImgEl);
+      }
+    }
+  }
+
+  // Thumbnails
+  const thumbsEl=document.getElementById('product-thumbs');
+  thumbsEl.innerHTML=media.map((m,i)=>{
+    const thumb=m.type==='video'
+      ?`<video src="${m.url}" muted style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none"></video>`
+      :`<img src="${m.url}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+    return `<div class="thumb-item${i===0?' active':''}" onclick="setMainMedia(${i})">${thumb}</div>`;
   }).join('');
-  if(typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function setMainMedia(idx){
+  _currentMainIdx=idx;
+  const m=lbItems[idx];
+  if(!m)return;
+  // Update thumbnails
+  document.querySelectorAll('.thumb-item').forEach((el,i)=>el.classList.toggle('active',i===idx));
+  // Update main
+  const wrap=document.getElementById('product-main-img');
+  if(m.type==='video'){
+    wrap.innerHTML=`<video src="${m.url}" controls playsinline style="width:100%;height:100%;object-fit:cover;display:block;"></video>`;
+  } else {
+    wrap.innerHTML=`<img id="product-main-img-el" src="${m.url}" alt="" loading="eager" style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .25s;" onclick="openLightboxFromMain()">`;
+  }
+}
+
+function openLightboxFromMain(){openLightbox(_currentMainIdx);}
+
+function toggleSizeChart(){
+  const el=document.getElementById('size-chart');
+  const chevron=document.getElementById('size-chart-chevron');
+  const open=el.style.display==='none';
+  el.style.display=open?'block':'none';
+  chevron.style.transform=open?'rotate(180deg)':'rotate(0)';
 }
 
 // ─── LIGHTBOX ──────────────────────────────────────────────────────────────
-function openLightbox(idx) { lbIndex = idx; updateLightbox(); document.getElementById('lightbox').classList.add('open'); }
-function closeLightbox(e) {
-  if (e && e.target !== e.currentTarget) return;
-  document.getElementById('lightbox').classList.remove('open');
-  document.getElementById('lb-video').pause();
+function openLightbox(idx){lbIndex=idx;updateLightbox();document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(e){if(e&&e.target!==e.currentTarget)return;document.getElementById('lightbox').classList.remove('open');document.getElementById('lb-video').pause();}
+function lbNav(d){lbIndex=(lbIndex+d+lbItems.length)%lbItems.length;updateLightbox();}
+function updateLightbox(){
+  const m=lbItems[lbIndex];
+  const img=document.getElementById('lb-img');
+  const vid=document.getElementById('lb-video');
+  document.getElementById('lb-caption').textContent=`${lbIndex+1} / ${lbItems.length}`;
+  if(m.type==='video'){img.style.display='none';vid.style.display='block';vid.src=m.url;}
+  else{vid.style.display='none';vid.src='';img.style.display='block';img.src=m.url;}
 }
-function lbNav(d) { lbIndex = (lbIndex + d + lbItems.length) % lbItems.length; updateLightbox(); }
-function updateLightbox() {
-  const m = lbItems[lbIndex];
-  const img = document.getElementById('lb-img');
-  const vid = document.getElementById('lb-video');
-  document.getElementById('lb-caption').textContent = `${lbIndex + 1} / ${lbItems.length}`;
-  if (m.type === 'video') { img.style.display='none'; vid.style.display='block'; vid.src=m.url; }
-  else { vid.style.display='none'; vid.src=''; img.style.display='block'; img.src=m.url; }
-}
-document.addEventListener('keydown', e => {
-  if (!document.getElementById('lightbox').classList.contains('open')) return;
-  if (e.key === 'ArrowLeft') lbNav(-1);
-  if (e.key === 'ArrowRight') lbNav(1);
-  if (e.key === 'Escape') { document.getElementById('lightbox').classList.remove('open'); document.getElementById('lb-video').pause(); }
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lightbox').classList.contains('open'))return;
+  if(e.key==='ArrowLeft')lbNav(-1);
+  if(e.key==='ArrowRight')lbNav(1);
+  if(e.key==='Escape'){document.getElementById('lightbox').classList.remove('open');document.getElementById('lb-video').pause();}
 });
 
 // ─── ROUTER ────────────────────────────────────────────────────────────────
-async function handleRoute() {
-  const hash = window.location.hash.replace(/^#[/]?/, '');
-  if (!hash) { await showHome(); }
-  else if (hash === 'albums') { await showAlbumsPage(); }
-  else if (hash === 'contact') { showContactPage(); }
-  else if (hash.startsWith('album/')) {
-    const slug = hash.replace('album/', '');
-    if (!albums.length) albums = await fetchAlbums();
-    const alb = albums.find(a => slugify(a.name) === slug);
-    if (alb) { lastView = 'albums'; renderAlbumDetail(alb); showView('album'); }
-    else { await showHome(); }
-  } else { await showHome(); }
+async function handleRoute(){
+  const hash=window.location.hash.replace(/^#[/]?/,'');
+  if(!hash){await showHome();}
+  else if(hash==='albums'){await showAlbumsPage();}
+  else if(hash==='contact'){showContactPage();}
+  else if(hash.startsWith('album/')){
+    const slug=hash.replace('album/','');
+    if(!albums.length)albums=await fetchAlbums();
+    const alb=albums.find(a=>slugify(a.name)===slug);
+    if(alb){lastView='albums';currentAlbum=alb;renderProductPage(alb);showView('album');}
+    else{await showHome();}
+  }else{await showHome();}
 }
-window.addEventListener('popstate', handleRoute);
+window.addEventListener('popstate',handleRoute);
 handleRoute();
-// Remover service worker antigo
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(regs => {
-    regs.forEach(r => r.unregister());
-  });
-}
+
+// Remove old service worker
+if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(regs=>regs.forEach(r=>r.unregister()));}
 trackVisit();
-// Initialize Lucide icons
-if(typeof lucide !== "undefined") lucide.createIcons();
 
-// ─── HERO SLIDESHOW ────────────────────────────────────────────────────────
-let _slideIdx = 0;
-let _slideTimer = null;
-const _SLIDE_INTERVAL = 5000;
-
-function goToSlide(n) {
-  const slides = document.querySelectorAll('.hero-slide');
-  const dots   = document.querySelectorAll('.hero-dot');
-  if (!slides.length) return;
+// ─── SLIDESHOW ─────────────────────────────────────────────────────────────
+let _slideIdx=0,_slideTimer=null;
+function goToSlide(n){
+  const slides=document.querySelectorAll('.hero-slide');
+  const dots=document.querySelectorAll('.hero-dot');
+  if(!slides.length)return;
   slides[_slideIdx].classList.remove('active');
   dots[_slideIdx]?.classList.remove('active');
-  _slideIdx = (n + slides.length) % slides.length;
+  _slideIdx=(n+slides.length)%slides.length;
   slides[_slideIdx].classList.add('active');
   dots[_slideIdx]?.classList.add('active');
-  // restart auto-timer on manual nav
   clearInterval(_slideTimer);
-  _slideTimer = setInterval(() => goToSlide(_slideIdx + 1), _SLIDE_INTERVAL);
+  _slideTimer=setInterval(()=>goToSlide(_slideIdx+1),5000);
 }
-
-function slideStep(dir) { goToSlide(_slideIdx + dir); }
-
-// Start auto-play
-_slideTimer = setInterval(() => goToSlide(_slideIdx + 1), _SLIDE_INTERVAL);
+function slideStep(dir){goToSlide(_slideIdx+dir);}
+_slideTimer=setInterval(()=>goToSlide(_slideIdx+1),5000);
 </script>
 </body>
 </html>
