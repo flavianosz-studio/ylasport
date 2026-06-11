@@ -190,15 +190,6 @@
       ]
     },
     {
-      "id": "album-how-to-buy",
-      "name": "How to Buy (Custom Order) or (Big orders)",
-      "tag": "How to Buy - Step by Step",
-      "description": "Learn how to place custom or bulk orders.",
-      "pay_link": "",
-      "cover_media_id": null,
-      "media": []
-    },
-    {
       "id": "album-customer-reviews",
       "name": "Customer Reviews",
       "tag": "Reviews",
