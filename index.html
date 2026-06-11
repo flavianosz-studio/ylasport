@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YLASPORT — Premium Athletic Wear</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/favicon.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://api.github.com">
 <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
@@ -229,26 +231,90 @@ body{font-family:var(--font);background:var(--white);color:var(--black);overflow
 
 /* ── MOBILE ── */
 @media(max-width:768px){
-  .announce-bar{font-size:10px;letter-spacing:1px;}
-  .header-top{padding:0 20px;height:52px;}
+  /* ── ANNOUNCE ── */
+  .announce-bar{font-size:10px;letter-spacing:1.5px;padding:9px 16px;}
+
+  /* ── HEADER ── */
+  .header-top{padding:0 16px;height:52px;}
   .header-phone{display:none;}
-  .logo{font-size:20px;letter-spacing:6px;}
+  .logo{font-size:20px;letter-spacing:5px;}
   .header-nav-bar{display:none;}
-  .hero-banner{height:80vw;min-height:300px;max-height:560px;}
-  .hero-shop-btn{padding:14px 32px;font-size:11px;bottom:40px;min-width:160px;}
-  .hero-scroll-btn{bottom:12px;}
-  .section-wrap{padding:40px 20px;}
-  .section-title{font-size:28px;}
-  .album-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
-  .product-page{padding:20px 20px 60px;}
-  .product-layout{grid-template-columns:1fr;gap:28px;}
-  .product-info h1{font-size:18px;}
-  .contact-hero{padding:48px 20px 40px;}
-  .contact-title{font-size:36px;letter-spacing:2px;}
-  .contact-body{grid-template-columns:1fr;padding:40px 20px;gap:24px;}
-  .contact-card{padding:32px 24px;}
-  .site-footer{padding:40px 20px;}
-  .footer-inner{flex-direction:column;align-items:flex-start;gap:20px;}
+  .header-icons{gap:2px;}
+  .header-icon-btn{padding:8px;}
+
+  /* ── HERO ── */
+  .hero-banner{height:70vw;min-height:260px;max-height:480px;}
+  .hero-shop-btn{padding:12px 28px;font-size:11px;bottom:36px;min-width:140px;letter-spacing:2px;}
+  .hero-scroll-btn{width:36px;height:36px;bottom:10px;}
+  .hero-arrow{width:36px;height:36px;}
+  .hero-dots{bottom:14px;gap:6px;}
+  .hero-dot{width:6px;height:6px;}
+
+  /* ── COLLECTIONS ── */
+  .section-wrap{padding:28px 16px 40px;}
+  .section-label{font-size:10px;}
+  .section-title{font-size:24px;letter-spacing:1px;}
+  .section-header{margin-bottom:20px;padding-bottom:14px;flex-direction:column;align-items:flex-start;gap:12px;}
+  .search-wrap input{width:100% !important;}
+  .search-wrap{width:100%;}
+
+  /* ── ALBUM CARDS ── */
+  .album-grid{grid-template-columns:repeat(2,1fr);gap:10px;padding:2px;}
+  .album-card-footer{padding:10px 2px 6px;}
+  .album-card-footer h3{font-size:12px;letter-spacing:.5px;}
+  .price-cny{font-size:14px;}
+  .price-usd{font-size:10px;padding:1px 6px;}
+  .swatch{width:17px;height:17px;}
+  .color-swatches{gap:5px;}
+
+  /* ── PRODUCT PAGE ── */
+  .product-page{padding:16px 16px 60px;}
+  .product-breadcrumb{font-size:10px;gap:6px;margin-bottom:16px;}
+  .product-layout{grid-template-columns:1fr;gap:20px;}
+  .product-main-img{aspect-ratio:4/5;}
+  .thumb-item{width:60px;height:60px;}
+  .product-info h1{font-size:17px;letter-spacing:.8px;}
+  .product-price-cny{font-size:20px;}
+  .product-price-usd{font-size:12px;}
+  .product-price-row{margin-bottom:16px;padding-bottom:16px;}
+  .product-desc{font-size:13px;}
+  .size-chart-toggle{font-size:11px;}
+  .size-chart table{font-size:11px;}
+  .size-chart th,.size-chart td{padding:7px 10px;}
+  .product-buy-btn{padding:15px;font-size:12px;}
+  .spec-label{min-width:110px;font-size:12px;}
+  .spec-value{font-size:12px;}
+  .spec-row{padding:8px 0;}
+
+  /* ── CONTACT ── */
+  .contact-hero{padding:40px 16px 32px;}
+  .contact-title{font-size:32px;letter-spacing:1.5px;}
+  .contact-subtitle{font-size:13px;}
+  .contact-body{grid-template-columns:1fr;padding:28px 16px;gap:16px;}
+  .contact-card{padding:28px 20px;}
+  .wc-id{font-size:24px;}
+  .contact-info-item{padding:16px 20px;gap:12px;}
+  .contact-info-value{font-size:13px;}
+
+  /* ── FOOTER ── */
+  .site-footer{padding:32px 16px;margin-top:40px;}
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:16px;}
+  .footer-logo{font-size:20px;letter-spacing:3px;}
+  .footer-links{gap:20px;flex-wrap:wrap;}
+  .footer-copy{font-size:10px;margin-top:24px;padding-top:24px;}
+
+  /* ── LIGHTBOX ── */
+  .lb-nav{width:40px;height:40px;}
+  #lb-prev{left:8px;}
+  #lb-next{right:8px;}
+  .lb-close{top:12px;right:12px;width:36px;height:36px;}
+}
+
+@media(max-width:420px){
+  .album-grid{gap:6px;}
+  .album-card-footer h3{font-size:11px;}
+  .price-cny{font-size:13px;}
+  .hero-shop-btn{min-width:120px;padding:11px 20px;}
 }
 </style>
 </head>
