@@ -204,8 +204,15 @@
       "tag": "Reviews",
       "description": "Real customer reviews and photos.",
       "pay_link": "",
-      "cover_media_id": null,
-      "media": []
+      "cover_media_id": "1781150896947_opqpmx",
+      "media": [
+        {
+          "id": "1781150896947_opqpmx",
+          "path": "media/album-customer-reviews/1781150896947_opqpmx.webp",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-customer-reviews/1781150896947_opqpmx.webp",
+          "type": "image"
+        }
+      ]
     },
     {
       "id": "album-in-production",
