@@ -285,9 +285,15 @@ body{font-family:var(--font);background:var(--white);color:var(--black);overflow
       <div class="hero-slide active">
         <img src="https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/assets/banner.png" alt="YLASPORT New Drop" loading="eager" fetchpriority="high">
       </div>
+      <div class="hero-slide">
+        <img src="https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/assets/banner2.png" alt="YLASPORT Official Taobao Store" loading="lazy">
+      </div>
     </div>
     <div class="hero-banner-overlay"></div>
-    <div class="hero-dots"><button class="hero-dot active" onclick="goToSlide(0)"></button></div>
+    <div class="hero-dots">
+      <button class="hero-dot active" onclick="goToSlide(0)"></button>
+      <button class="hero-dot" onclick="goToSlide(1)"></button>
+    </div>
     <button class="hero-arrow hero-arrow-prev" onclick="slideStep(-1)">
       <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
