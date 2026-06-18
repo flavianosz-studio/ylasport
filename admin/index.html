@@ -463,6 +463,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
       <div class="form-field"><label class="form-label">Album Name *</label><input class="form-input" id="f-name" placeholder="e.g. YoungLA x Superman"></div>
       <div class="form-field"><label class="form-label">Tag</label><input class="form-input" id="f-tag" placeholder="e.g. NEW, SALE, LIMITED"></div>
       <div class="form-field"><label class="form-label">Description</label><textarea class="form-input form-textarea" id="f-desc" placeholder="Price, sizes, colors..."></textarea></div>
+      <div class="form-field" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label class="form-label">Price (¥ CNY)</label>
+          <input class="form-input" type="number" id="f-price" placeholder="e.g. 168" min="0" step="1">
+        </div>
+        <div>
+          <label class="form-label">≈ USD <span id="usd-preview" style="color:var(--text-3);font-weight:400;letter-spacing:0;text-transform:none;font-size:11px;"></span></label>
+          <input class="form-input" id="f-usd-preview" placeholder="Auto calculated" readonly style="background:var(--bg);color:var(--text-3);cursor:default;">
+        </div>
+      </div>
       <div class="form-field"><label class="form-label">Buy Link</label><input class="form-input" type="url" id="f-pay" placeholder="https://item.taobao.com/..."></div>
       <div class="form-field" style="margin-top:22px">
         <label class="form-label">Photos / Videos <span style="font-weight:400;color:var(--text-3);text-transform:none;letter-spacing:0">(click to set cover · drag to reorder)</span></label>
@@ -536,6 +546,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 <div class="toast" id="toast"><span class="toast-icon" id="toast-icon"></span><span id="toast-msg"></span></div>
 
 <script>
+const CNY_TO_USD = 0.1476; // 1 CNY ≈ $0.1476 USD (June 2026)
+
 const SUPABASE_URL = 'https://pbdkpvlpbxykmtizazha.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiZGtwdmxwYnh5a210aXphemhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExMDQ1NzIsImV4cCI6MjA5NjY4MDU3Mn0.A3K-M8OxDQN8MV5RT2mqEUNmNcjQEL1PCq1Am4S4d3c';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -684,7 +696,7 @@ function renderAlbums(){
       <div class="album-row-thumb">${thumb}</div>
       <div class="album-row-info">
         <div class="album-row-name">${esc(a.name)}${tagHtml}</div>
-        <div class="album-row-meta">${media.length} media item${media.length!==1?'s':''}</div>
+        <div class="album-row-meta">${media.length} media item${media.length!==1?'s':''}${a.price?' · ¥'+a.price:''}</div>
       </div>
       <div class="album-row-actions">
         <button class="btn btn-secondary btn-sm" onclick="openPhotos('${a.id}')">
@@ -707,7 +719,7 @@ function renderAlbums(){
 function openNewAlbum(){
   editingAlbumId=null;pendingFiles=[];pendingCoverId=null;
   document.getElementById('modal-album-title').textContent='New Album';
-  ['f-name','f-tag','f-desc','f-pay'].forEach(id=>document.getElementById(id).value='');
+  ['f-name','f-tag','f-desc','f-pay','f-price','f-usd-preview'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('preview-grid').innerHTML='';
   document.getElementById('prog-wrap').style.display='none';
   document.getElementById('drag-hint').style.display='none';
@@ -719,8 +731,16 @@ function editAlbum(id){
   document.getElementById('modal-album-title').textContent='Edit Album';
   document.getElementById('f-name').value=alb.name||'';
   document.getElementById('f-tag').value=alb.tag||'';
-  document.getElementById('f-desc').value=alb.description||'';
   document.getElementById('f-pay').value=alb.pay_link||'';
+  // Extract price from description or price field
+  const _priceVal = alb.price || '';
+  const _priceEl = document.getElementById('f-price');
+  const _usdEl = document.getElementById('f-usd-preview');
+  if (_priceEl) { _priceEl.value = _priceVal; }
+  if (_usdEl && _priceVal) { _usdEl.value = '≈ $' + (parseFloat(_priceVal) * CNY_TO_USD).toFixed(2) + ' USD'; }
+  // Show description without price line
+  const _descClean = (alb.description||'').replace(/Price:[^\n]+\n?/i,'').trim();
+  document.getElementById('f-desc').value=_descClean;
   const grid=document.getElementById('preview-grid');
   grid.innerHTML=(alb.media||[]).map(m=>existingThumbHTML(m,id)).join('');
   if((alb.media||[]).length>1){document.getElementById('drag-hint').style.display='block';initSortable('preview-grid',id);}
@@ -804,8 +824,12 @@ async function saveAlbum(){
   let alb=localData.albums.find(a=>a.id===albumId);
   if(!alb){alb={id:albumId,name,tag:'',description:'',pay_link:'',cover_media_id:null,created_at:new Date().toISOString(),media:[]};localData.albums.unshift(alb);}
   alb.name=name;alb.tag=document.getElementById('f-tag').value.trim();
-  alb.description=document.getElementById('f-desc').value.trim();
   alb.pay_link=document.getElementById('f-pay').value.trim();
+  const _price = document.getElementById('f-price')?.value.trim() || '';
+  alb.price = _price;
+  // Build description: prepend price line if set
+  const _descRaw = document.getElementById('f-desc').value.trim();
+  alb.description = _price ? `Price: ${_price}y\n${_descRaw}` : _descRaw;
   if(editingAlbumId)syncOrderToData('preview-grid',editingAlbumId);
   const files=pendingFiles.filter(Boolean);
   if(files.length){
@@ -935,6 +959,15 @@ window.addEventListener('resize',checkMobileNav);
 checkMobileNav();
 
 // ── INIT ──────────────────────────────────────────────────────────────────
+document.addEventListener('input', e => {
+  if (e.target.id === 'f-price') {
+    const cny = parseFloat(e.target.value) || 0;
+    const usd = (cny * CNY_TO_USD).toFixed(2);
+    const preview = document.getElementById('f-usd-preview');
+    if (preview) preview.value = cny > 0 ? `≈ $${usd} USD` : '';
+  }
+});
+
 (async()=>{const {data:{session}}=await sb.auth.getSession();if(session)await enterAdmin();})();
 </script>
 </body>
