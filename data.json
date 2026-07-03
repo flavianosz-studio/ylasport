@@ -232,7 +232,7 @@
       "id": "album-superman-newcolors",
       "name": "YoungLA x Superman (New Colors)",
       "tag": "YoungLA x Superman",
-      "description": "Price: 168y with original package\n147y without original package.",
+      "description": "Price: 168y\n147y without original package.",
       "pay_link": "https://item.taobao.com/item.htm?id=1051335028577",
       "cover_media_id": "1781116077180_blsqlo",
       "media": [
@@ -284,7 +284,8 @@
           "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-superman-newcolors/1781117380978_n562da.webp",
           "type": "image"
         }
-      ]
+      ],
+      "price": "168"
     },
     {
       "id": "album-customer-reviews",
