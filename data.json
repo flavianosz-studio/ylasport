@@ -132,6 +132,12 @@
           "path": "media/album-batman/1783173464853_q9063j.jpg",
           "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/1783173464853_q9063j.jpg",
           "type": "image"
+        },
+        {
+          "id": "1783173512975_s8902d",
+          "path": "media/album-batman/1783173512975_s8902d.mov",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/1783173512975_s8902d.mov",
+          "type": "video"
         }
       ],
       "price": "168"
