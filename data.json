@@ -1,6 +1,66 @@
 {
   "albums": [
     {
+      "id": "1783172464413",
+      "name": "YoungLA x Superman Compression Longsleeves",
+      "tag": "8066 - NEW SALE",
+      "description": "Price: 178y\n",
+      "pay_link": "https://item.taobao.com/item.htm?id=1051335028577&mi_id=00009Rs2Ui2QLhn9VNAUNePkW_NJ8JxdhXEfb1v9yCubW5U&skuId=6248394055095&spm=a21xtw.29178619.0.0&xxc=shop",
+      "cover_media_id": "1783172464413_zvep7y",
+      "created_at": "2026-07-04T13:41:04.413Z",
+      "media": [
+        {
+          "id": "1783172464413_zvep7y",
+          "path": "media/1783172464413/1783172464413_zvep7y.webp",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1783172464413/1783172464413_zvep7y.webp",
+          "type": "image"
+        },
+        {
+          "id": "1783172466052_rboplj",
+          "path": "media/1783172464413/1783172466052_rboplj.webp",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1783172464413/1783172466052_rboplj.webp",
+          "type": "image"
+        },
+        {
+          "id": "1783172467247_x7hqye",
+          "path": "media/1783172464413/1783172467247_x7hqye.webp",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1783172464413/1783172467247_x7hqye.webp",
+          "type": "image"
+        },
+        {
+          "id": "1783172468628_c4otwm",
+          "path": "media/1783172464413/1783172468628_c4otwm.webp",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1783172464413/1783172468628_c4otwm.webp",
+          "type": "image"
+        },
+        {
+          "id": "1783172470399_niwt3g",
+          "path": "media/1783172464413/1783172470399_niwt3g.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1783172464413/1783172470399_niwt3g.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1783172472532_ki8pcw",
+          "path": "media/1783172464413/1783172472532_ki8pcw.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1783172464413/1783172472532_ki8pcw.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1783172474576_cq3wyu",
+          "path": "media/1783172464413/1783172474576_cq3wyu.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1783172464413/1783172474576_cq3wyu.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1783172476845_5c9lrb",
+          "path": "media/1783172464413/1783172476845_5c9lrb.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1783172464413/1783172476845_5c9lrb.jpg",
+          "type": "image"
+        }
+      ],
+      "price": "178"
+    },
+    {
       "id": "1781303464455",
       "name": "How To Buy",
       "tag": "How To Buy",
