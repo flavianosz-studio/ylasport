@@ -636,65 +636,42 @@ function showPage(id,btn){
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────
 async function renderDashboard(){
-  const btn = document.getElementById('btn-refresh');
-  if (btn) { btn.disabled=true; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="animation:spin .6s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.57-4.75"/></svg> Loading...'; }
+  const btn=document.getElementById('btn-refresh');
+  if(btn){btn.disabled=true;btn.textContent='Loading...';}
+  try{
+    const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const now=new Date();
+    const todayStr=now.toLocaleDateString('sv',{timeZone:tz});
+    const yestStr=new Date(now-86400000).toLocaleDateString('sv',{timeZone:tz});
+    // Convert local midnight to UTC
+    const todayStart=new Date(todayStr).toISOString();
+    const yestStart=new Date(yestStr).toISOString();
+    const tomorrowStart=new Date(new Date(todayStr).getTime()+86400000).toISOString();
 
-  try {
-    // Use local date (browser timezone)
-    const nowLocal = new Date();
-    const todayLocal = nowLocal.toLocaleDateString('sv'); // YYYY-MM-DD in local TZ
-    const yestLocal = new Date(nowLocal-86400000).toLocaleDateString('sv');
-
-    // Local day boundaries in UTC
-    const tzOffset = nowLocal.getTimezoneOffset() * 60000;
-    const todayStartUTC = new Date(new Date(todayLocal).getTime() + tzOffset).toISOString();
-    const yestStartUTC = new Date(new Date(yestLocal).getTime() + tzOffset).toISOString();
-    const todayEndUTC = new Date(new Date(todayLocal).getTime() + tzOffset + 86400000).toISOString();
-
-    // Get total count using HEAD request (no row limit)
-    const [countRes, clickCountRes] = await Promise.all([
-      sb.from('page_views').select('*', {count:'exact', head:true}),
-      sb.from('buy_clicks').select('*', {count:'exact', head:true})
-    ]);
-    const totalVisits = countRes.count || 0;
-    const totalClicks = clickCountRes.count || 0;
-
-    const since90 = new Date(Date.now()-90*86400000).toISOString();
-
-    const [recentVisits, todayVisits, yestVisits, countryData, clickData] = await Promise.all([
-      sb.from('page_views').select('visited_at').gte('visited_at', since90).limit(10000),
-      sb.from('page_views').select('id', {count:'exact', head:true}).gte('visited_at', todayStartUTC).lt('visited_at', todayEndUTC),
-      sb.from('page_views').select('id', {count:'exact', head:true}).gte('visited_at', yestStartUTC).lt('visited_at', todayStartUTC),
-      sb.from('page_views').select('country').limit(10000),
+    const [{count:tv},{count:tc},{count:td},{count:ty},{data:visits},{data:clicks},{data:cdata}]=await Promise.all([
+      sb.from('page_views').select('*',{count:'exact',head:true}),
+      sb.from('buy_clicks').select('*',{count:'exact',head:true}),
+      sb.from('page_views').select('*',{count:'exact',head:true}).gte('visited_at',todayStart).lt('visited_at',tomorrowStart),
+      sb.from('page_views').select('*',{count:'exact',head:true}).gte('visited_at',yestStart).lt('visited_at',todayStart),
+      sb.from('page_views').select('visited_at').gte('visited_at',new Date(Date.now()-90*86400000).toISOString()).limit(10000),
       sb.from('buy_clicks').select('album_name').limit(10000),
+      sb.from('page_views').select('country').limit(10000)
     ]);
 
-    const v = recentVisits.data || [];
-    const allCountries = countryData.data || [];
-    const allClicks = clickData.data || [];
+    const cm={};(cdata||[]).forEach(x=>{if(x.country)cm[x.country]=(cm[x.country]||0)+1;});
 
-    const todayCount = todayVisits.count || 0;
-    const yestCount = yestVisits.count || 0;
+    document.getElementById('s-visits').textContent=(tv||0).toLocaleString();
+    document.getElementById('s-today').textContent=td||0;
+    document.getElementById('s-yesterday').textContent='Yesterday: '+(ty||0);
+    document.getElementById('s-clicks').textContent=(tc||0).toLocaleString();
+    document.getElementById('s-countries').textContent=Object.keys(cm).length;
 
-    // Countries
-    const countries={};
-    allCountries.forEach(x=>{if(x.country)countries[x.country]=(countries[x.country]||0)+1;});
-
-    document.getElementById('s-visits').textContent = totalVisits.toLocaleString();
-    document.getElementById('s-today').textContent = todayCount;
-    document.getElementById('s-yesterday').textContent = `Yesterday: ${yestCount}`;
-    document.getElementById('s-clicks').textContent = totalClicks.toLocaleString();
-    document.getElementById('s-countries').textContent = Object.keys(countries).length;
-
-    renderVisitChart(v);
-    renderClickChart(allClicks);
-    renderCountriesTable(countries, totalVisits);
-    renderClicksTable(allClicks);
-  } catch(e) {
-    console.error('Dashboard error:', e);
-  }
-
-  if (btn) { btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Refresh'; }
+    renderVisitChart(visits||[]);
+    renderClickChart(clicks||[]);
+    renderCountriesTable(cm,tv||0);
+    renderClicksTable(clicks||[]);
+  }catch(e){console.error('Dashboard error:',e);}
+  if(btn){btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Refresh';}
 }
 function setFilter(f,btn){
   chartFilter=f;
