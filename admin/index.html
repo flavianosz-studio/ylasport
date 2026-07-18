@@ -640,8 +640,16 @@ async function renderDashboard(){
   if (btn) { btn.disabled=true; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="animation:spin .6s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.57-4.75"/></svg> Loading...'; }
 
   try {
-    const today = new Date().toISOString().slice(0,10);
-    const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+    // Use local date (browser timezone)
+    const nowLocal = new Date();
+    const todayLocal = nowLocal.toLocaleDateString('sv'); // YYYY-MM-DD in local TZ
+    const yestLocal = new Date(nowLocal-86400000).toLocaleDateString('sv');
+
+    // Local day boundaries in UTC
+    const tzOffset = nowLocal.getTimezoneOffset() * 60000;
+    const todayStartUTC = new Date(new Date(todayLocal).getTime() + tzOffset).toISOString();
+    const yestStartUTC = new Date(new Date(yestLocal).getTime() + tzOffset).toISOString();
+    const todayEndUTC = new Date(new Date(todayLocal).getTime() + tzOffset + 86400000).toISOString();
 
     // Get total count using HEAD request (no row limit)
     const [countRes, clickCountRes] = await Promise.all([
@@ -651,16 +659,12 @@ async function renderDashboard(){
     const totalVisits = countRes.count || 0;
     const totalClicks = clickCountRes.count || 0;
 
-    // Get data for today and yesterday
-    const todayStart = today + 'T00:00:00.000Z';
-    const yestStart = yesterday + 'T00:00:00.000Z';
-
     const since90 = new Date(Date.now()-90*86400000).toISOString();
 
     const [recentVisits, todayVisits, yestVisits, countryData, clickData] = await Promise.all([
       sb.from('page_views').select('visited_at').gte('visited_at', since90).limit(10000),
-      sb.from('page_views').select('id', {count:'exact', head:true}).gte('visited_at', todayStart),
-      sb.from('page_views').select('id', {count:'exact', head:true}).gte('visited_at', yestStart).lt('visited_at', todayStart),
+      sb.from('page_views').select('id', {count:'exact', head:true}).gte('visited_at', todayStartUTC).lt('visited_at', todayEndUTC),
+      sb.from('page_views').select('id', {count:'exact', head:true}).gte('visited_at', yestStartUTC).lt('visited_at', todayStartUTC),
       sb.from('page_views').select('country').limit(10000),
       sb.from('buy_clicks').select('album_name').limit(10000),
     ]);
@@ -696,7 +700,15 @@ function setFilter(f,btn){chartFilter=f;document.querySelectorAll('.filter-btn')
 function renderVisitChart(visits){
   const days=chartFilter==='week'?7:chartFilter==='month'?30:90;
   const labels=[],counts=[];
-  for(let i=days-1;i>=0;i--){const d=new Date(Date.now()-i*86400000).toISOString().slice(0,10);labels.push(d.slice(5));counts.push(visits.filter(v=>v.visited_at?.slice(0,10)===d).length);}
+  for(let i=days-1;i>=0;i--){
+    const d=new Date(Date.now()-i*86400000).toLocaleDateString('sv');
+    labels.push(d.slice(5));
+    // Convert UTC timestamps to local date for comparison
+    counts.push(visits.filter(v=>{
+      if(!v.visited_at) return false;
+      return new Date(v.visited_at).toLocaleDateString('sv')===d;
+    }).length);
+  }
   if(visitChart)visitChart.destroy();
   visitChart=new Chart(document.getElementById('chart-visits'),{type:'line',data:{labels,datasets:[{label:'Visits',data:counts,borderColor:'#2ecc71',backgroundColor:'rgba(46,204,113,.08)',fill:true,tension:.4,pointRadius:2,borderWidth:2}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0,font:{size:11}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{maxRotation:0,font:{size:10}},grid:{display:false}}},responsive:true,maintainAspectRatio:false}});
 }
