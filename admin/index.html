@@ -696,7 +696,14 @@ async function renderDashboard(){
 
   if (btn) { btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Refresh'; }
 }
-function setFilter(f,btn){chartFilter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');sb.from('page_views').select('visited_at,country,city').then(({data})=>renderVisitChart(data||[]));}
+function setFilter(f,btn){
+  chartFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const days=f==='week'?7:f==='month'?30:90;
+  const since=new Date(Date.now()-days*86400000).toISOString();
+  sb.from('page_views').select('visited_at').gte('visited_at',since).limit(10000).then(({data})=>renderVisitChart(data||[]));
+}
 function renderVisitChart(visits){
   const days=chartFilter==='week'?7:chartFilter==='month'?30:90;
   const labels=[],counts=[];
