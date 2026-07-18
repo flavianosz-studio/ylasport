@@ -651,23 +651,26 @@ async function renderDashboard(){
     const totalVisits = countRes.count || 0;
     const totalClicks = clickCountRes.count || 0;
 
-    // Get recent data for charts (last 90 days)
+    // Get data for today and yesterday
+    const todayStart = today + 'T00:00:00.000Z';
+    const yestStart = yesterday + 'T00:00:00.000Z';
+
     const since90 = new Date(Date.now()-90*86400000).toISOString();
-    const [recentVisits, recentClicks, countryData, clickData] = await Promise.all([
+
+    const [recentVisits, todayVisits, yestVisits, countryData, clickData] = await Promise.all([
       sb.from('page_views').select('visited_at').gte('visited_at', since90).limit(10000),
-      sb.from('buy_clicks').select('album_name,clicked_at').limit(10000),
+      sb.from('page_views').select('id', {count:'exact', head:true}).gte('visited_at', todayStart),
+      sb.from('page_views').select('id', {count:'exact', head:true}).gte('visited_at', yestStart).lt('visited_at', todayStart),
       sb.from('page_views').select('country').limit(10000),
       sb.from('buy_clicks').select('album_name').limit(10000),
     ]);
 
     const v = recentVisits.data || [];
-    const c = recentClicks.data || [];
     const allCountries = countryData.data || [];
     const allClicks = clickData.data || [];
 
-    // Today/yesterday counts
-    const todayCount = v.filter(x=>x.visited_at?.slice(0,10)===today).length;
-    const yestCount = v.filter(x=>x.visited_at?.slice(0,10)===yesterday).length;
+    const todayCount = todayVisits.count || 0;
+    const yestCount = yestVisits.count || 0;
 
     // Countries
     const countries={};
