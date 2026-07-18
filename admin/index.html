@@ -324,6 +324,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
             <div class="page-title">Dashboard</div>
             <div class="page-subtitle">Overview of your store performance</div>
           </div>
+          <button class="btn btn-secondary" onclick="renderDashboard()" id="btn-refresh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Refresh
+          </button>
         </div>
 
         <div class="stat-grid">
@@ -632,11 +636,13 @@ function showPage(id,btn){
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────
 async function renderDashboard(){
+  const btn = document.getElementById('btn-refresh');
+  if (btn) { btn.disabled=true; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="animation:spin .6s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.57-4.75"/></svg> Loading...'; }
   const today=new Date().toISOString().slice(0,10);
   const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
   const [{data:visits},{data:clicks}]=await Promise.all([
-    sb.from('page_views').select('visited_at,country,city'),
-    sb.from('buy_clicks').select('album_name,clicked_at,country')
+    sb.from('page_views').select('visited_at,country,city', {count:'exact'}).limit(10000),
+    sb.from('buy_clicks').select('album_name,clicked_at,country').limit(10000)
   ]);
   const v=visits||[],c=clicks||[];
   const tc=v.filter(x=>x.visited_at?.slice(0,10)===today).length;
@@ -648,6 +654,8 @@ async function renderDashboard(){
   document.getElementById('s-clicks').textContent=c.length;
   document.getElementById('s-countries').textContent=Object.keys(countries).length;
   renderVisitChart(v);renderClickChart(c);renderCountriesTable(countries,v.length);renderClicksTable(c);
+  const btn2 = document.getElementById('btn-refresh');
+  if (btn2) { btn2.disabled=false; btn2.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Refresh'; }
 }
 function setFilter(f,btn){chartFilter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');sb.from('page_views').select('visited_at,country,city').then(({data})=>renderVisitChart(data||[]));}
 function renderVisitChart(visits){
@@ -969,6 +977,8 @@ document.addEventListener('input', e => {
 });
 
 (async()=>{const {data:{session}}=await sb.auth.getSession();if(session)await enterAdmin();})();
+// Auto-refresh dashboard every 60 seconds
+setInterval(()=>{ if(document.getElementById('page-dashboard').style.display!=='none') renderDashboard(); }, 60000);
 </script>
 </body>
 </html>
