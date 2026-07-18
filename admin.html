@@ -636,65 +636,59 @@ function showPage(id,btn){
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────
 async function renderDashboard(){
-  const btn = document.getElementById('btn-refresh');
-  if (btn) { btn.disabled=true; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="animation:spin .6s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.57-4.75"/></svg> Loading...'; }
+  const btn=document.getElementById('btn-refresh');
+  if(btn){btn.disabled=true;btn.textContent='Loading...';}
 
-  try {
-    // Use local date (browser timezone)
-    const nowLocal = new Date();
-    const todayLocal = nowLocal.toLocaleDateString('sv'); // YYYY-MM-DD in local TZ
-    const yestLocal = new Date(nowLocal-86400000).toLocaleDateString('sv');
-
-    // Local day boundaries in UTC
-    const tzOffset = nowLocal.getTimezoneOffset() * 60000;
-    const todayStartUTC = new Date(new Date(todayLocal).getTime() + tzOffset).toISOString();
-    const yestStartUTC = new Date(new Date(yestLocal).getTime() + tzOffset).toISOString();
-    const todayEndUTC = new Date(new Date(todayLocal).getTime() + tzOffset + 86400000).toISOString();
-
-    // Get total count using HEAD request (no row limit)
-    const [countRes, clickCountRes] = await Promise.all([
-      sb.from('page_views').select('*', {count:'exact', head:true}),
-      sb.from('buy_clicks').select('*', {count:'exact', head:true})
+  try{
+    // 1. Total counts via server-side count
+    const[{count:totalVisits},{count:totalClicks}]=await Promise.all([
+      sb.from('page_views').select('*',{count:'exact',head:true}),
+      sb.from('buy_clicks').select('*',{count:'exact',head:true})
     ]);
-    const totalVisits = countRes.count || 0;
-    const totalClicks = clickCountRes.count || 0;
 
-    const since90 = new Date(Date.now()-90*86400000).toISOString();
+    // 2. Today/yesterday using local timezone
+    const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const now=new Date();
+    const todayStr=now.toLocaleDateString('sv',{timeZone:tz});
+    const yestStr=new Date(now-86400000).toLocaleDateString('sv',{timeZone:tz});
+    const todayUTCStart=new Date(todayStr+'T00:00:00').toISOString();
+    const yestUTCStart=new Date(yestStr+'T00:00:00').toISOString();
 
-    const [recentVisits, todayVisits, yestVisits, countryData, clickData] = await Promise.all([
-      sb.from('page_views').select('visited_at').gte('visited_at', since90).limit(10000),
-      sb.from('page_views').select('id', {count:'exact', head:true}).gte('visited_at', todayStartUTC).lt('visited_at', todayEndUTC),
-      sb.from('page_views').select('id', {count:'exact', head:true}).gte('visited_at', yestStartUTC).lt('visited_at', todayStartUTC),
-      sb.from('page_views').select('country').limit(10000),
+    const[{count:todayCount},{count:yestCount}]=await Promise.all([
+      sb.from('page_views').select('*',{count:'exact',head:true}).gte('visited_at',todayUTCStart),
+      sb.from('page_views').select('*',{count:'exact',head:true}).gte('visited_at',yestUTCStart).lt('visited_at',todayUTCStart)
+    ]);
+
+    // 3. Data for charts
+    const since90=new Date(Date.now()-90*86400000).toISOString();
+    const[{data:visits},{data:clicks},{data:countries}]=await Promise.all([
+      sb.from('page_views').select('visited_at').gte('visited_at',since90).limit(10000),
       sb.from('buy_clicks').select('album_name').limit(10000),
+      sb.from('page_views').select('country').limit(10000)
     ]);
 
-    const v = recentVisits.data || [];
-    const allCountries = countryData.data || [];
-    const allClicks = clickData.data || [];
+    // 4. Update stat cards
+    document.getElementById('s-visits').textContent=(totalVisits||0).toLocaleString();
+    document.getElementById('s-today').textContent=todayCount||0;
+    document.getElementById('s-yesterday').textContent='Yesterday: '+(yestCount||0);
+    document.getElementById('s-clicks').textContent=(totalClicks||0).toLocaleString();
 
-    const todayCount = todayVisits.count || 0;
-    const yestCount = yestVisits.count || 0;
+    // 5. Countries count
+    const countryMap={};
+    (countries||[]).forEach(x=>{if(x.country)countryMap[x.country]=(countryMap[x.country]||0)+1;});
+    document.getElementById('s-countries').textContent=Object.keys(countryMap).length;
 
-    // Countries
-    const countries={};
-    allCountries.forEach(x=>{if(x.country)countries[x.country]=(countries[x.country]||0)+1;});
+    // 6. Render charts
+    renderVisitChart(visits||[]);
+    renderClickChart(clicks||[]);
+    renderCountriesTable(countryMap,totalVisits||0);
+    renderClicksTable(clicks||[]);
 
-    document.getElementById('s-visits').textContent = totalVisits.toLocaleString();
-    document.getElementById('s-today').textContent = todayCount;
-    document.getElementById('s-yesterday').textContent = `Yesterday: ${yestCount}`;
-    document.getElementById('s-clicks').textContent = totalClicks.toLocaleString();
-    document.getElementById('s-countries').textContent = Object.keys(countries).length;
-
-    renderVisitChart(v);
-    renderClickChart(allClicks);
-    renderCountriesTable(countries, totalVisits);
-    renderClicksTable(allClicks);
-  } catch(e) {
-    console.error('Dashboard error:', e);
+  }catch(e){
+    console.error('Dashboard error:',e);
   }
 
-  if (btn) { btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Refresh'; }
+  if(btn){btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Refresh';}
 }
 function setFilter(f,btn){
   chartFilter=f;
