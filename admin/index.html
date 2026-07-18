@@ -383,8 +383,11 @@ async function loadDash(){
     document.getElementById('sv3').textContent=(tc||0).toLocaleString();
     document.getElementById('sv4').textContent=Object.keys(cm).length;
     // Charts
-    drawVC(vis||[]);
-    drawCC(cli||[]);
+    // Small delay to ensure canvas is ready
+    setTimeout(()=>{
+      drawVC(vis||[]);
+      drawCC(cli||[]);
+    }, 50);
     drawCT(cm,tv||0);
     drawKT(cli||[]);
   }catch(e){console.error(e);}
@@ -393,33 +396,59 @@ async function loadDash(){
 
 function setF(f,btn){
   CF=f;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  if(VC){VC.destroy();VC=null;}
   const days=f==='w'?7:f==='m'?30:90;
   const since=new Date(Date.now()-days*86400000).toISOString();
-  sb.from('page_views').select('visited_at').gte('visited_at',since).limit(10000).then(({data})=>{drawVC(data||[]);});
+  sb.from('page_views').select('visited_at').gte('visited_at',since).limit(10000).then(({data})=>drawVC(data||[]));
 }
 
 function drawVC(vis){
-  const days=CF==='w'?7:CF==='m'?30:90;
-  const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const labels=[],counts=[];
-  // Convert each visit timestamp to local date string
-  const dates=vis.map(v=>{
-    if(!v.visited_at) return '';
-    const d=new Date(v.visited_at);
-    // Format as YYYY-MM-DD in local timezone
-    return d.toLocaleDateString('en-CA',{timeZone:tz}); // en-CA gives YYYY-MM-DD format
-  });
-  for(let i=days-1;i>=0;i--){
-    // Get local date string for each day
-    const dayMs=Date.now()-i*86400000;
-    const d=new Date(dayMs).toLocaleDateString('en-CA',{timeZone:tz});
-    labels.push(d.slice(5)); // MM-DD
-    counts.push(dates.filter(x=>x===d).length);
+  const days = CF==='w' ? 7 : CF==='m' ? 30 : 90;
+  const labels = [], counts = [];
+  
+  for(let i = days-1; i >= 0; i--){
+    // Get date string YYYY-MM-DD for each day in local time
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const key = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    labels.push(key.slice(5));
+    
+    // Count visits that match this local date
+    const cnt = vis.filter(v => {
+      if(!v.visited_at) return false;
+      const vd = new Date(v.visited_at);
+      const vkey = vd.getFullYear()+'-'+String(vd.getMonth()+1).padStart(2,'0')+'-'+String(vd.getDate()).padStart(2,'0');
+      return vkey === key;
+    }).length;
+    counts.push(cnt);
   }
-  if(VC)VC.destroy();
-  const canvas=document.getElementById('cv');
-  if(!canvas)return;
-  VC=new Chart(canvas,{type:'line',data:{labels,datasets:[{data:counts,borderColor:'#2ecc71',backgroundColor:'rgba(46,204,113,.08)',fill:true,tension:.4,pointRadius:3,borderWidth:2,pointBackgroundColor:'#2ecc71'}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{title:ctx=>'Date: '+labels[ctx[0].dataIndex],label:ctx=>`${ctx.parsed.y} visits`}}},scales:{y:{beginAtZero:true,ticks:{precision:0,font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{maxRotation:0,font:{size:10}},grid:{display:false}}},responsive:true,maintainAspectRatio:false}});
+  
+  if(VC) VC.destroy();
+  VC = new Chart(document.getElementById('cv'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: counts,
+        borderColor: '#2ecc71',
+        backgroundColor: 'rgba(46,204,113,.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3,
+        borderWidth: 2,
+        pointBackgroundColor: '#2ecc71'
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { precision: 0, font: { size: 10 } }, grid: { color: 'rgba(0,0,0,.04)' } },
+        x: { ticks: { maxRotation: 0, font: { size: 10 } }, grid: { display: false } }
+      },
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
 }
 
 function drawCC(cli){
