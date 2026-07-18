@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YLASPORT Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
@@ -393,20 +395,31 @@ function setF(f,btn){
   CF=f;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
   const days=f==='w'?7:f==='m'?30:90;
   const since=new Date(Date.now()-days*86400000).toISOString();
-  sb.from('page_views').select('visited_at').gte('visited_at',since).limit(10000).then(({data})=>drawVC(data||[]));
+  sb.from('page_views').select('visited_at').gte('visited_at',since).limit(10000).then(({data})=>{drawVC(data||[]);});
 }
 
 function drawVC(vis){
   const days=CF==='w'?7:CF==='m'?30:90;
   const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
   const labels=[],counts=[];
-  const dates=vis.map(v=>v.visited_at?new Date(v.visited_at).toLocaleDateString('sv',{timeZone:tz}):'');
+  // Convert each visit timestamp to local date string
+  const dates=vis.map(v=>{
+    if(!v.visited_at) return '';
+    const d=new Date(v.visited_at);
+    // Format as YYYY-MM-DD in local timezone
+    return d.toLocaleDateString('en-CA',{timeZone:tz}); // en-CA gives YYYY-MM-DD format
+  });
   for(let i=days-1;i>=0;i--){
-    const d=new Date(Date.now()-i*86400000).toLocaleDateString('sv',{timeZone:tz});
-    labels.push(d.slice(5));counts.push(dates.filter(x=>x===d).length);
+    // Get local date string for each day
+    const dayMs=Date.now()-i*86400000;
+    const d=new Date(dayMs).toLocaleDateString('en-CA',{timeZone:tz});
+    labels.push(d.slice(5)); // MM-DD
+    counts.push(dates.filter(x=>x===d).length);
   }
   if(VC)VC.destroy();
-  VC=new Chart(document.getElementById('cv'),{type:'line',data:{labels,datasets:[{data:counts,borderColor:'#2ecc71',backgroundColor:'rgba(46,204,113,.08)',fill:true,tension:.4,pointRadius:2,borderWidth:2}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0,font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{maxRotation:0,font:{size:10}},grid:{display:false}}},responsive:true,maintainAspectRatio:false}});
+  const canvas=document.getElementById('cv');
+  if(!canvas)return;
+  VC=new Chart(canvas,{type:'line',data:{labels,datasets:[{data:counts,borderColor:'#2ecc71',backgroundColor:'rgba(46,204,113,.08)',fill:true,tension:.4,pointRadius:3,borderWidth:2,pointBackgroundColor:'#2ecc71'}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{title:ctx=>'Date: '+labels[ctx[0].dataIndex],label:ctx=>`${ctx.parsed.y} visits`}}},scales:{y:{beginAtZero:true,ticks:{precision:0,font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{maxRotation:0,font:{size:10}},grid:{display:false}}},responsive:true,maintainAspectRatio:false}});
 }
 
 function drawCC(cli){
