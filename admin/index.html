@@ -368,9 +368,11 @@ async function loadDash(){
       sb.from('page_views').select('*',{count:'exact',head:true}).gte('visited_at',y0).lt('visited_at',t0)
     ]);
     // Chart + table data
+    // Fetch visits for current filter period
+    const days7=new Date(Date.now()-7*86400000).toISOString();
     const s90=new Date(Date.now()-90*86400000).toISOString();
     const[{data:vis},{data:cli},{data:cou}]=await Promise.all([
-      sb.from('page_views').select('visited_at').gte('visited_at',s90).limit(10000),
+      sb.from('page_views').select('visited_at').gte('visited_at',days7).limit(10000),
       sb.from('buy_clicks').select('album_name').limit(10000),
       sb.from('page_views').select('country').limit(10000)
     ]);
