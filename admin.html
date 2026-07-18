@@ -638,56 +638,39 @@ function showPage(id,btn){
 async function renderDashboard(){
   const btn=document.getElementById('btn-refresh');
   if(btn){btn.disabled=true;btn.textContent='Loading...';}
-
   try{
-    // 1. Total counts via server-side count
-    const[{count:totalVisits},{count:totalClicks}]=await Promise.all([
-      sb.from('page_views').select('*',{count:'exact',head:true}),
-      sb.from('buy_clicks').select('*',{count:'exact',head:true})
-    ]);
-
-    // 2. Today/yesterday using local timezone
     const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
     const now=new Date();
     const todayStr=now.toLocaleDateString('sv',{timeZone:tz});
     const yestStr=new Date(now-86400000).toLocaleDateString('sv',{timeZone:tz});
-    const todayUTCStart=new Date(todayStr+'T00:00:00').toISOString();
-    const yestUTCStart=new Date(yestStr+'T00:00:00').toISOString();
+    // Convert local midnight to UTC
+    const todayStart=new Date(todayStr).toISOString();
+    const yestStart=new Date(yestStr).toISOString();
+    const tomorrowStart=new Date(new Date(todayStr).getTime()+86400000).toISOString();
 
-    const[{count:todayCount},{count:yestCount}]=await Promise.all([
-      sb.from('page_views').select('*',{count:'exact',head:true}).gte('visited_at',todayUTCStart),
-      sb.from('page_views').select('*',{count:'exact',head:true}).gte('visited_at',yestUTCStart).lt('visited_at',todayUTCStart)
-    ]);
-
-    // 3. Data for charts
-    const since90=new Date(Date.now()-90*86400000).toISOString();
-    const[{data:visits},{data:clicks},{data:countries}]=await Promise.all([
-      sb.from('page_views').select('visited_at').gte('visited_at',since90).limit(10000),
+    const [{count:tv},{count:tc},{count:td},{count:ty},{data:visits},{data:clicks},{data:cdata}]=await Promise.all([
+      sb.from('page_views').select('*',{count:'exact',head:true}),
+      sb.from('buy_clicks').select('*',{count:'exact',head:true}),
+      sb.from('page_views').select('*',{count:'exact',head:true}).gte('visited_at',todayStart).lt('visited_at',tomorrowStart),
+      sb.from('page_views').select('*',{count:'exact',head:true}).gte('visited_at',yestStart).lt('visited_at',todayStart),
+      sb.from('page_views').select('visited_at').gte('visited_at',new Date(Date.now()-90*86400000).toISOString()).limit(10000),
       sb.from('buy_clicks').select('album_name').limit(10000),
       sb.from('page_views').select('country').limit(10000)
     ]);
 
-    // 4. Update stat cards
-    document.getElementById('s-visits').textContent=(totalVisits||0).toLocaleString();
-    document.getElementById('s-today').textContent=todayCount||0;
-    document.getElementById('s-yesterday').textContent='Yesterday: '+(yestCount||0);
-    document.getElementById('s-clicks').textContent=(totalClicks||0).toLocaleString();
+    const cm={};(cdata||[]).forEach(x=>{if(x.country)cm[x.country]=(cm[x.country]||0)+1;});
 
-    // 5. Countries count
-    const countryMap={};
-    (countries||[]).forEach(x=>{if(x.country)countryMap[x.country]=(countryMap[x.country]||0)+1;});
-    document.getElementById('s-countries').textContent=Object.keys(countryMap).length;
+    document.getElementById('s-visits').textContent=(tv||0).toLocaleString();
+    document.getElementById('s-today').textContent=td||0;
+    document.getElementById('s-yesterday').textContent='Yesterday: '+(ty||0);
+    document.getElementById('s-clicks').textContent=(tc||0).toLocaleString();
+    document.getElementById('s-countries').textContent=Object.keys(cm).length;
 
-    // 6. Render charts
     renderVisitChart(visits||[]);
     renderClickChart(clicks||[]);
-    renderCountriesTable(countryMap,totalVisits||0);
+    renderCountriesTable(cm,tv||0);
     renderClicksTable(clicks||[]);
-
-  }catch(e){
-    console.error('Dashboard error:',e);
-  }
-
+  }catch(e){console.error('Dashboard error:',e);}
   if(btn){btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Refresh';}
 }
 function setFilter(f,btn){
