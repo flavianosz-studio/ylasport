@@ -86,7 +86,14 @@
       "pay_link": "https://item.taobao.com/item.htm?id=1075641516194&mi_id=0000IL7sKrftas6pyFOVvjkoEVFKRYVbap8w9O_Xh9UllJM&sku_properties=1627207%3A1485489689&spm=a21xtw.29178619.0.0&xxc=shop",
       "cover_media_id": "1786624075599_hkx6nv",
       "created_at": "2026-08-13T12:27:46.250Z",
-      "media": []
+      "media": [
+        {
+          "id": "1786765203162_p8b6fi",
+          "path": "media/1786624066250/1786765203162_p8b6fi.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765203162_p8b6fi.jpg",
+          "type": "image"
+        }
+      ]
     },
     {
       "id": "album-batman",
