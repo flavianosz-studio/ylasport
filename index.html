@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YLASPORT — Premium Athletic Wear</title>
-<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/favicon.png">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/favicon.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://api.github.com">
 <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
@@ -121,8 +121,9 @@ body{font-family:var(--font);background:var(--white);color:var(--black);overflow
 
 /* LEFT — image gallery */
 .product-gallery{}
-.product-main-img{width:100%;aspect-ratio:4/5;max-height:520px;overflow:hidden;background:var(--gray-100);border-radius:2px;position:relative;cursor:zoom-in;}
-.product-main-img img,.product-main-img video{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .25s;}
+.product-main-img{width:100%;max-height:640px;overflow:hidden;background:var(--gray-50);border-radius:2px;position:relative;cursor:zoom-in;display:flex;align-items:center;justify-content:center;}
+.product-main-img img{width:100%;height:auto;max-height:640px;object-fit:contain;display:block;transition:opacity .25s;}
+.product-main-img video{width:100%;height:100%;object-fit:contain;display:block;}
 .video-play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);}
 .play-circle{width:64px;height:64px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.3);}
 
@@ -301,17 +302,21 @@ body{font-family:var(--font);background:var(--white);color:var(--black);overflow
   .product-gallery{width:100%;overflow:hidden;}
   .product-main-img{
     width:100vw;
-    aspect-ratio:1/1;
     max-height:100vw;
     border-radius:0;
     cursor:default;
     overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--gray-50);
   }
   .product-main-img img,
   .product-main-img video{
     width:100%;
-    height:100%;
-    object-fit:cover;
+    height:auto;
+    max-height:100vw;
+    object-fit:contain;
     display:block;
   }
 
