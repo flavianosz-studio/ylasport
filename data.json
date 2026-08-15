@@ -84,9 +84,58 @@
       "price": "188",
       "description": "Price: 188y\nBlack, Green, Navy, Burgundy",
       "pay_link": "https://item.taobao.com/item.htm?id=1075641516194&mi_id=0000IL7sKrftas6pyFOVvjkoEVFKRYVbap8w9O_Xh9UllJM&sku_properties=1627207%3A1485489689&spm=a21xtw.29178619.0.0&xxc=shop",
-      "cover_media_id": "1786624075599_hkx6nv",
+      "cover_media_id": "1786765238337_2al1a7",
       "created_at": "2026-08-13T12:27:46.250Z",
-      "media": []
+      "media": [
+        {
+          "id": "1786765238337_2al1a7",
+          "path": "media/1786624066250/1786765238337_2al1a7.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765238337_2al1a7.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786765240215_2bfop5",
+          "path": "media/1786624066250/1786765240215_2bfop5.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765240215_2bfop5.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786765241706_iltw7h",
+          "path": "media/1786624066250/1786765241706_iltw7h.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765241706_iltw7h.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786765243375_3uaelx",
+          "path": "media/1786624066250/1786765243375_3uaelx.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765243375_3uaelx.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786765245218_4z87ho",
+          "path": "media/1786624066250/1786765245218_4z87ho.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765245218_4z87ho.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786765246866_s5awf7",
+          "path": "media/1786624066250/1786765246866_s5awf7.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765246866_s5awf7.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786765248490_mmgmb9",
+          "path": "media/1786624066250/1786765248490_mmgmb9.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765248490_mmgmb9.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786765250747_3id2yk",
+          "path": "media/1786624066250/1786765250747_3id2yk.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765250747_3id2yk.jpg",
+          "type": "image"
+        }
+      ]
     },
     {
       "id": "album-batman",
