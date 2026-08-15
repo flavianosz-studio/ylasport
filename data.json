@@ -1,6 +1,66 @@
 {
   "albums": [
     {
+      "id": "1786764851173",
+      "name": "YoungLA Apex Series",
+      "tag": "NEW, Sale!",
+      "price": "158",
+      "description": "Price: 158y\nBlack, Gray, Red, Navy blue.",
+      "pay_link": "",
+      "cover_media_id": "1786764851173_qsy5cd",
+      "created_at": "2026-08-15T03:34:11.173Z",
+      "media": [
+        {
+          "id": "1786764851173_qsy5cd",
+          "path": "media/1786764851173/1786764851173_qsy5cd.png",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764851173_qsy5cd.png",
+          "type": "image"
+        },
+        {
+          "id": "1786764856140_en71ml",
+          "path": "media/1786764851173/1786764856140_en71ml.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764856140_en71ml.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786764857604_mb8npr",
+          "path": "media/1786764851173/1786764857604_mb8npr.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764857604_mb8npr.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786764859411_nk2tq1",
+          "path": "media/1786764851173/1786764859411_nk2tq1.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764859411_nk2tq1.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786764860886_4wllcw",
+          "path": "media/1786764851173/1786764860886_4wllcw.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764860886_4wllcw.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786764862142_1pm65j",
+          "path": "media/1786764851173/1786764862142_1pm65j.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764862142_1pm65j.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786764863784_ylbrwv",
+          "path": "media/1786764851173/1786764863784_ylbrwv.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764863784_ylbrwv.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786764865554_45qniq",
+          "path": "media/1786764851173/1786764865554_45qniq.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764865554_45qniq.jpg",
+          "type": "image"
+        }
+      ]
+    },
+    {
       "id": "1781303464455",
       "name": "How To Buy",
       "tag": "How To Buy",
@@ -26,56 +86,7 @@
       "pay_link": "https://item.taobao.com/item.htm?id=1075641516194&mi_id=0000IL7sKrftas6pyFOVvjkoEVFKRYVbap8w9O_Xh9UllJM&sku_properties=1627207%3A1485489689&spm=a21xtw.29178619.0.0&xxc=shop",
       "cover_media_id": "1786624075599_hkx6nv",
       "created_at": "2026-08-13T12:27:46.250Z",
-      "media": [
-        {
-          "id": "1786624075599_hkx6nv",
-          "path": "media/1786624066250/1786624075599_hkx6nv.webp",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786624075599_hkx6nv.webp",
-          "type": "image"
-        },
-        {
-          "id": "1786624073564_5s5fu0",
-          "path": "media/1786624066250/1786624073564_5s5fu0.webp",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786624073564_5s5fu0.webp",
-          "type": "image"
-        },
-        {
-          "id": "1786624066250_hcrrpw",
-          "path": "media/1786624066250/1786624066250_hcrrpw.webp",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786624066250_hcrrpw.webp",
-          "type": "image"
-        },
-        {
-          "id": "1786624068136_g9tjow",
-          "path": "media/1786624066250/1786624068136_g9tjow.webp",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786624068136_g9tjow.webp",
-          "type": "image"
-        },
-        {
-          "id": "1786624071821_6qoezc",
-          "path": "media/1786624066250/1786624071821_6qoezc.webp",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786624071821_6qoezc.webp",
-          "type": "image"
-        },
-        {
-          "id": "1786624069877_wt7iud",
-          "path": "media/1786624066250/1786624069877_wt7iud.webp",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786624069877_wt7iud.webp",
-          "type": "image"
-        },
-        {
-          "id": "1786625093187_mm1yqd",
-          "path": "media/1786624066250/1786625093187_mm1yqd.mp4",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786625093187_mm1yqd.mp4",
-          "type": "video"
-        },
-        {
-          "id": "1786742416555_9mra52",
-          "path": "media/1786624066250/1786742416555_9mra52.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786742416555_9mra52.jpg",
-          "type": "image"
-        }
-      ]
+      "media": []
     },
     {
       "id": "album-batman",
