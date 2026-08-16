@@ -26,7 +26,50 @@
       "pay_link": "https://item.taobao.com/item.htm?id=1074220666582&mi_id=0000kQdgxQTgsFx-6obpuL3c-w0WVK9Yy4CNZVocDNtJvvc&spm=a21xtw.29178619.0.0&xxc=shop",
       "cover_media_id": "1786764863784_ylbrwv",
       "created_at": "2026-08-15T03:34:11.173Z",
-      "media": []
+      "media": [
+        {
+          "id": "1786920423268_af3roq",
+          "path": "media/1786764851173/1786920423268_af3roq.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786920423268_af3roq.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786920424902_pcaiit",
+          "path": "media/1786764851173/1786920424902_pcaiit.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786920424902_pcaiit.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786920426073_l56khl",
+          "path": "media/1786764851173/1786920426073_l56khl.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786920426073_l56khl.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786920427604_jc8sew",
+          "path": "media/1786764851173/1786920427604_jc8sew.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786920427604_jc8sew.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786920429539_ouzibj",
+          "path": "media/1786764851173/1786920429539_ouzibj.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786920429539_ouzibj.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1786920431275_sj9zq1",
+          "path": "media/1786764851173/1786920431275_sj9zq1.png",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786920431275_sj9zq1.png",
+          "type": "image"
+        },
+        {
+          "id": "1786920433446_x95w55",
+          "path": "media/1786764851173/1786920433446_x95w55.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786920433446_x95w55.jpg",
+          "type": "image"
+        }
+      ]
     },
     {
       "id": "1786765474702",
