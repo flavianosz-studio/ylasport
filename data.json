@@ -26,62 +26,7 @@
       "pay_link": "https://item.taobao.com/item.htm?id=1074220666582&mi_id=0000kQdgxQTgsFx-6obpuL3c-w0WVK9Yy4CNZVocDNtJvvc&spm=a21xtw.29178619.0.0&xxc=shop",
       "cover_media_id": "1786764863784_ylbrwv",
       "created_at": "2026-08-15T03:34:11.173Z",
-      "media": [
-        {
-          "id": "1786764863784_ylbrwv",
-          "path": "media/1786764851173/1786764863784_ylbrwv.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764863784_ylbrwv.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1786764862142_1pm65j",
-          "path": "media/1786764851173/1786764862142_1pm65j.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764862142_1pm65j.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1786764860886_4wllcw",
-          "path": "media/1786764851173/1786764860886_4wllcw.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764860886_4wllcw.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1786764859411_nk2tq1",
-          "path": "media/1786764851173/1786764859411_nk2tq1.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764859411_nk2tq1.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1786764856140_en71ml",
-          "path": "media/1786764851173/1786764856140_en71ml.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764856140_en71ml.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1786764857604_mb8npr",
-          "path": "media/1786764851173/1786764857604_mb8npr.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764857604_mb8npr.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1786764851173_qsy5cd",
-          "path": "media/1786764851173/1786764851173_qsy5cd.png",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764851173_qsy5cd.png",
-          "type": "image"
-        },
-        {
-          "id": "1786764865554_45qniq",
-          "path": "media/1786764851173/1786764865554_45qniq.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786764865554_45qniq.jpg",
-          "type": "image"
-        },
-        {
-          "id": "1786920301762_8uqaot",
-          "path": "media/1786764851173/1786920301762_8uqaot.mp4",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786764851173/1786920301762_8uqaot.mp4",
-          "type": "video"
-        }
-      ]
+      "media": []
     },
     {
       "id": "1786765474702",
@@ -190,12 +135,6 @@
           "type": "image"
         },
         {
-          "id": "1786765250747_3id2yk",
-          "path": "media/1786624066250/1786765250747_3id2yk.jpg",
-          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765250747_3id2yk.jpg",
-          "type": "image"
-        },
-        {
           "id": "1786765323651_048xil",
           "path": "media/1786624066250/1786765323651_048xil.png",
           "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765323651_048xil.png",
@@ -206,6 +145,12 @@
           "path": "media/1786624066250/1786765529251_sipvy3.mp4",
           "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765529251_sipvy3.mp4",
           "type": "video"
+        },
+        {
+          "id": "1786765250747_3id2yk",
+          "path": "media/1786624066250/1786765250747_3id2yk.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1786624066250/1786765250747_3id2yk.jpg",
+          "type": "image"
         }
       ]
     },
