@@ -1,6 +1,54 @@
 {
   "albums": [
     {
+      "id": "1789272448055",
+      "name": "YoungLA x Batman Longsleeve",
+      "tag": "NEW, SALE!",
+      "price": "178",
+      "description": "Price: 178y\nAll Black, Burgundy/burgundy, Navy blue/navy",
+      "pay_link": "https://item.taobao.com/item.htm?abbucket=0&id=1083103337237&mi_id=0000a9XxZ2OcZ0hu2jVbU7gsjpbGZ83vHiDo6QFyLeIznp0&ns=1&skuId=6135793264905&spm=a21xtw.29178619.product_shelf.12.288d2a7fDsTHe2&xxc=taobaoSearch",
+      "cover_media_id": "1789272448055_fp5vj7",
+      "created_at": "2026-09-13T04:07:28.055Z",
+      "media": [
+        {
+          "id": "1789272448055_fp5vj7",
+          "path": "media/1789272448055/1789272448055_fp5vj7.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1789272448055/1789272448055_fp5vj7.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1789272450026_josyl3",
+          "path": "media/1789272448055/1789272450026_josyl3.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1789272448055/1789272450026_josyl3.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1789272452319_bi0mrq",
+          "path": "media/1789272448055/1789272452319_bi0mrq.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1789272448055/1789272452319_bi0mrq.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1789272453854_ciny99",
+          "path": "media/1789272448055/1789272453854_ciny99.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1789272448055/1789272453854_ciny99.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1789272455698_ngjpz3",
+          "path": "media/1789272448055/1789272455698_ngjpz3.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1789272448055/1789272455698_ngjpz3.jpg",
+          "type": "image"
+        },
+        {
+          "id": "1789272457336_vqgu2o",
+          "path": "media/1789272448055/1789272457336_vqgu2o.jpg",
+          "url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/1789272448055/1789272457336_vqgu2o.jpg",
+          "type": "image"
+        }
+      ]
+    },
+    {
       "id": "1781303464455",
       "name": "How To Buy",
       "tag": "How To Buy",
