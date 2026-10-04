@@ -547,6 +547,18 @@
       "price": "168",
       "reviews": [
         {
+          "id": "r1791121645441",
+          "created_at": "2026-10-04T13:47:25.441Z",
+          "name": "R**n",
+          "country_code": "cn",
+          "country": "China",
+          "text": "Best quality",
+          "stars": 5,
+          "verified": true,
+          "photo_url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/reviews/1791121645441_4e2zfx.jpeg",
+          "photo_path": "media/album-batman/reviews/1791121645441_4e2zfx.jpeg"
+        },
+        {
           "id": "r1791121561042",
           "created_at": "2026-10-04T13:46:01.042Z",
           "name": "Strong**y",
