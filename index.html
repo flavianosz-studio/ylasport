@@ -312,7 +312,11 @@ button{font-family:inherit;}
 
 /* ── REVIEWS ── */
 .stars{position:relative;display:inline-block;font-size:15px;letter-spacing:2px;line-height:1;color:var(--gray-200);white-space:nowrap;}
-.stars i{position:absolute;left:0;top:0;overflow:hidden;color:#f5a623;font-style:normal;}
+.stars i{position:absolute;left:0;top:0;overflow:hidden;color:var(--black);font-style:normal;}
+.card-rating{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;color:var(--black);}
+.card-rating .stars{font-size:14px;letter-spacing:1px;}
+.related-info .card-rating{margin-top:8px;font-size:12px;}
+.related-info .card-rating .stars{font-size:12px;}
 .product-rating{display:none;align-items:center;gap:10px;margin:-4px 0 16px;cursor:pointer;width:max-content;}
 .product-rating.show{display:flex;}
 .product-rating .rt-n{font-size:13px;font-weight:700;}
@@ -832,8 +836,15 @@ function albumCardHTML(a){
       <h3><span>${esc(a.name)}</span></h3>
       ${p?`<div class="album-price"><span class="price-cny">${p.cny}</span><span class="price-usd">${p.usd}</span></div>`:''}
       ${swatches}
+      ${cardRatingHTML(a)}
     </div>
   </div>`;
+}
+function cardRatingHTML(a){
+  const rv=(a.reviews||[]).filter(r=>r&&r.name);
+  if(!rv.length)return '';
+  const avg=rv.reduce((s,r)=>s+(Number(r.stars)||5),0)/rv.length;
+  return `<div class="card-rating">${starsHTML(avg)}<span>(${rv.length})</span></div>`;
 }
 
 function switchVariant(el,albumId,mediaId){
@@ -966,6 +977,7 @@ function renderRelated(currentId){
         <h4>${esc(a.name)}</h4>
         ${priceHtml}
         ${swatches}
+        ${cardRatingHTML(a)}
       </div>
     </div>`;
   }).join('');
