@@ -183,6 +183,27 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 .save-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
 
+/* REVIEWS */
+.rv-list{display:grid;gap:8px;margin-bottom:18px;}
+.rv-item{display:flex;align-items:center;gap:12px;border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;background:var(--white);}
+.rv-item .rv-ph{width:46px;height:46px;border-radius:var(--r);object-fit:cover;background:var(--bg);flex-shrink:0;}
+.rv-item .rv-fl{width:18px;height:13px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:5px;}
+.rv-item .rv-n{font-weight:600;font-size:13px;}
+.rv-item .rv-m{font-size:11px;color:var(--text3);margin-top:2px;}
+.rv-item .rv-st{color:#f5a623;letter-spacing:1px;}
+.rv-form{background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:18px;}
+.rv-form .finput{background:var(--white);}
+.star-pick{display:flex;gap:4px;}
+.star-pick button{background:none;border:none;font-size:24px;line-height:1;cursor:pointer;color:#ddd;padding:0 1px;transition:transform .15s,color .15s;}
+.star-pick button.on{color:#f5a623;}
+.star-pick button:hover{transform:scale(1.15);}
+.rv-photo{display:flex;align-items:center;gap:12px;}
+.rv-photo-box{width:64px;height:64px;border-radius:var(--r);background:var(--white);border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;flex-shrink:0;transition:border-color .15s;}
+.rv-photo-box:hover{border-color:var(--black);}
+.rv-photo-box img{width:100%;height:100%;object-fit:cover;}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;cursor:pointer;}
+.chk input{width:16px;height:16px;accent-color:var(--green-dark);}
+
 @media(max-width:900px){
   .admin-body{grid-template-columns:1fr;}
   .sidebar{display:none;}
@@ -349,6 +370,44 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
       <button class="btn btn-ghost" onclick="saveOrder2()">Save Order</button>
       <button class="btn btn-black" onclick="closeModal('modal-photos')">Done</button>
     </div>
+  </div>
+</div>
+
+<!-- MODAL REVIEWS -->
+<div class="modal-overlay" id="modal-reviews">
+  <div class="modal" style="max-width:620px">
+    <div class="modal-head">
+      <div class="modal-title" id="reviews-title">Reviews</div>
+      <button class="modal-close" onclick="closeModal('modal-reviews')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="rv-list" id="rv-list"></div>
+      <div class="rv-form">
+        <div class="card-title" id="rv-form-title" style="margin-bottom:14px">Add Review</div>
+        <div class="fgroup frow">
+          <div><label class="flabel">Customer Name *</label><input class="finput" id="rv-name" placeholder="e.g. Lucas M."></div>
+          <div><label class="flabel">Country</label><select class="finput" id="rv-country"></select></div>
+        </div>
+        <div class="fgroup">
+          <label class="flabel">Customer Photo</label>
+          <div class="rv-photo">
+            <div class="rv-photo-box" id="rv-photo-box" onclick="document.getElementById('rv-file').click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20" style="color:var(--text3)"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+            <div style="font-size:11px;color:var(--text3);line-height:1.5">Photo of the customer with the item<br>Image max 10MB · optional</div>
+          </div>
+          <input type="file" id="rv-file" accept="image/*" style="display:none" onchange="rvPick(this.files[0])">
+        </div>
+        <div class="fgroup"><label class="flabel">Comment <span style="font-weight:400;color:var(--text3);text-transform:none;letter-spacing:0">(optional)</span></label><textarea class="finput ftextarea" id="rv-text" style="min-height:60px" placeholder="Great fit, fast shipping..."></textarea></div>
+        <div class="fgroup frow" style="align-items:center">
+          <div><label class="flabel">Stars</label><div class="star-pick" id="rv-stars"></div></div>
+          <label class="chk"><input type="checkbox" id="rv-verified" checked> Verified Purchase</label>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button class="btn btn-ghost" id="rv-cancel" onclick="rvReset()" style="display:none">Cancel Edit</button>
+          <button class="btn btn-black" id="rv-save" onclick="saveReview()">Add Review</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-black" onclick="closeModal('modal-reviews')">Done</button></div>
   </div>
 </div>
 
@@ -567,6 +626,7 @@ function renderAlbums(){
       </div>
       <div class="album-actions">
         <button class="btn btn-ghost btn-sm" onclick="openPhotos('${a.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Photos</button>
+        <button class="btn btn-ghost btn-sm" onclick="openReviews('${a.id}')"><span style="color:#f5a623">★</span>Reviews${(a.reviews||[]).length?` (${a.reviews.length})`:''}</button>
         <button class="btn btn-ghost btn-sm" onclick="editAlbum('${a.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>
         <button class="btn btn-danger btn-sm" onclick="deleteAlbum('${a.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
       </div>
@@ -782,6 +842,86 @@ async function uploadFile(file,albumId){
   return{id,path,url:`https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${path}`,type:file.type.startsWith('video')?'video':'image'};
 }
 function toB64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});}
+
+// ══ REVIEWS ════════════════════════════════════════════════════
+const COUNTRIES=[['','—'],['us','United States'],['br','Brazil'],['cn','China'],['hk','Hong Kong'],['tw','Taiwan'],['jp','Japan'],['kr','South Korea'],['sg','Singapore'],['my','Malaysia'],['th','Thailand'],['ph','Philippines'],['id','Indonesia'],['vn','Vietnam'],['in','India'],['au','Australia'],['nz','New Zealand'],['ca','Canada'],['mx','Mexico'],['ar','Argentina'],['cl','Chile'],['co','Colombia'],['pe','Peru'],['pt','Portugal'],['es','Spain'],['fr','France'],['de','Germany'],['it','Italy'],['nl','Netherlands'],['be','Belgium'],['ch','Switzerland'],['at','Austria'],['gb','United Kingdom'],['ie','Ireland'],['se','Sweden'],['no','Norway'],['dk','Denmark'],['fi','Finland'],['pl','Poland'],['ru','Russia'],['ua','Ukraine'],['tr','Turkey'],['ae','United Arab Emirates'],['sa','Saudi Arabia'],['il','Israel'],['eg','Egypt'],['za','South Africa'],['ng','Nigeria'],['ma','Morocco'],['ao','Angola'],['mz','Mozambique']];
+let rvAlbumId=null,rvEditId=null,rvStarsVal=5,rvFile=null;
+const RV_PLUS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20" style="color:var(--text3)"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+const flagUrl=c=>`https://flagcdn.com/w40/${c}.png`;
+function openReviews(albumId){
+  rvAlbumId=albumId;const a=localData.albums.find(x=>x.id===albumId);
+  document.getElementById('reviews-title').textContent='Reviews · '+(a?.name||'');
+  const sel=document.getElementById('rv-country');
+  if(!sel.options.length)sel.innerHTML=COUNTRIES.map(([c,n])=>`<option value="${c}">${n}</option>`).join('');
+  rvReset();renderRvList();openModal('modal-reviews');
+}
+function renderRvList(){
+  const a=localData.albums.find(x=>x.id===rvAlbumId);const rv=a?.reviews||[];
+  document.getElementById('rv-list').innerHTML=!rv.length?'<div style="font-size:13px;color:var(--text3);text-align:center;padding:10px">No reviews yet</div>':rv.map(r=>`<div class="rv-item">
+    ${r.photo_url?`<img class="rv-ph" src="${r.photo_url}" alt="">`:'<div class="rv-ph"></div>'}
+    <div style="flex:1;min-width:0">
+      <div class="rv-n">${r.country_code?`<img class="rv-fl" src="${flagUrl(r.country_code)}" alt="">`:''}${esc(r.name)}${r.verified?' <span class="album-tag-badge" style="margin-left:4px">Verified</span>':''}</div>
+      <div class="rv-m"><span class="rv-st">${'★'.repeat(r.stars||5)}</span>${r.text?' · '+esc(r.text.slice(0,60))+(r.text.length>60?'…':''):''}</div>
+    </div>
+    <div class="album-actions">
+      <button class="btn btn-ghost btn-sm" onclick="editReview('${r.id}')">Edit</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteReview('${r.id}')">Del</button>
+    </div>
+  </div>`).join('');
+}
+function rvStars(n){rvStarsVal=n;document.getElementById('rv-stars').innerHTML=[1,2,3,4,5].map(i=>`<button type="button" class="${i<=n?'on':''}" onclick="rvStars(${i})">★</button>`).join('');}
+function rvPreview(url){document.getElementById('rv-photo-box').innerHTML=url?`<img src="${url}" alt="">`:RV_PLUS;}
+function rvPick(f){if(!f)return;if(f.size>10*1024*1024){toast('Photo exceeds 10MB','err');return;}rvFile=f;rvPreview(URL.createObjectURL(f));}
+function rvReset(){
+  rvEditId=null;rvFile=null;
+  document.getElementById('rv-name').value='';document.getElementById('rv-text').value='';
+  document.getElementById('rv-country').value='';document.getElementById('rv-verified').checked=true;document.getElementById('rv-file').value='';
+  rvStars(5);rvPreview(null);
+  document.getElementById('rv-form-title').textContent='Add Review';document.getElementById('rv-save').textContent='Add Review';document.getElementById('rv-cancel').style.display='none';
+}
+function editReview(rid){
+  const a=localData.albums.find(x=>x.id===rvAlbumId);const r=(a?.reviews||[]).find(x=>x.id===rid);if(!r)return;
+  rvEditId=rid;rvFile=null;
+  document.getElementById('rv-name').value=r.name||'';document.getElementById('rv-text').value=r.text||'';
+  document.getElementById('rv-country').value=r.country_code||'';document.getElementById('rv-verified').checked=!!r.verified;
+  rvStars(r.stars||5);rvPreview(r.photo_url||null);
+  document.getElementById('rv-form-title').textContent='Edit Review';document.getElementById('rv-save').textContent='Save Changes';document.getElementById('rv-cancel').style.display='inline-flex';
+}
+async function saveReview(){
+  const name=document.getElementById('rv-name').value.trim();
+  if(!name){toast('Customer name required','err');return;}
+  const a=localData.albums.find(x=>x.id===rvAlbumId);if(!a)return;
+  if(!a.reviews)a.reviews=[];
+  const btn=document.getElementById('rv-save');btn.disabled=true;btn.textContent='Saving...';
+  let r=rvEditId?a.reviews.find(x=>x.id===rvEditId):null;
+  const isNew=!r;
+  if(!r){r={id:'r'+Date.now(),created_at:new Date().toISOString()};a.reviews.unshift(r);}
+  const cc=document.getElementById('rv-country').value;
+  r.name=name;r.country_code=cc;r.country=cc?((COUNTRIES.find(x=>x[0]===cc)||[])[1]||''):'';
+  r.text=document.getElementById('rv-text').value.trim();
+  r.stars=rvStarsVal;r.verified=document.getElementById('rv-verified').checked;
+  if(rvFile){
+    const up=await uploadFile(rvFile,rvAlbumId+'/reviews');
+    if(up){
+      if(r.photo_path){const f=await ghGet(r.photo_path);if(f)await ghDel(r.photo_path,'Replace review photo',f.sha);}
+      r.photo_url=up.url;r.photo_path=up.path;
+    }else toast('Photo upload failed','err');
+  }
+  const ok=await saveData(isNew?'Add review':'Edit review');
+  btn.disabled=false;
+  renderRvList();renderAlbums();rvReset();
+  toast(ok?'Review saved!':'Error saving',ok?'ok':'err');
+}
+async function deleteReview(rid){
+  if(!confirm('Delete this review?'))return;
+  const a=localData.albums.find(x=>x.id===rvAlbumId);if(!a)return;
+  const r=(a.reviews||[]).find(x=>x.id===rid);
+  if(r?.photo_path){const f=await ghGet(r.photo_path);if(f)await ghDel(r.photo_path,'Remove review photo',f.sha);}
+  a.reviews=(a.reviews||[]).filter(x=>x.id!==rid);
+  if(rvEditId===rid)rvReset();
+  const ok=await saveData('Delete review');
+  renderRvList();renderAlbums();toast(ok?'Review deleted':'Error',ok?'ok':'err');
+}
 
 // ══ HELPERS ═════════════════════════════════════════════════════
 function openModal(id){document.getElementById(id).classList.add('open');}
