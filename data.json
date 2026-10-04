@@ -544,7 +544,21 @@
           "type": "image"
         }
       ],
-      "price": "168"
+      "price": "168",
+      "reviews": [
+        {
+          "id": "r1791121561042",
+          "created_at": "2026-10-04T13:46:01.042Z",
+          "name": "Strong**y",
+          "country_code": "cn",
+          "country": "China",
+          "text": "The quality is excellent. the anti-slip strip at the hem prevents it from riding up. i'm 177cm and 93kg, and xl fits perfectly",
+          "stars": 5,
+          "verified": true,
+          "photo_url": "https://raw.githubusercontent.com/flavianosz-studio/ylasport/main/media/album-batman/reviews/1791121561042_3zrvbp.jpeg",
+          "photo_path": "media/album-batman/reviews/1791121561042_3zrvbp.jpeg"
+        }
+      ]
     },
     {
       "id": "album-warrior-4041",
